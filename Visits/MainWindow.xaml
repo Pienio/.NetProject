@@ -37,7 +37,7 @@
             </ListView>
         </GroupBox>
         <Label x:Name="User" Content="Witaj gościu" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="80" Height="31"/>
-        <Button x:Name="Login" Content="Zaloguj się" HorizontalAlignment="Right" Margin="0,18,26.8,0" VerticalAlignment="Top" Width="85" Height="23"/>
+        <Button x:Name="Login" Content="Zaloguj się" HorizontalAlignment="Right" Margin="0,18,26.8,0" VerticalAlignment="Top" Width="85" Height="23" Click="Login_Click"/>
         <Button x:Name="Register" Content="Zarejestruj się" Grid.Column="1" HorizontalAlignment="Left" Margin="4.2,18,0,0" VerticalAlignment="Top" Width="83" RenderTransformOrigin="-0.043,0.576" Height="23"/>
         <Button x:Name="Search" Content="Wyszukaj
                 " HorizontalAlignment="Left" Margin="4.2,19,0,0" Grid.Row="1" VerticalAlignment="Top" Width="83" Grid.Column="1" Height="23"/>

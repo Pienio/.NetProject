@@ -37,6 +37,11 @@ namespace Visits
             }
 
         }
-       
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            var zal = new Login();
+            zal.Show();
+        }
     }
 }
