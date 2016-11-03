@@ -34,7 +34,7 @@ namespace Visits
                     MessageBox.Show(c.Name.Name);
                 }
 
-
+                db.Dispose();
             }
             catch(Exception e)
             {

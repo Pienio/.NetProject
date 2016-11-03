@@ -9,8 +9,8 @@ namespace DatabaseAccess
 {
     class ApplicationData : DbContext, IApplicationData
     {
-        public IDbSet<Doctor> Doctors { get; set; }
-        public IDbSet<Patient> Patients { get; set; }
+       // public IDbSet<Doctor> Doctors { get; set; }
+        public IDbSet<User> Users { get; set; }
         public IDbSet<Specialization> Specializations { get; set; }
         public IDbSet<Visit> Visits { get; set; }
 
@@ -21,9 +21,9 @@ namespace DatabaseAccess
 
         public ApplicationData() : base() { }
 
-        public List<Doctor>  AddSpec()
+        public List<User>  AddSpec()
         {
-            return Doctors.ToList<Doctor>();
+            return Users.ToList<User>();
         }
 
     }
