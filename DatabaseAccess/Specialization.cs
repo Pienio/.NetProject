@@ -9,7 +9,7 @@ namespace DatabaseAccess
 {
     public class Specialization : Entity
     {
-        [Key]
+        
         public string Name { get; set; }
     }
 }

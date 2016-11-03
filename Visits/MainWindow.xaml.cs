@@ -24,6 +24,25 @@ namespace Visits
         public MainWindow()
         {
             InitializeComponent();
+            //To tylko na potrzeby testów
+            var a = new ApplicationDataFactory();
+            try
+            {
+                var db = a.CreateApplicationData();
+                foreach (var c in db.AddSpec())
+                {
+                    MessageBox.Show(c.Name.Name);
+                }
+
+
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+           
+           
         }
+       
     }
 }

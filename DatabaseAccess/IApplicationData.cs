@@ -10,8 +10,9 @@ namespace DatabaseAccess
     public interface IApplicationData : IDisposable
     {
         IDbSet<Doctor> Doctors { get; set; }
-        IDbSet<Doctor> Patients { get; set; }
-        IDbSet<Doctor> Specializations { get; set; }
-        IDbSet<Doctor> Visits { get; set; }
+        IDbSet<Patient> Patients { get; set; }
+        IDbSet<Specialization> Specializations { get; set; }
+        IDbSet<Visit> Visits { get; set; }
+        List<Doctor> AddSpec();
     }
 }
