@@ -28,29 +28,13 @@ namespace Visits
             var a = new ApplicationDataFactory();
           
                 var db = a.CreateApplicationData();
-            // db.FillSpec();
-            List<Specialization> ad =new List<Specialization>();
-            try
-            {
-                ad = db.AddSpec();
+            db.FillSpec();
+           
 
-                //MessageBox.Show(ad.First().Name);
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-
-            // WynikiWyszukiwania.DataContext = db.AddSpec();
-
-            foreach (var c in ad)
+            foreach (var c in db.AddSpec())
             {
                 MessageBox.Show(c.Name);
             }
-
-
-
-
 
         }
        

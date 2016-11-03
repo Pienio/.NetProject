@@ -24,24 +24,8 @@ namespace DatabaseAccess
 
         public List<Specialization>  AddSpec()
         {
-            List<Specialization> op = new List<Specialization>();
-            if(Specializations.Count()==0)
-                 op.Add(new Specialization("SUPA"));
-
-            IQueryable<Specialization> rtn = from temp in Specializations select temp;
-
-            // var list = rtn.ToList();
-            //foreach (var a in rtn.ToList())
-            //{
-            //    //op.Add(new Specialization(a.Name));
-            //}
-            string a = rtn.First().Name;
-               // op = Specializations.Select(p => p).ToList();
-            
-            
            
-         
-            return op;
+            return Specializations.Select(p => p).ToList();
         }
         public void FillSpec()
         {
