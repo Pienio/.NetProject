@@ -13,6 +13,7 @@ namespace DatabaseAccess
         IDbSet<User> Users { get; set; }
         IDbSet<Specialization> Specializations { get; set; }
         IDbSet<Visit> Visits { get; set; }
-        List<User> AddSpec();
+        List<Specialization> AddSpec();
+        void FillSpec();
     }
 }

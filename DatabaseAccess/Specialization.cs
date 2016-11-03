@@ -11,5 +11,9 @@ namespace DatabaseAccess
     {
         
         public string Name { get; set; }
+        public Specialization(string name) : base()
+        {
+            Name = name;
+        }
     }
 }

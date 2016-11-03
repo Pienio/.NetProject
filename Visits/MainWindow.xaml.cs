@@ -26,22 +26,32 @@ namespace Visits
             InitializeComponent();
             //To tylko na potrzeby testów
             var a = new ApplicationDataFactory();
+          
+                var db = a.CreateApplicationData();
+            // db.FillSpec();
+            List<Specialization> ad =new List<Specialization>();
             try
             {
-                var db = a.CreateApplicationData();
-                foreach (var c in db.AddSpec())
-                {
-                    MessageBox.Show(c.Name.Name);
-                }
+                ad = db.AddSpec();
 
-                db.Dispose();
+                //MessageBox.Show(ad.First().Name);
             }
             catch(Exception e)
             {
                 MessageBox.Show(e.Message);
             }
-           
-           
+
+            // WynikiWyszukiwania.DataContext = db.AddSpec();
+
+            foreach (var c in ad)
+            {
+                MessageBox.Show(c.Name);
+            }
+
+
+
+
+
         }
        
     }
