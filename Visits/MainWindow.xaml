@@ -6,17 +6,7 @@
         xmlns:local="clr-namespace:Visits"
         mc:Ignorable="d"
         Title="System rezerwacji wizyt" Height="445.385" Width="748.062">
-    <!--<DockPanel>
-        <Menu x:Name="menu" DockPanel.Dock="Top" Height="23">
-            <Menu.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <DockPanel/>
-                </ItemsPanelTemplate>
-            </Menu.ItemsPanel>
-        </Menu>
-        <DockPanel DockPanel.Dock="Top" Margin="10,10,10,0"/>
-        <GroupBox x:Name="groupBox" Header="Wyniki wyszukiwania" Margin="10,5,10,10"/>
-    </DockPanel>-->
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*"></ColumnDefinition>
@@ -38,13 +28,13 @@
         </GroupBox>
         <Label x:Name="User" Content="Witaj gościu" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="80" Height="31"/>
         <Button x:Name="Login" Content="Zaloguj się" HorizontalAlignment="Right" Margin="0,18,26.8,0" VerticalAlignment="Top" Width="85" Height="23" Click="Login_Click"/>
-        <Button x:Name="Register" Content="Zarejestruj się" Grid.Column="1" HorizontalAlignment="Left" Margin="4.2,18,0,0" VerticalAlignment="Top" Width="83" RenderTransformOrigin="-0.043,0.576" Height="23"/>
+        <Button x:Name="Register" Content="Zarejestruj się" Grid.Column="1" HorizontalAlignment="Left" Margin="4.2,18,0,0" VerticalAlignment="Top" Width="83" RenderTransformOrigin="-0.043,0.576" Height="23" Click="Register_Click"/>
         <Button x:Name="Search" Content="Wyszukaj
                 " HorizontalAlignment="Left" Margin="4.2,19,0,0" Grid.Row="1" VerticalAlignment="Top" Width="83" Grid.Column="1" Height="23"/>
         <Label x:Name="Lsz" Content="Wyszukaj lekarza według specjalizacji:" HorizontalAlignment="Left" Margin="10,16,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.51,0.133"/>
         <ComboBox x:Name="Spec" HorizontalAlignment="Left" Margin="225,19,0,0" Grid.Row="1" VerticalAlignment="Top" Width="148"/>
         <Label x:Name="Lsz2" Content="i/lub nazwiska" HorizontalAlignment="Left" Margin="378,16,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <TextBox x:Name="Nazw" HorizontalAlignment="Left" Height="23" Margin="467,19,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155"/>
-        <Button x:Name="ZW" Content="Zamów wizytę" Grid.Column="1" Margin="0,10,5.6,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82"/>
+        <Button x:Name="ZW" Content="Zamów wizytę" Grid.Column="1" Margin="0,10,5.6,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="82" Click="ZW_Click"/>
     </Grid>
 </Window>

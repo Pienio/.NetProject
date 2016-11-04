@@ -16,5 +16,6 @@ namespace DatabaseAccess
         public PersonName Name { get; set; }
 
         public Specialization Specialization { get; set; }
+
     }
 }

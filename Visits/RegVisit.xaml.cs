@@ -15,16 +15,16 @@ using System.Windows.Shapes;
 namespace Visits
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for RegVisit.xaml
     /// </summary>
-    public partial class Login : Window
+    public partial class RegVisit : Window
     {
-        public Login()
+        public RegVisit()
         {
             InitializeComponent();
         }
 
-        private void Anul_Click(object sender, RoutedEventArgs e)
+        private void button1_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }

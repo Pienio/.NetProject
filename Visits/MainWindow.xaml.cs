@@ -43,5 +43,17 @@ namespace Visits
             var zal = new Login();
             zal.Show();
         }
+
+        private void Register_Click(object sender, RoutedEventArgs e)
+        {
+            var zar = new Register();
+            zar.Show();
+        }
+
+        private void ZW_Click(object sender, RoutedEventArgs e)
+        {
+            var regwiz = new RegVisit();
+            regwiz.Show();
+        }
     }
 }
