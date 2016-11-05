@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess
 {
-    public class Patient : User
+    public class Patient : Entity, IPerson
     {
+        public User User { get; set; } = new User();
     }
 }
