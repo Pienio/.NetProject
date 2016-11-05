@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess
 {
-    public abstract class User : Entity
+    public class User : Entity
     {
         public string PESEL { get; set; }
         /// <summary>
