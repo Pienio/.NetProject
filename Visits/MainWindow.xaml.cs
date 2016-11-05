@@ -30,12 +30,15 @@ namespace Visits
             {
                 var a = new ApplicationDataFactory();
                 var db = a.CreateApplicationData();
-                db.FillSpec();
-                foreach (var c in db.AddSpec())
+                db.Fill();
+                foreach (var c in db.ShowSpec())
                 {
                     MessageBox.Show(c.Name);
                 }
-
+                foreach (var c in db.ShowDoc())
+                {
+                    MessageBox.Show(c.Name.Name + " " + c.Name.Surname + " ");//+c.MondayWorkingTime.Start.ToString()+" "+c.MondayWorkingTime.End.ToString());
+                }
             }
             catch (Exception ex)
             {

@@ -8,7 +8,7 @@ namespace DatabaseAccess
 {
     public abstract class User : Entity
     {
-        public int PESEL { get; set; }
+        public string PESEL { get; set; }
         /// <summary>
         /// Trzeba będzie zrobić szyfrowanie przy secie
         /// </summary>

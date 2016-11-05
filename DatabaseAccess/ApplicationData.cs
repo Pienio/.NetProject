@@ -22,15 +22,62 @@ namespace DatabaseAccess
 
         public ApplicationData() : base() { }
 
-        public List<Specialization>  AddSpec()
+        public List<Specialization>  ShowSpec()
         {
            
             return Specializations.Select(p => p).ToList();
         }
-        public void FillSpec()
+        public List<User> ShowDoc()
+        {
+            //List<Doctor> n = new List<Doctor>();
+            //foreach(var )
+
+            return null;//Users.Select(p =>  p).ToList();
+        }
+        public void Fill()
         {
             if (Specializations.Count() == 0)
+            {
                 Specializations.Add(new Specialization("Patient"));
+                Specializations.Add(new Specialization("Reumatolog"));
+                Specializations.Add(new Specialization("Kardiolog"));
+                Specializations.Add(new Specialization("Neurolog"));
+                Specializations.Add(new Specialization("Urolog"));
+                Specializations.Add(new Specialization("Okulista"));
+                Specializations.Add(new Specialization("Psychiatra"));
+                Specializations.Add(new Specialization("Ginekolog"));
+            }
+            if(Users.Count()==0)
+            {
+                string[] names = { "Kuba", "Jan", "Łukasz", "Adrian", "Bartosz", "Marek", "Filip", "Bartłomiej" };
+                string[] surnames = { "Soczkowski", "Berwid", "Okular", "Michałowski", "Skała", "Mikowski", "Wasiłkowski", "Normowski" };
+                string[] pesels = { "09586749381", "19683750923", "94860285691", "58672349682", "38596827364", "58476923857", "88975643287", "29384795618" };
+                for (int i = 0; i < 8; i++)
+                {
+                    Doctor ne = new Doctor();
+                    ne.Name.Name = names[i];
+                    ne.Name.Surname = surnames[i];
+                    ne.PESEL = pesels[i];
+                    ne.Password = "1111111111";
+                    ne.MondayWorkingTime = new WorkingTime();
+                    ne.MondayWorkingTime.Start = 8 + i / 2;
+                    ne.MondayWorkingTime.End = 12 + i / 2;
+                    ne.TuesdayWorkingTime = new WorkingTime();
+                    ne.TuesdayWorkingTime.Start = 8 + i / 2;
+                    ne.TuesdayWorkingTime.End = 12 + i / 2;
+                    ne.WednesdayWorkingTime = new WorkingTime();
+                    ne.WednesdayWorkingTime.Start = 8 + i / 2;
+                    ne.WednesdayWorkingTime.End = 12 + i / 2;
+                    ne.ThursdayWorkingTime = new WorkingTime();
+                    ne.ThursdayWorkingTime.Start = 8 + i / 2;
+                    ne.ThursdayWorkingTime.End = 12 + i / 2;
+                    ne.FridayWorkingTime = new WorkingTime();
+                    ne.FridayWorkingTime.Start = 8 + i / 2;
+                    ne.FridayWorkingTime.End = 12 + i / 2;
+                    Users.Add(ne);
+                }
+            }
+                
             this.SaveChanges();
         }
 
