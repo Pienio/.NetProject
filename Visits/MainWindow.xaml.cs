@@ -37,7 +37,7 @@ namespace Visits
                 }
                 foreach (var c in db.ShowDoc())
                 {
-                    MessageBox.Show(c.Name.Name + " " + c.Name.Surname + " ");//+c.MondayWorkingTime.Start.ToString()+" "+c.MondayWorkingTime.End.ToString());
+                    MessageBox.Show(c.User.Name.Name + " " + c.User.Name.Surname + " ");//+c.MondayWorkingTime.Start.ToString()+" "+c.MondayWorkingTime.End.ToString());
                 }
             }
             catch (Exception ex)
