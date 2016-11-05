@@ -8,5 +8,6 @@ namespace DatabaseAccess
 {
     public interface IPerson
     {
+        User User { get; set; }
     }
 }
