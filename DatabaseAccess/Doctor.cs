@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DatabaseAccess
 {
     public class Doctor : Entity, IPerson
-    {
+    { 
         public User User { get; set; } = new User();
 
         public Specialization Specialization { get; set; }

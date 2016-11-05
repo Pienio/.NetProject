@@ -10,7 +10,7 @@ namespace DatabaseAccess
     public class Specialization : Entity
     {
         public string Name { get; set; }
-
+         
         public Specialization() : base() { }
         public Specialization(string name) : base()
         {

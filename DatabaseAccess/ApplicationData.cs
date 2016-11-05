@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DatabaseAccess    
-{
+{ 
     class ApplicationData : DbContext, IApplicationData
     {
         public IDbSet<User> Users { get; set; }
@@ -22,7 +22,7 @@ namespace DatabaseAccess
 
         public ApplicationData() : base() { }
 
-        public List<Specialization>  ShowSpec()
+        public List<Specialization> ShowSpec()
         {
             return Specializations.Select(p => p).ToList();
         }
@@ -42,7 +42,7 @@ namespace DatabaseAccess
                 Specializations.Add(new Specialization("Psychiatra"));
                 Specializations.Add(new Specialization("Ginekolog"));
             }
-            if(Users.Count()==0)
+            if (Users.Count() == 0)
             {
                 string[] names = { "Kuba", "Jan", "Łukasz", "Adrian", "Bartosz", "Marek", "Filip", "Bartłomiej" };
                 string[] surnames = { "Soczkowski", "Berwid", "Okular", "Michałowski", "Skała", "Mikowski", "Wasiłkowski", "Normowski" };
@@ -72,7 +72,7 @@ namespace DatabaseAccess
                     Doctors.Add(ne);
                 }
             }
-                
+
             this.SaveChanges();
         }
 

@@ -20,7 +20,7 @@ namespace Visits
     public partial class RegVisit : Window
     {
         public RegVisit()
-        {
+        { 
             InitializeComponent();
         }
 

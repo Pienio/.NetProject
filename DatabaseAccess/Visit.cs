@@ -10,6 +10,6 @@ namespace DatabaseAccess
     {
         public Patient Patient { get; set; }
         public Doctor Doctor { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } 
     }
 }

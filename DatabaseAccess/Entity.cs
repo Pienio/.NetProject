@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace DatabaseAccess
 {
     public class Entity
-    {
+    { 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Key { get; set; }

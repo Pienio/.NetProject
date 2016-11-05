@@ -14,8 +14,8 @@ namespace DatabaseAccess
         public int Start { get; set; }
         public int End { get; set; }
 
-        public WorkingTime()
-        {
+        public WorkingTime() 
+        { 
 
         }
     }
