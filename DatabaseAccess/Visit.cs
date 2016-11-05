@@ -8,8 +8,8 @@ namespace DatabaseAccess
 {
     public class Visit : Entity
     {
-        public User Patient { get; set; }
-        public User Doctor { get; set; }
+        public Patient Patient { get; set; }
+        public Doctor Doctor { get; set; }
         public DateTime Date { get; set; }
     }
 }
