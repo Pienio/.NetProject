@@ -9,12 +9,12 @@ namespace DatabaseAccess
 {
     class ApplicationData : DbContext, IApplicationData
     {
-       // public IDbSet<Doctor> Doctors { get; set; }
         public IDbSet<User> Users { get; set; }
+        public IDbSet<Patient> Patients { get; set; }
+        public IDbSet<Doctor> Doctors { get; set; }
         public IDbSet<Specialization> Specializations { get; set; }
         public IDbSet<Visit> Visits { get; set; }
         
-
         public ApplicationData(string nameOrConnectionString) : base(nameOrConnectionString)
         {
             
