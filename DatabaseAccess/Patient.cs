@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess
 {
-    class Patient : User
+    public class Patient : User
     {
     }
 }

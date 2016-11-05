@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess
 {
-    class WorkingTime : Entity
+    public class WorkingTime : Entity
     {
         public int Start { get; set; }
         public int End { get; set; }

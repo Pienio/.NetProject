@@ -25,17 +25,26 @@ namespace Visits
         {
             InitializeComponent();
             //To tylko na potrzeby testów
-            var a = new ApplicationDataFactory();
-          
+           
+            try
+            {
+                var a = new ApplicationDataFactory();
                 var db = a.CreateApplicationData();
-            db.FillSpec();
+                db.FillSpec();
+                foreach (var c in db.AddSpec())
+                {
+                    MessageBox.Show(c.Name);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
            
 
-            foreach (var c in db.AddSpec())
-            {
-                MessageBox.Show(c.Name);
-            }
-
+            
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess
 {
-    class Doctor : User
+    public class Doctor : User
     {
         public WorkingTime MondayWorkingTime { get; set; }
         public WorkingTime TuesdayWorkingTime { get; set; }
