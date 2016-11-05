@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DatabaseAccess    
-{
+{ 
     class ApplicationData : DbContext, IApplicationData
     {
         public IDbSet<User> Users { get; set; }

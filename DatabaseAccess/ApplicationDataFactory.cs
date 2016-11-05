@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DatabaseAccess
 {
     public class ApplicationDataFactory : IApplicationDataFactory
-    {
+    { 
         public IApplicationData CreateApplicationData()
         {
             return new ApplicationData();

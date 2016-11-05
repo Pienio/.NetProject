@@ -10,7 +10,7 @@ namespace DatabaseAccess
     [ComplexType]
     public class PersonName
     {
-        public string Name { get; set; }
+        public string Name { get; set; } 
         public string Surname { get; set; }
     }
 }
