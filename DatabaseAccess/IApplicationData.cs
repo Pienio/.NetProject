@@ -15,7 +15,7 @@ namespace DatabaseAccess
         IDbSet<Specialization> Specializations { get; set; }
         IDbSet<Visit> Visits { get; set; }
         List<Specialization> ShowSpec();
-        List<User> ShowDoc();
+        List<Doctor> ShowDoc();
         void Fill();
     }
 }

@@ -24,21 +24,16 @@ namespace DatabaseAccess
 
         public List<Specialization>  ShowSpec()
         {
-           
             return Specializations.Select(p => p).ToList();
         }
-        public List<User> ShowDoc()
+        public List<Doctor> ShowDoc()
         {
-            //List<Doctor> n = new List<Doctor>();
-            //foreach(var )
-
-            return null;//Users.Select(p =>  p).ToList();
+            return Doctors.Select(d => d).ToList();
         }
         public void Fill()
         {
             if (Specializations.Count() == 0)
             {
-                Specializations.Add(new Specialization("Patient"));
                 Specializations.Add(new Specialization("Reumatolog"));
                 Specializations.Add(new Specialization("Kardiolog"));
                 Specializations.Add(new Specialization("Neurolog"));
@@ -55,10 +50,10 @@ namespace DatabaseAccess
                 for (int i = 0; i < 8; i++)
                 {
                     Doctor ne = new Doctor();
-                    ne.Name.Name = names[i];
-                    ne.Name.Surname = surnames[i];
-                    ne.PESEL = pesels[i];
-                    ne.Password = "1111111111";
+                    ne.User.Name.Name = names[i];
+                    ne.User.Name.Surname = surnames[i];
+                    ne.User.PESEL = pesels[i];
+                    ne.User.Password = "1111111111";
                     ne.MondayWorkingTime = new WorkingTime();
                     ne.MondayWorkingTime.Start = 8 + i / 2;
                     ne.MondayWorkingTime.End = 12 + i / 2;
@@ -74,7 +69,7 @@ namespace DatabaseAccess
                     ne.FridayWorkingTime = new WorkingTime();
                     ne.FridayWorkingTime.Start = 8 + i / 2;
                     ne.FridayWorkingTime.End = 12 + i / 2;
-                    Users.Add(ne);
+                    Doctors.Add(ne);
                 }
             }
                 

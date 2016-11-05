@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace DatabaseAccess
 {
     [ComplexType]
-    public class WorkingTime : Entity
+    public class WorkingTime
     {
         public int Start { get; set; }
         public int End { get; set; }

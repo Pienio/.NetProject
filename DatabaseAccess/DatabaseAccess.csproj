@@ -54,6 +54,7 @@
     <Compile Include="Entity.cs" />
     <Compile Include="IApplicationData.cs" />
     <Compile Include="IApplicationDataFactory.cs" />
+    <Compile Include="IPerson.cs" />
     <Compile Include="Patient.cs" />
     <Compile Include="PersonName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
