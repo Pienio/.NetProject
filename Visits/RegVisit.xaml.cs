@@ -34,7 +34,7 @@ namespace Visits
                 items[i] = new
                 {
                     DayOfWeek = new CultureInfo("pl-PL").DateTimeFormat.GetDayName(first.AddDays(i - Week.DayOfWeekNo(first)).DayOfWeek),
-                    Hours = w.Slots[i]
+                    Hours = w.Slots[i] 
                 };
             }
             daysOfWeek.ItemsSource = items;
