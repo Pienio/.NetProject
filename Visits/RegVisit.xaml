@@ -7,9 +7,18 @@
         mc:Ignorable="d"
         Title="Wybierz termin wizyty" Height="403" Width="642">
     <StackPanel>
-        <TextBlock x:Name="textBlock" Margin="10" Text="Lekarz: Janina Kowalska" DockPanel.Dock="Top"/>
-        <StackPanel Margin="10,0,10,10">
-            
-        </StackPanel>
+        <TextBlock x:Name="textBlock" Margin="10" Text="Lekarz: " DockPanel.Dock="Top"/>
+        <DataGrid x:Name="daysOfWeek" Margin="10,0,10,10" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding DayOfWeek}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <local:WrapPanelCell Hours="{Binding Hours}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </StackPanel>
 </Window>

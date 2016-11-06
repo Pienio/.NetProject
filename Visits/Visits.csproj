@@ -61,6 +61,7 @@
     <Compile Include="AddSpec.xaml.cs">
       <DependentUpon>AddSpec.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\IsEnabledConverter.cs" />
     <Compile Include="LekPac.xaml.cs">
       <DependentUpon>LekPac.xaml</DependentUpon>
     </Compile>
@@ -69,6 +70,9 @@
     </Compile>
     <Compile Include="RegVisit.xaml.cs">
       <DependentUpon>RegVisit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WrapPanelCell.xaml.cs">
+      <DependentUpon>WrapPanelCell.xaml</DependentUpon>
     </Compile>
     <Page Include="AddSpec.xaml">
       <SubType>Designer</SubType>
@@ -102,6 +106,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RegVisit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WrapPanelCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

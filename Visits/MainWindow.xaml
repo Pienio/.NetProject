@@ -4,9 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
+        xmlns:conv="clr-namespace:Visits.Converters"
         mc:Ignorable="d"
-        Title="System rezerwacji wizyt" Height="445.385" Width="748.062">
-    
+        Title="System rezerwacji wizyt" Height="470.385" Width="748.062">
+    <Window.Resources>
+        <conv:IsEnabledConverter x:Key="enabledConv"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*"></ColumnDefinition>
@@ -16,8 +19,9 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="6*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <GroupBox x:Name="WynWysz" Header="Wyniki wyszukiwania" Grid.Row="2">
+        <GroupBox x:Name="WynWysz" Margin="10,0,0,0" Header="Wyniki wyszukiwania" Grid.Row="2">
             <ListView x:Name="WynikiWyszukiwania" Margin="10" BorderThickness="0">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
@@ -29,13 +33,6 @@
                         <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Nazwisko lekarza"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Specialization}" Header="Specjalizacja"/>
                         <GridViewColumn DisplayMemberBinding="{Binding NextSlot, StringFormat={}{0:dd.MM.yyyy hh:mm}}" Header="Następna możliwa wizyta"/>
-                        <GridViewColumn>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Umów się na wizytę"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -48,5 +45,7 @@
         <ComboBox x:Name="Spec" HorizontalAlignment="Left" Margin="225,19,0,0" Grid.Row="1" VerticalAlignment="Top" Width="148"/>
         <Label x:Name="Lsz2" Content="i/lub nazwiska" HorizontalAlignment="Left" Margin="378,16,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <TextBox x:Name="Nazwisko" HorizontalAlignment="Left" Height="23" Margin="467,19,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155"/>
+        <Button x:Name="button" Content="Zarezerwuj wizytę" HorizontalAlignment="Left" Margin="503,14,0,0" Grid.Row="3" VerticalAlignment="Top" Width="119" 
+                IsEnabled="{Binding ElementName=WynikiWyszukiwania, Path=SelectedItem, Converter={StaticResource enabledConv}}" Click="ZW_Click"/>
     </Grid>
 </Window>

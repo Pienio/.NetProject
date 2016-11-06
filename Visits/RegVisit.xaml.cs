@@ -1,6 +1,7 @@
 ﻿using DatabaseAccess;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,20 @@ namespace Visits
         public RegVisit(Doctor doctor)
         { 
             InitializeComponent();
+
+            textBlock.Text = "Lekarz: " + doctor.User.Name.ToString();
+            DateTime first = doctor.FirstFreeSlot();
+            Week w = new Week(doctor, first);
+            object[] items = new object[w.Slots.Length];
+            for (int i = 0; i < w.Slots.Length; i++)
+            {
+                items[i] = new
+                {
+                    DayOfWeek = new CultureInfo("pl-PL").DateTimeFormat.GetDayName(first.AddDays(i - Week.DayOfWeekNo(first)).DayOfWeek),
+                    Hours = w.Slots[i]
+                };
+            }
+            daysOfWeek.ItemsSource = items;
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -33,7 +48,7 @@ namespace Visits
         private class Week
         {
             public Doctor Doctor { get; }
-            public Slot[][] Slots { get; } = new Slot[5][];
+            public DateTime[][] Slots { get; } = new DateTime[5][];
             public Week(Doctor doc, DateTime from)
             {
                 if (doc == null)
@@ -44,21 +59,28 @@ namespace Visits
                 {
                     foreach (var time in doc.WeeklyWorkingTime)
                     {
-                        if (time == null || DayOfWeekNo(from) > i)
+                        if (time != null && DayOfWeekNo(from) <= i)
                         {
-                            i++;
-                            continue;
+                            DateTime current = from.AddDays(i - DayOfWeekNo(from));
+                            current = new DateTime(current.Year, current.Month, current.Day, time.Start, 0, 0);
+                            List<DateTime> slots = new List<DateTime>();
+                            //wizyty u danego lekarza danego dnia
+                            var visits = from v in db.Visits
+                                         where v.Doctor.Key == Doctor.Key && v.Date.Year == current.Year && v.Date.Month == current.Month && v.Date.Day == current.Day
+                                         select v.Date;
+                            for (DateTime s = current; s.Hour < time.End; s = s.AddMinutes(30))
+                                if (s >= from && !visits.Contains(s))
+                                    slots.Add(s);
+                            Slots[i] = slots.ToArray();
                         }
-                        List<Slot> slots = new List<Slot>();
-                        var visits = from v in db.Visits
-                                     where v.Doctor == Doctor && DayOfWeekNo(v.Date) == i
-                                     select v.Date;
+                        else Slots[i] = new DateTime[0];
+                        i++;
                     }
                 }
                     
             }
 
-            private int DayOfWeekNo(DateTime day)
+            public static int DayOfWeekNo(DateTime day)
             {
                 switch(day.DayOfWeek)
                 {
@@ -74,19 +96,6 @@ namespace Visits
                         return 4;
                 }
                 throw new ArgumentException("Dzień nie może być sobotą ani niedzielą.", nameof(day));
-            }
-        }
-
-        private class Slot
-        {
-            public DateTime Start { get; }
-            public DateTime End
-            {
-                get { return Start.AddMinutes(30); }
-            }
-            public Slot(DateTime start)
-            {
-                Start = start;
             }
         }
     }
