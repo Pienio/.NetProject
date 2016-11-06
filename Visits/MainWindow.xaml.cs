@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DatabaseAccess;
 using System.Data.Entity;
+using System.Security.Cryptography;
 
 namespace Visits
 {
@@ -22,33 +23,21 @@ namespace Visits
     /// </summary>
     public partial class MainWindow : Window
     {
+        private User ActuallyLogged=null;
         public MainWindow()
         {
             InitializeComponent();
-            //To tylko na potrzeby testów
-            //try
-            //{
+           
             var a = new ApplicationDataFactory();
             using (var db = a.CreateApplicationData())
             {
-                db.Fill();
-                //    foreach (var c in db.ShowSpec())
-                //    {
-                //        MessageBox.Show(c.Name);
-                //    }
-                //    foreach (var c in db.ShowDoc())
-                //    {
-                //        MessageBox.Show(c.User.Name.Name + " " + c.User.Name.Surname + " ");//+c.MondayWorkingTime.Start.ToString()+" "+c.MondayWorkingTime.End.ToString());
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    MessageBox.Show(ex.Message);
-                //}
+               
+                    db.Fill();
 
                 var specs = new List<Specialization>();
                 specs.Add(new Specialization("- brak -"));
                 specs.AddRange(db.Specializations);
+                specs.RemoveAt(1);
                 Spec.ItemsSource = specs;
                 Spec.SelectedIndex = 0;
 
@@ -56,18 +45,104 @@ namespace Visits
                 WynikiWyszukiwania.ItemsSource = from d in db.Doctors.Local
                                                  select new { Name = d.User.Name, Specialization = d.Specialization, NextSlot = d.FirstFreeSlot() };
             }
+           
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            var zal = new Login();
-            zal.Show();
+
+           if(ActuallyLogged==null)
+            {
+                var zal = new Login();
+                zal.ShowDialog();
+                if (zal.GetResult())
+                {
+                    var a = new ApplicationDataFactory();
+                    using (var db = a.CreateApplicationData())
+                    {
+                        string us = zal.GetUser();
+                        string pas = zal.GetHashedPassword();
+                        var usr = db.Users.Select(n => n).Where(p => p.PESEL == us && p.Password == pas);
+                        if (usr.Count() != 0)
+                        {
+                            ActuallyLogged = usr.First();
+                            User.Content = "Witaj " + ActuallyLogged.Name.ToString();
+                            Login.Content = "Wyloguj";
+                            Register.Visibility = Visibility.Collapsed;
+                        }     
+                        else
+                        {
+                            MessageBox.Show("Błędny login lub hasło");
+                            return;
+                        }
+                      
+                    }
+                }
+            }
+           else
+            {
+                ActuallyLogged = null;
+                Login.Content = "Zaloguj";
+                User.Content = "Witaj gościu!";
+                Register.Visibility = Visibility.Visible;
+            }
+
         }
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            var zar = new Register();
-            zar.Show();
+            var lekpac = new LekPac();
+            lekpac.ShowDialog();
+            if(lekpac.GetResult()!=0)
+            {
+                var a = new ApplicationDataFactory();
+                var specs = new List<Specialization>();
+                using (var db = a.CreateApplicationData())
+                {
+                   
+
+                    specs.AddRange(db.Specializations);
+                    specs.RemoveAt(1);
+                 
+                Register zar;
+                if (lekpac.GetResult() == 1)
+                    zar = new Register(specs);
+                else
+                    zar = new Register();
+
+                zar.ShowDialog();
+                if(zar.GetResult())
+                {
+                        string us ="";
+                        string pas = "";
+                        if (lekpac.GetResult()==1)
+                        {
+                            Specialization newspec = zar.GetSpec();
+                            if (newspec != null)
+                                db.AddSpecialization(newspec);
+
+                            db.AddDoctor(zar.GetDoctor());
+                            us = zar.GetDoctor().User.PESEL;
+                            pas = zar.GetDoctor().User.Password;                
+                        }
+                     else
+                        {
+                            db.AddPatient(zar.GetPatient());
+                            us = zar.GetPatient().User.PESEL;
+                            pas = zar.GetPatient().User.Password;
+                        }
+                        var usr = db.Users.Select(n => n).Where(p => p.PESEL == us && p.Password == pas);
+                        if (usr.Count() != 0)
+                        {
+                            ActuallyLogged = usr.First();
+                            User.Content = "Witaj " + ActuallyLogged.Name.ToString();
+                            Login.Content = "Wyloguj";
+                            Register.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                }
+            }
+            
         }
 
         private void ZW_Click(object sender, RoutedEventArgs e)
@@ -78,27 +153,54 @@ namespace Visits
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            var a = new ApplicationDataFactory();
-            using (var db = a.CreateApplicationData())
-            {
-                db.Doctors.Load();
-                Predicate<Doctor> isValid;
-                if (Spec.SelectedIndex > 0)
+            try
+            { 
+                var a = new ApplicationDataFactory();
+                using (var db = a.CreateApplicationData())
                 {
-                    if (Nazwisko.Text == null)
-                        isValid = (doc) => doc.Specialization.Name == Spec.SelectedItem.ToString();
-                    else
-                        isValid = (doc) => doc.Specialization.Name == Spec.SelectedItem.ToString() && doc.User.Name.ToString().ToLower().Contains(Nazwisko.Text.ToLower());
+                    db.Doctors.Load();
+                    
+                    Predicate<Doctor> isValid;
+                    if (Spec.SelectedIndex > 0)
+                    {
+                        if (Nazwisko.Text == null)
+                            isValid = (doc) => doc.Specialization.Name == Spec.SelectedItem.ToString();
+                        else
+                            isValid = (doc) => doc.Specialization.Name == Spec.SelectedItem.ToString() && doc.User.Name.ToString().ToLower().Contains(Nazwisko.Text.ToLower());
+                    }
+                    else if (Nazwisko.Text != null)
+                        isValid = (doc) => doc.User.Name.ToString().ToLower().Contains(Nazwisko.Text.ToLower());
+                    else return;
+
+                    WynikiWyszukiwania.ItemsSource = from d in db.Doctors.Local
+                                                     where isValid(d)
+                                                     select new { Name = d.User.Name, Specialization = d.Specialization, NextSlot = d.FirstFreeSlot() };
+
                 }
-                else if (Nazwisko.Text != null)
-                    isValid = (doc) => doc.User.Name.ToString().ToLower().Contains(Nazwisko.Text.ToLower());
-                else return;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
+        }
+        
+       
 
-                WynikiWyszukiwania.ItemsSource = from d in db.Doctors.Local
-                                                 where isValid(d)
-                                                 select new { Name = d.User.Name, Specialization = d.Specialization, NextSlot = d.FirstFreeSlot() };
+        
+        private bool VerifyPassword(string hashOfInput, string hash)
+        {
 
+            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
+            if (0 == comparer.Compare(hashOfInput, hash))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
+
     }
 }

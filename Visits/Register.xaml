@@ -5,20 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
         mc:Ignorable="d"
-        Title="Zarejestruj się" Height="355.148" Width="433.403">
+        Title="Zarejestruj się" Height="546.348" Width="433.403">
     <Grid>
-        <Label x:Name="label" Content="PESEL:" HorizontalAlignment="Left" Margin="32,80,0,0" VerticalAlignment="Top" Width="94"/>
-        <Label x:Name="label1" Content="Hasło:" HorizontalAlignment="Left" Margin="32,111,0,0" VerticalAlignment="Top" Width="94"/>
-        <Label x:Name="label2" Content="Imię:" HorizontalAlignment="Left" Margin="32,142,0,0" VerticalAlignment="Top" Width="94"/>
-        <Label x:Name="label3" Content="Nazwisko:" HorizontalAlignment="Left" Margin="32,173,0,0" VerticalAlignment="Top" Width="94"/>
-        <Label x:Name="label4" Content="Specjalizacja:" HorizontalAlignment="Left" Margin="32,204,0,0" VerticalAlignment="Top" Width="94"/>
-        <TextBox x:Name="Pes" HorizontalAlignment="Left" Height="23" Margin="131,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262"/>
-        <TextBox x:Name="Imi" HorizontalAlignment="Left" Height="23" Margin="131,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262"/>
-        <TextBox x:Name="Nazw" HorizontalAlignment="Left" Height="23" Margin="131,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262"/>
-        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="131,111,0,0" VerticalAlignment="Top" Width="262" Height="26"/>
-        <ComboBox x:Name="Spec" HorizontalAlignment="Left" Margin="131,206,0,0" VerticalAlignment="Top" Width="262"/>
-        <Button x:Name="Reg" Content="Zarejestruj się!" HorizontalAlignment="Left" Margin="32,276,0,0" VerticalAlignment="Top" Width="111" Height="40"/>
-        <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Left" Margin="280,276,0,0" VerticalAlignment="Top" Width="113" Height="40" Click="Anul_Click"/>
+        <Label x:Name="label" Content="PESEL:" HorizontalAlignment="Left" Margin="32,60,0,0" VerticalAlignment="Top" Width="94"/>
+        <Label x:Name="label1" Content="Hasło:" HorizontalAlignment="Left" Margin="32,91,0,0" VerticalAlignment="Top" Width="94"/>
+        <Label x:Name="label2" Content="Imię:" HorizontalAlignment="Left" Margin="32,152,0,0" VerticalAlignment="Top" Width="94"/>
+        <Label x:Name="label3" Content="Nazwisko:" HorizontalAlignment="Left" Margin="32,183,0,0" VerticalAlignment="Top" Width="94"/>
+        <Label x:Name="label4" Content="Specjalizacja:" HorizontalAlignment="Left" Margin="32,214,0,0" VerticalAlignment="Top" Width="94"/>
+        <TextBox x:Name="Pes" HorizontalAlignment="Left" Height="23" Margin="126,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262"/>
+        <TextBox x:Name="Imi" HorizontalAlignment="Left" Height="26" Margin="126,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262"/>
+        <TextBox x:Name="Nazw" HorizontalAlignment="Left" Height="23" Margin="126,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="262"/>
+        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Margin="126,91,0,0" VerticalAlignment="Top" Width="262" Height="26"/>
+        <ComboBox x:Name="Spec" HorizontalAlignment="Left" Margin="126,217,0,0" VerticalAlignment="Top" Width="262"/>
+        <Button x:Name="Reg" Content="Zarejestruj się!" HorizontalAlignment="Left" Margin="32,0,0,9.6" Width="111" Height="40" VerticalAlignment="Bottom" Click="Reg_Click"/>
+        <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Margin="0,0,34.2,9.6" VerticalAlignment="Bottom" Width="113" Height="40" Click="Anul_Click"/>
+        <Label x:Name="label5" Content="Powtórz hasło:" HorizontalAlignment="Left" Margin="32,122,0,0" VerticalAlignment="Top" Width="94"/>
+        <PasswordBox x:Name="passwordBox1" HorizontalAlignment="Left" Margin="126,122,0,0" VerticalAlignment="Top" Width="262" Height="25"/>
+        <GroupBox x:Name="GP" Header="Godziny przyjęć" HorizontalAlignment="Left" Margin="32,244,0,0" VerticalAlignment="Top" Height="206" Width="361">
+            <Grid HorizontalAlignment="Left" Height="187" VerticalAlignment="Top" Width="351" Margin="0,0,-3,-3.8">
+                <Label x:Name="label6" Content="Od:" HorizontalAlignment="Left" Margin="204,10,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label7" Content="Do:" HorizontalAlignment="Left" Margin="279,10,0,0" VerticalAlignment="Top" Width="38"/>
+                <Label x:Name="label8" Content="Wtorek" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label9" Content="Środa" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label10" Content="Czwartek" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label11" Content="Piątek" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label12" Content="Poniedziałek" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="PS" HorizontalAlignment="Left" Height="23" Margin="204,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="33"/>
+                <TextBox x:Name="PE" HorizontalAlignment="Left" Height="23" Margin="279,48,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38"/>
+                <TextBox x:Name="WS" HorizontalAlignment="Left" Height="23" Margin="204,74,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
+                <TextBox x:Name="WE" HorizontalAlignment="Left" Height="23" Margin="279,74,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38"/>
+                <TextBox x:Name="SS" HorizontalAlignment="Left" Height="23" Margin="204,99,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
+                <TextBox x:Name="SE" HorizontalAlignment="Left" Height="23" Margin="279,99,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38"/>
+                <TextBox x:Name="CS" HorizontalAlignment="Left" Height="23" Margin="204,125,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
+                <TextBox x:Name="CE" HorizontalAlignment="Left" Height="23" Margin="279,125,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38"/>
+                <TextBox x:Name="PIS" HorizontalAlignment="Left" Height="23" Margin="204,151,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
+                <TextBox x:Name="PIE" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Margin="279,151,0,0"/>
+            </Grid>
+        </GroupBox>
+        <Button x:Name="AddSpec" Content="+" HorizontalAlignment="Left" Margin="393,217,0,0" VerticalAlignment="Top" Width="24" Height="22" Click="AddSpec_Click"/>
 
     </Grid>
 </Window>

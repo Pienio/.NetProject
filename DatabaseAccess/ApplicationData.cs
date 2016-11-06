@@ -53,7 +53,7 @@ namespace DatabaseAccess
                     ne.User.Name.Name = names[i];
                     ne.User.Name.Surname = surnames[i];
                     ne.User.PESEL = pesels[i];
-                    ne.User.Password = "1111111111";
+                    ne.User.Password = "96e79218965eb72c92a549dd5a330112";
 
                     ne.MondayWorkingTime = new WorkingTime();
                     ne.MondayWorkingTime.Start = 8 + i / 2;
@@ -70,13 +70,27 @@ namespace DatabaseAccess
                     ne.FridayWorkingTime = new WorkingTime();
                     ne.FridayWorkingTime.Start = 8 + i / 2;
                     ne.FridayWorkingTime.End = 12 + i / 2;
-
                     ne.Specialization = specs[i];
-
                     Doctors.Add(ne);
                 }
                 this.SaveChanges();
             }
+          
+        }
+        public void AddDoctor(Doctor nowy)
+        {
+            Doctors.Add(nowy);
+            this.SaveChanges();
+        }
+        public void AddPatient(Patient nowy)
+        {
+            Patients.Add(nowy);
+            this.SaveChanges();
+        }
+        public void AddSpecialization(Specialization nowy)
+        {
+            Specializations.Add(nowy);
+            this.SaveChanges();
         }
 
     }
