@@ -27,7 +27,7 @@ namespace Visits
         public MainWindow()
         {
             InitializeComponent();
-           
+            EdProf.Visibility = Visibility.Collapsed;
             var a = new ApplicationDataFactory();
             using (var db = a.CreateApplicationData())
             {
@@ -47,7 +47,13 @@ namespace Visits
             }
            
         }
-
+        private void LoggedChanges()
+        {
+            User.Content = "Witaj " + ActuallyLogged.Name.ToString();
+            Login.Content = "Wyloguj";
+            Register.Visibility = Visibility.Collapsed;
+            EdProf.Visibility = Visibility.Visible;
+        }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
 
@@ -66,9 +72,7 @@ namespace Visits
                         if (usr.Count() != 0)
                         {
                             ActuallyLogged = usr.First();
-                            User.Content = "Witaj " + ActuallyLogged.Name.ToString();
-                            Login.Content = "Wyloguj";
-                            Register.Visibility = Visibility.Collapsed;
+                            LoggedChanges();
                         }     
                         else
                         {
@@ -85,6 +89,7 @@ namespace Visits
                 Login.Content = "Zaloguj";
                 User.Content = "Witaj gościu!";
                 Register.Visibility = Visibility.Visible;
+                EdProf.Visibility = Visibility.Collapsed;
             }
 
         }
@@ -135,9 +140,7 @@ namespace Visits
                         if (usr.Count() != 0)
                         {
                             ActuallyLogged = usr.First();
-                            User.Content = "Witaj " + ActuallyLogged.Name.ToString();
-                            Login.Content = "Wyloguj";
-                            Register.Visibility = Visibility.Collapsed;
+                            LoggedChanges();
                         }
                     }
                 }

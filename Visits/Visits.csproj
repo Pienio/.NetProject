@@ -61,6 +61,9 @@
     <Compile Include="AddSpec.xaml.cs">
       <DependentUpon>AddSpec.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Edit.xaml.cs">
+      <DependentUpon>Edit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LekPac.xaml.cs">
       <DependentUpon>LekPac.xaml</DependentUpon>
     </Compile>
@@ -71,6 +74,10 @@
       <DependentUpon>RegVisit.xaml</DependentUpon>
     </Compile>
     <Page Include="AddSpec.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Edit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
