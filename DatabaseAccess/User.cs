@@ -15,5 +15,7 @@ namespace DatabaseAccess
         /// </summary>
         public string Password { get; set; }
         public virtual PersonName Name { get; set; }
+
+        public DocOrPat Kind { get; set; }
     }
 }

@@ -17,11 +17,11 @@ namespace Visits
     /// <summary>
     /// Interaction logic for AddSpec.xaml
     /// </summary>
-    public partial class AddSpec : Window
+    public partial class AddSpec : Window 
     {
         private bool result = false;
         private string name;
-
+         
         public AddSpec()
         {
             InitializeComponent();

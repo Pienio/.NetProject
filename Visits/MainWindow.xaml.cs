@@ -27,11 +27,12 @@ namespace Visits
         public MainWindow()
         {
             InitializeComponent();
-
+           
+            EdProf.Visibility = Visibility.Collapsed;
             var a = new ApplicationDataFactory();
             using (var db = a.CreateApplicationData())
             {
-                db.Fill();
+                    db.Fill();
 
                 var specs = new List<Specialization>();
                 specs.Add(new Specialization("- brak -"));
@@ -43,9 +44,16 @@ namespace Visits
                 WynikiWyszukiwania.ItemsSource = from d in db.Doctors.Local
                                                  select new { DoctorId = d.Key, Name = d.User.Name, Specialization = d.Specialization, NextSlot = d.FirstFreeSlot() };
             }
-
+           
         }
+        private void LoggedChanges()
+        {
 
+            User.Content = "Witaj "+ ActuallyLogged.Name.ToString();
+            Login.Content = "Wyloguj";
+            Register.Visibility = Visibility.Collapsed;
+            EdProf.Visibility = Visibility.Visible;
+        }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
 
@@ -64,25 +72,24 @@ namespace Visits
                         if (usr.Count() != 0)
                         {
                             ActuallyLogged = usr.First();
-                            User.Content = "Witaj " + ActuallyLogged.Name.ToString();
-                            Login.Content = "Wyloguj";
-                            Register.Visibility = Visibility.Collapsed;
-                        }
+                            LoggedChanges();
+                        }     
                         else
                         {
                             MessageBox.Show("Błędny login lub hasło");
                             return;
                         }
-
+                      
                     }
                 }
             }
-            else
+           else
             {
                 ActuallyLogged = null;
                 Login.Content = "Zaloguj";
                 User.Content = "Witaj gościu!";
                 Register.Visibility = Visibility.Visible;
+                EdProf.Visibility = Visibility.Collapsed;
             }
 
         }
@@ -99,16 +106,16 @@ namespace Visits
                 {
                     specs.AddRange(db.Specializations);
                     specs.RemoveAt(1);
+                 
+                Register zar;
+                if (lekpac.GetResult() == 1)
+                    zar = new Register(specs);
+                else
+                    zar = new Register();
 
-                    Register zar;
-                    if (lekpac.GetResult() == 1)
-                        zar = new Register(specs);
-                    else
-                        zar = new Register();
-
-                    zar.ShowDialog();
+                zar.ShowDialog();
                     if (zar.GetResult())
-                    {
+                {
                         string us = "";
                         string pas = "";
                         if (lekpac.GetResult() == 1)
@@ -119,9 +126,9 @@ namespace Visits
 
                             db.AddDoctor(zar.GetDoctor());
                             us = zar.GetDoctor().User.PESEL;
-                            pas = zar.GetDoctor().User.Password;
+                            pas = zar.GetDoctor().User.Password;                
                         }
-                        else
+                     else
                         {
                             db.AddPatient(zar.GetPatient());
                             us = zar.GetPatient().User.PESEL;
@@ -131,14 +138,12 @@ namespace Visits
                         if (usr.Count() != 0)
                         {
                             ActuallyLogged = usr.First();
-                            User.Content = "Witaj " + ActuallyLogged.Name.ToString();
-                            Login.Content = "Wyloguj";
-                            Register.Visibility = Visibility.Collapsed;
+                            LoggedChanges();
                         }
                     }
                 }
             }
-
+            
         }
 
         private void ZW_Click(object sender, RoutedEventArgs e)
@@ -153,15 +158,16 @@ namespace Visits
             }
         }
 
+
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             try
-            {
+            { 
                 var a = new ApplicationDataFactory();
                 using (var db = a.CreateApplicationData())
                 {
                     db.Doctors.Load();
-
+                    
                     Predicate<Doctor> isValid;
                     if (Spec.SelectedIndex > 0)
                     {
@@ -183,21 +189,65 @@ namespace Visits
             {
                 MessageBox.Show(ex.Message);
             }
-
+           
         }
-
-        private bool VerifyPassword(string hashOfInput, string hash)
+        
+        private void EdProf_Click(object sender, RoutedEventArgs e)
         {
-            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
-            if (0 == comparer.Compare(hashOfInput, hash))
+            var a = new ApplicationDataFactory();
+            using (var db = a.CreateApplicationData())
             {
-                return true;
+                Edit ed=new Edit();
+                if (ActuallyLogged.Kind == DocOrPat.Doctor)
+                {
+                    var usr = db.Doctors.Select(n => n).Where(p => p.User.Key == ActuallyLogged.Key);
+                    if(usr.Count()!=0)
+                    {
+                        var specs = new List<Specialization>();
+                        specs.AddRange(db.Specializations);
+                        specs.RemoveAt(1);
+                        ed = new Edit(specs, usr.First());
+                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("non?");
+                    }
+                  
+                }
+                else
+                {
+                    var usr = db.Patients.Select(n => n).Where(p => p.User.Key == ActuallyLogged.Key);
+                    if (usr.Count() != 0)
+        {
+                        ed = new Edit(usr.First());
+                    }
+                        
+                }
+                ed.ShowDialog();
+                if (ed.GetResult())
+                {
+                    if(ed.GetPatient()!=null)
+            {
+                        db.UpdatePatient(ed.GetPatient());
+                        
             }
             else
             {
-                return false;
+                        if (ed.GetSpec() != null)
+                            db.AddSpecialization(ed.GetSpec());
+                        db.UpdateDoctor(ed.GetDoctor());
+                    }
+                    var usr = db.Users.Select(n => n).Where(p => p.Key == ActuallyLogged.Key);
+                    if (usr.Count() != 0)
+                    {
+                        ActuallyLogged = usr.First();
+                        LoggedChanges();
+                    }
             }
+
         }
 
     }
+}
 }

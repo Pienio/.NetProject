@@ -54,7 +54,7 @@ namespace DatabaseAccess
                     ne.User.Name.Surname = surnames[i];
                     ne.User.PESEL = pesels[i];
                     ne.User.Password = "96e79218965eb72c92a549dd5a330112";
-
+                    ne.User.Kind = DocOrPat.Doctor;
                     ne.MondayWorkingTime = new WorkingTime();
                     ne.MondayWorkingTime.Start = 8 + i / 2;
                     ne.MondayWorkingTime.End = 12 + i / 2;
@@ -92,6 +92,26 @@ namespace DatabaseAccess
             Specializations.Add(nowy);
             this.SaveChanges();
         }
-
+        public void UpdateDoctor(Doctor nowy)
+        {
+            this.Users.Attach(nowy.User);
+            var entry = this.Entry(nowy.User);
+            entry.State= EntityState.Modified;
+            this.Doctors.Attach(nowy);
+            var entry1 = this.Entry(nowy);
+            entry1.State = EntityState.Modified;
+            this.SaveChanges();
+            
+        }
+        public void UpdatePatient(Patient nowy)
+        {
+            this.Users.Attach(nowy.User);
+            var entry = this.Entry(nowy.User);
+            entry.State = EntityState.Modified;
+            this.Patients.Attach(nowy);
+            var entry1 = this.Entry(nowy);
+            entry1.State = EntityState.Modified;
+            this.SaveChanges();
+        }
     }
 }
