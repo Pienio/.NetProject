@@ -20,6 +20,17 @@ namespace DatabaseAccess
         public WorkingTime ThursdayWorkingTime { get; set; }
         public WorkingTime FridayWorkingTime { get; set; }
 
+        public WorkingTime[] WeeklyWorkingTime
+        {
+            get
+            {
+                return new WorkingTime[]
+                {
+                    MondayWorkingTime, TuesdayWorkingTime, WednesdayWorkingTime, ThursdayWorkingTime, FridayWorkingTime
+                };
+            }
+        }
+
         /// <summary>
         /// Zwraca najbliższy możliwy termin wizyty z uwzględnieniem innych zaplanowanych wizyt i godzin pracy
         /// </summary>
@@ -63,18 +74,14 @@ namespace DatabaseAccess
             do
             {
                 time = GetWorkingTime(date);
-                if (time == null)
+                if (time == null || date.Hour >= time.End)
                 {
                     date = date.AddDays(1);
+                    date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
                 }
                 else if (date.Hour < time.Start)
                 {
                     return new DateTime(date.Year, date.Month, date.Day, time.Start, 0, 0);
-                }
-                else if (date.Hour >= time.End)
-                {
-                    date = date.AddDays(1);
-                    date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
                 }
                 else break;
             }
