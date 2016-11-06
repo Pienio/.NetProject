@@ -27,6 +27,7 @@ namespace Visits
         public MainWindow()
         {
             InitializeComponent();
+            
             EdProf.Visibility = Visibility.Collapsed;
             var a = new ApplicationDataFactory();
             using (var db = a.CreateApplicationData())
@@ -49,7 +50,8 @@ namespace Visits
         }
         private void LoggedChanges()
         {
-            User.Content = "Witaj " + ActuallyLogged.Name.ToString();
+            
+            User.Content = "Witaj "+ ActuallyLogged.Name.ToString();
             Login.Content = "Wyloguj";
             Register.Visibility = Visibility.Collapsed;
             EdProf.Visibility = Visibility.Visible;
@@ -148,11 +150,7 @@ namespace Visits
             
         }
 
-        private void ZW_Click(object sender, RoutedEventArgs e)
-        {
-            var regwiz = new RegVisit();
-            regwiz.Show();
-        }
+      
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
@@ -187,23 +185,61 @@ namespace Visits
             }
            
         }
-        
-       
 
-        
-        private bool VerifyPassword(string hashOfInput, string hash)
+        private void EdProf_Click(object sender, RoutedEventArgs e)
         {
+            var a = new ApplicationDataFactory();
+            using (var db = a.CreateApplicationData())
+            {
+                Edit ed=new Edit();
+                if (ActuallyLogged.Kind == DocOrPat.Doctor)
+                {
+                    var usr = db.Doctors.Select(n => n).Where(p => p.User.Key == ActuallyLogged.Key);
+                    if(usr.Count()!=0)
+                    {
+                        var specs = new List<Specialization>();
+                        specs.AddRange(db.Specializations);
+                        specs.RemoveAt(1);
+                        ed = new Edit(specs, usr.First());
+                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("non?");
+                    }
+                  
+                }
+                else
+                {
+                    var usr = db.Patients.Select(n => n).Where(p => p.User.Key == ActuallyLogged.Key);
+                    if (usr.Count() != 0)
+                    {
+                        ed = new Edit(usr.First());
+                    }
+                        
+                }
+                ed.ShowDialog();
+                if (ed.GetResult())
+                {
+                    if(ed.GetPatient()!=null)
+                    {
+                        db.UpdatePatient(ed.GetPatient());
+                        
+                    }
+                    else
+                    {
+                        db.UpdateDoctor(ed.GetDoctor());
+                    }
+                    var usr = db.Users.Select(n => n).Where(p => p.Key == ActuallyLogged.Key);
+                    if (usr.Count() != 0)
+                    {
+                        ActuallyLogged = usr.First();
+                        LoggedChanges();
+                    }
+                }
 
-            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
-            if (0 == comparer.Compare(hashOfInput, hash))
-            {
-                return true;
             }
-            else
-            {
-                return false;
-            }
+            
         }
-
     }
 }

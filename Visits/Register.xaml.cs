@@ -68,6 +68,7 @@ namespace Visits
                 NewPatient.User.Name.Surname = Nazw.Text;
                 NewPatient.User.PESEL = Pes.Text;
                 NewPatient.User.Password = HashPassword(passwordBox.Password);
+                NewPatient.User.Kind = DocOrPat.Patient;
 
             }
             else
@@ -78,6 +79,7 @@ namespace Visits
                 NewDoctor.User.Name.Surname = Nazw.Text;
                 NewDoctor.User.PESEL = Pes.Text;
                 NewDoctor.User.Password = HashPassword(passwordBox.Password);
+                NewDoctor.User.Kind = DocOrPat.Doctor;
                 NewDoctor.Specialization =(Specialization)Spec.SelectedItem;
                 NewDoctor.MondayWorkingTime = new WorkingTime();
                 NewDoctor.MondayWorkingTime.Start = Int32.Parse(PS.Text);

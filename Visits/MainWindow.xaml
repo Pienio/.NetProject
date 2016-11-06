@@ -48,6 +48,6 @@
         <ComboBox x:Name="Spec" HorizontalAlignment="Left" Margin="225,19,0,0" Grid.Row="1" VerticalAlignment="Top" Width="148"/>
         <Label x:Name="Lsz2" Content="i/lub nazwiska" HorizontalAlignment="Left" Margin="378,16,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <TextBox x:Name="Nazwisko" HorizontalAlignment="Left" Height="23" Margin="467,19,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155"/>
-        <Button x:Name="EdProf" Content="TwójProfil" HorizontalAlignment="Left" Margin="447,18,0,0" VerticalAlignment="Top" Width="85" Height="23"/>
+        <Button x:Name="EdProf" Content="TwójProfil" HorizontalAlignment="Left" Margin="447,18,0,0" VerticalAlignment="Top" Width="85" Height="23" Click="EdProf_Click"/>
     </Grid>
 </Window>

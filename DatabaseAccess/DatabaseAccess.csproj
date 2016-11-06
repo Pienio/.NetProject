@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationDataFactory.cs" />
+    <Compile Include="DocOrPat.cs" />
     <Compile Include="Doctor.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="IApplicationData.cs" />
