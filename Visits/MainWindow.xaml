@@ -47,6 +47,6 @@
         <TextBox x:Name="Nazwisko" HorizontalAlignment="Left" Height="23" Margin="467,19,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155"/>
         <Button x:Name="button" Content="Zarezerwuj wizytę" HorizontalAlignment="Left" Margin="503,14,0,0" Grid.Row="3" VerticalAlignment="Top" Width="119" 
                 IsEnabled="{Binding ElementName=WynikiWyszukiwania, Path=SelectedItem, Converter={StaticResource enabledConv}}" Click="ZW_Click"/>
-        <Button x:Name="EdProf" Content="Twój Profil" HorizontalAlignment="Left" Margin="457,18,0,0" VerticalAlignment="Top" Width="75" Click="EdProf_Click" Height="23"/>
+        <Button x:Name="EdProf" Content="Edytuj profil" HorizontalAlignment="Left" Margin="435,18,0,0" VerticalAlignment="Top" Width="85" Height="23" Click="EdProf_Click"/>
     </Grid>
 </Window>
