@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,12 @@ namespace DatabaseAccess
     [ComplexType]
     public class PersonName
     {
-        public string Name { get; set; } 
-        public string Surname { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string Surname { get; set; }
+
+        public override string ToString()
+        {
+            return Name + ' ' + Surname;
+        }
     }
 }

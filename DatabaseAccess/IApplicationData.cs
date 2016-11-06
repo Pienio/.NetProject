@@ -9,13 +9,11 @@ namespace DatabaseAccess
 {
     public interface IApplicationData : IDisposable
     {
-        IDbSet<User> Users { get; set; }
-        IDbSet<Patient> Patients { get; set; }
-        IDbSet<Doctor> Doctors { get; set; }
-        IDbSet<Specialization> Specializations { get; set; }
-        IDbSet<Visit> Visits { get; set; }
-        List<Specialization> ShowSpec();
-        List<Doctor> ShowDoc();
+        DbSet<User> Users { get; set; }
+        DbSet<Patient> Patients { get; set; }
+        DbSet<Doctor> Doctors { get; set; }
+        DbSet<Specialization> Specializations { get; set; }
+        DbSet<Visit> Visits { get; set; }
         void Fill();
     }
 }

@@ -9,12 +9,17 @@ namespace DatabaseAccess
 {
     public class Specialization : Entity
     {
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
          
         public Specialization() : base() { }
         public Specialization(string name) : base()
         {
             Name = name;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

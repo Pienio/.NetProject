@@ -8,6 +8,6 @@ namespace DatabaseAccess
 {
     public class Patient : Entity, IPerson
     {
-        public User User { get; set; } = new User(); 
+        public virtual User User { get; set; }
     }
 }

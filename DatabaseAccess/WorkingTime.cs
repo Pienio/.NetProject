@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess
 {
+    /// <summary>
+    /// Zakładamy, że godziny dotyczą tego samego dnia, tj Start < End
+    /// </summary>
     [ComplexType]
     public class WorkingTime
     {

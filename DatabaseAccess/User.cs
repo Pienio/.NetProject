@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,6 @@ namespace DatabaseAccess
         /// Trzeba będzie zrobić szyfrowanie przy secie 
         /// </summary>
         public string Password { get; set; }
-        public PersonName Name { get; set; } = new PersonName();
+        public virtual PersonName Name { get; set; }
     }
 }
