@@ -228,6 +228,8 @@ namespace Visits
                     }
                     else
                     {
+                        if (ed.GetSpec() != null)
+                            db.AddSpecialization(ed.GetSpec());
                         db.UpdateDoctor(ed.GetDoctor());
                     }
                     var usr = db.Users.Select(n => n).Where(p => p.Key == ActuallyLogged.Key);
