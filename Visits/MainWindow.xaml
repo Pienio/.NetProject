@@ -7,7 +7,9 @@
         xmlns:conv="clr-namespace:Visits.Converters"
         mc:Ignorable="d"
         Title="System rezerwacji wizyt" Height="445.385" Width="748.062">
-
+    <Window.Resources>
+        <conv:IsEnabledConverter x:Key="enabledConv"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*"></ColumnDefinition>
@@ -45,6 +47,5 @@
         <TextBox x:Name="Nazwisko" HorizontalAlignment="Left" Height="23" Margin="467,19,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155"/>
         <Button x:Name="button" Content="Zarezerwuj wizytę" HorizontalAlignment="Left" Margin="503,14,0,0" Grid.Row="3" VerticalAlignment="Top" Width="119" 
                 IsEnabled="{Binding ElementName=WynikiWyszukiwania, Path=SelectedItem, Converter={StaticResource enabledConv}}" Click="ZW_Click"/>
-        <Button x:Name="EdProf" Content="Twój Profil" HorizontalAlignment="Left" Margin="439,18,0,0" VerticalAlignment="Top" Width="93" Height="21" Click="EdProf_Click"/>
     </Grid>
 </Window>
