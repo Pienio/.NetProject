@@ -153,7 +153,11 @@ namespace Visits
                 Type t = WynikiWyszukiwania.SelectedItem.GetType();
                 var prop = t.GetProperty("DoctorId");
                 var id = (long)prop.GetValue(WynikiWyszukiwania.SelectedItem);
-                var regwiz = new RegVisit(db.Doctors.First(d => d.Key == id));
+                var patient = ActuallyLogged == null ? null :
+                    (from p in db.Patients
+                     where p.User.Key == ActuallyLogged.Key
+                     select p).FirstOrDefault();
+                var regwiz = new RegVisit(db.Doctors.First(d => d.Key == id), patient);
                 regwiz.Show();
             }
         }

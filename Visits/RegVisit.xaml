@@ -6,19 +6,36 @@
         xmlns:local="clr-namespace:Visits"
         mc:Ignorable="d"
         Title="Wybierz termin wizyty" Height="403" Width="642">
-    <StackPanel>
-        <TextBlock x:Name="textBlock" Margin="10" Text="Lekarz: " DockPanel.Dock="Top"/>
-        <DataGrid x:Name="daysOfWeek" Margin="10,0,10,10" ItemsSource="{Binding}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding DayOfWeek}"/>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <local:WrapPanelCell Hours="{Binding Hours}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </StackPanel>
+    <DockPanel>
+        <TextBlock x:Name="textBlock" Margin="10" Text="Lekarz: " FontSize="16" FontWeight="SemiBold" DockPanel.Dock="Top"/>
+        <TextBlock x:Name="weekTxt" Margin="10,5,10,10" Text="Aktualny tydzień: " DockPanel.Dock="Top" FontSize="13"/>
+        <Grid DockPanel.Dock="Bottom" Height="42">
+            <Button x:Name="nextWeek" Content="Następny tydzień" HorizontalAlignment="Right" Margin="0,0,19,12" Width="120" Click="nextWeek_Click"/>
+            <Button x:Name="prevWeek" Content="Poprzedni tydzień" HorizontalAlignment="Left" Margin="11,0,0,10" IsEnabled="False" Width="120" Click="prevWeek_Click"/>
+
+        </Grid>
+        <ScrollViewer Margin="0,0,0,10">
+            <DataGrid x:Name="daysOfWeek" Margin="10,0,0,0" ItemsSource="{Binding}" AutoGenerateColumns="False" ColumnHeaderHeight="0" RowHeaderWidth="0">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center" Margin="10">
+                                    <TextBlock Text="{Binding DayOfWeek}" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ListBox Cursor="Hand" ItemsSource="{Binding Hours}" ItemStringFormat="{}{0:HH:mm}" MouseLeftButtonUp="ListBox_MouseLeftButtonUp"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+    </DockPanel>
 </Window>

@@ -18,6 +18,7 @@ namespace DatabaseAccess
         void AddPatient(Patient nowy);
         void AddSpecialization(Specialization nowy);
         void AddDoctor(Doctor nowy);
+        void AddVisit(Visit nowy);
         void UpdateDoctor(Doctor nowy);
         void UpdatePatient(Patient nowy);
     }

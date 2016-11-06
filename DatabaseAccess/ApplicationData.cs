@@ -92,6 +92,11 @@ namespace DatabaseAccess
             Specializations.Add(nowy);
             this.SaveChanges();
         }
+        public void AddVisit(Visit nowy)
+        {
+            Visits.Add(nowy);
+            this.SaveChanges();
+        }
         public void UpdateDoctor(Doctor nowy)
         {
             this.Users.Attach(nowy.User);
