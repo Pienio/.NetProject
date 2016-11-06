@@ -64,6 +64,7 @@
     <Compile Include="ChangePass.xaml.cs">
       <DependentUpon>ChangePass.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\IsEnabledConverter.cs" />
     <Compile Include="Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
     </Compile>

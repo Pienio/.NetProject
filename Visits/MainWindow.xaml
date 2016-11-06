@@ -7,7 +7,9 @@
         xmlns:conv="clr-namespace:Visits.Converters"
         mc:Ignorable="d"
         Title="System rezerwacji wizyt" Height="445.385" Width="748.062">
-    
+    <Window.Resources>
+        <conv:IsEnabledConverter x:Key="enabledConv"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*"></ColumnDefinition>
