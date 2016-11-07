@@ -15,7 +15,7 @@
             <Label x:Name="User" Content="Witaj, gościu" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="15"/>
             <Button x:Name="Login" Content="Zaloguj się" HorizontalAlignment="Right" Margin="0,2,98,-1" VerticalAlignment="Top" Width="85" Height="29" Click="Login_Click"/>
             <Button x:Name="Register" Content="Zarejestruj się" HorizontalAlignment="Right" Margin="0,2,10,-1" VerticalAlignment="Top" Width="83" Height="29" Click="Register_Click"/>
-            <Button x:Name="EdProf" Content="Edytuj profil" HorizontalAlignment="Left" Margin="467,2,0,-1" VerticalAlignment="Top" Width="85" Height="29" Click="EdProf_Click"/>
+            <Button x:Name="EdProf" Content="Edytuj profil" HorizontalAlignment="Right" Margin="0,2,188,-1" VerticalAlignment="Top" Width="85" Height="29" Click="EdProf_Click"/>
         </Grid>
         <GroupBox Header="Kryterium wyszukiwanie">
             <StackPanel Margin="10">
