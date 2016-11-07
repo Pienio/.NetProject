@@ -49,8 +49,8 @@ namespace Visits
         private void LoggedChanges()
         {
 
-            User.Content = "Witaj "+ ActuallyLogged.Name.ToString();
-            Login.Content = "Wyloguj";
+            User.Content = "Witaj, "+ ActuallyLogged.Name.ToString();
+            Login.Content = "Wyloguj się";
             Register.Visibility = Visibility.Collapsed;
             EdProf.Visibility = Visibility.Visible;
         }
@@ -86,8 +86,8 @@ namespace Visits
            else
             {
                 ActuallyLogged = null;
-                Login.Content = "Zaloguj";
-                User.Content = "Witaj gościu!";
+                Login.Content = "Zaloguj się";
+                User.Content = "Witaj, gościu!";
                 Register.Visibility = Visibility.Visible;
                 EdProf.Visibility = Visibility.Collapsed;
             }

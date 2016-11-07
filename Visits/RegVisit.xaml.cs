@@ -129,7 +129,7 @@ namespace Visits
             }
         }
 
-        private void ListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var box = sender as ListBox;
             if (box.SelectedItem == null)
@@ -156,6 +156,8 @@ namespace Visits
                     Patient = db.Patients.First()
                 });
             }
+            CurrentWeek = new Week(CurrentDoctor, CurrentWeek.From);
+            MessageBox.Show("Wizyta została zarejestrowana", App.ResourceAssembly.GetName().Name, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void nextWeek_Click(object sender, RoutedEventArgs e)

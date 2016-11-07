@@ -30,7 +30,7 @@
                     <DataGridTemplateColumn Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ListBox Cursor="Hand" ItemsSource="{Binding Hours}" ItemStringFormat="{}{0:HH:mm}" MouseLeftButtonUp="ListBox_MouseLeftButtonUp"/>
+                                <ListBox Cursor="Hand" ItemsSource="{Binding Hours}" ItemStringFormat="{}{0:HH:mm}" MouseDoubleClick="ListBox_MouseDoubleClick"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

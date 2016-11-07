@@ -174,9 +174,8 @@ namespace Visits
         {
             var chp = new ChangePass(password);
             chp.ShowDialog();
-            if(chp.GetResult())
+            if (chp.GetResult())
             {
-                MessageBox.Show(password + "    " + chp.GetPassword());
                 password = chp.GetPassword();
                 
                 if (actualdoctor != null)
@@ -184,7 +183,7 @@ namespace Visits
                 else
                     actualpatient.User.Password = chp.GetPassword();
 
-               
+                MessageBox.Show("Zmieniono hasło z powodzeniem");//password + "    " + chp.GetPassword());
             }
            
         }

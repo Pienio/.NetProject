@@ -5,11 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
         mc:Ignorable="d"
-        Title="Lekarz czy Pacjent?" Height="198.322" Width="529.53">
-    <Grid>
-        <Label x:Name="label" Content="Rejestracja jako lekarz czy pacjent?" Margin="10,25,10.2,0" VerticalAlignment="Top" HorizontalAlignment="Center" Height="33" />
-        <Button x:Name="button" Content="Lekarz" HorizontalAlignment="Left" Margin="41,0,0,12.8" VerticalAlignment="Bottom" Width="132" Height="60" Click="button_Click"/>
-        <Button x:Name="button1" Content="Pacjent" HorizontalAlignment="Right" Margin="0,0,38.2,12.8" VerticalAlignment="Bottom" Width="140" Height="60" Click="button1_Click"/>
+        Title="Rejestracja" Height="172.322" Width="503.53">
+    <StackPanel>
+        <Label x:Name="label" Content="Rejestracja jako lekarz czy pacjent?" HorizontalAlignment="Center" Margin="0,20,0,20"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="button" Content="Lekarz" HorizontalAlignment="Left"  Width="140" Height="40" Click="button_Click" Margin="66,0,0,0"/>
+            <Button x:Name="button1" Content="Pacjent" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="140" Height="40" Click="button1_Click" Grid.Column="1" Margin="0,0,66,0"/>
+        </Grid>
 
-    </Grid>
+    </StackPanel>
 </Window>
