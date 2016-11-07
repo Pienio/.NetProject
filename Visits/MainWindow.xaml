@@ -16,6 +16,7 @@
             <Button x:Name="Login" Content="Zaloguj się" HorizontalAlignment="Right" Margin="0,2,98,-1" VerticalAlignment="Top" Width="85" Height="29" Click="Login_Click"/>
             <Button x:Name="Register" Content="Zarejestruj się" HorizontalAlignment="Right" Margin="0,2,10,-1" VerticalAlignment="Top" Width="83" Height="29" Click="Register_Click"/>
             <Button x:Name="EdProf" Content="Edytuj profil" HorizontalAlignment="Left" Margin="467,2,0,-1" VerticalAlignment="Top" Width="85" Height="29" Click="EdProf_Click"/>
+            <Button x:Name="TwWiz" Content="Twoje wizyty" HorizontalAlignment="Left" Margin="387,2,0,0" VerticalAlignment="Top" Width="75" Height="28" Click="button1_Click"/>
         </Grid>
         <GroupBox Header="Kryterium wyszukiwanie">
             <StackPanel Margin="10">
