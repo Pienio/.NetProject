@@ -28,10 +28,7 @@ namespace Visits
         private List<Specialization> SpecList;
         ValPac actualpatient;
         ValDoc actualdoctor;
-        public static readonly DependencyProperty SecurePasswordProperty =
-        DependencyProperty.RegisterAttached("Pas", typeof(string), typeof(Register));
-        public static readonly DependencyProperty SecurePasswordProperty1 =
-        DependencyProperty.RegisterAttached("Pasp", typeof(string), typeof(Register));
+
         public Edit()
         {
             InitializeComponent();
