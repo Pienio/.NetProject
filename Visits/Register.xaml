@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
+        xmlns:conv="clr-namespace:Visits.Converters"
         mc:Ignorable="d"
         Title="Rejestracja" SizeToContent="Height" Width="413">
     <Window.Resources>
@@ -69,7 +70,7 @@
         <DockPanel Margin="0,10,0,0">
             <Label x:Name="label4" Content="Specjalizacja:" Width="94" DockPanel.Dock="Left"/>
             <Button x:Name="AddSpec" Content="+" Width="26" Height="26" DockPanel.Dock="Right" Click="AddSpec_Click"/>
-            <ComboBox x:Name="Spec" Height="26" Margin="0,0,5,0"/>
+            <ComboBox x:Name="Spec" Height="26" Margin="0,0,5,0" SelectionChanged="Spec_SelectionChanged"/>
         </DockPanel>
         <GroupBox x:Name="GP" Header="Godziny przyjęć" Margin="0,5,0,0">
             <Grid Margin="0,0,0,20">
@@ -133,27 +134,27 @@
                                     <Condition Binding="{Binding ElementName=passwordBox,
                             Path=(Validation.HasError)}" Value="false" />
                                     <Condition Binding="{Binding ElementName=passwordBox1,
-                            Path=(Validation.HasError)}" Value="false" />
-                                    <!--<Condition Binding="{Binding ElementName=PS,
-                            Path=(Validation.HasError)}" Value="false" />
+                            Path=(Validation.HasError)}" Value="false" />                         
+                                    <Condition Binding="{Binding ElementName=PS,
+                            Path=(Validation.HasError),TargetNullValue=false }" Value="false" />
                                     <Condition Binding="{Binding ElementName=PE,
-                            Path=(Validation.HasError)}" Value="false" />
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                     <Condition Binding="{Binding ElementName=WS,
-                            Path=(Validation.HasError)}" Value="false" />
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                     <Condition Binding="{Binding ElementName=WE,
-                            Path=(Validation.HasError)}" Value="false" />
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                     <Condition Binding="{Binding ElementName=SS,
-                            Path=(Validation.HasError)}" Value="false" />
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                     <Condition Binding="{Binding ElementName=SE,
-                            Path=(Validation.HasError)}" Value="false" />
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                     <Condition Binding="{Binding ElementName=CS,
-                            Path=(Validation.HasError)}" Value="false" />
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                     <Condition Binding="{Binding ElementName=CE,
-                            Path=(Validation.HasError)}" Value="false" />
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                     <Condition Binding="{Binding ElementName=PIS,
-                            Path=(Validation.HasError)}" Value="false" />
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                     <Condition Binding="{Binding ElementName=PES,
-                            Path=(Validation.HasError)}" Value="false" />-->
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                 </MultiDataTrigger.Conditions>
                             </MultiDataTrigger>
                         </Style.Triggers>

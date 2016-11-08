@@ -30,6 +30,7 @@ namespace Visits.Validations
             us.ThursdayWorkingTime = new WorkingTime();
             us.WednesdayWorkingTime = new WorkingTime();
             us.FridayWorkingTime = new WorkingTime();
+            us.Specialization = new Specialization();
             us.User.Kind = DocOrPat.Doctor;
             us.User.PESEL = "";
             us.User.Password = "";
@@ -116,7 +117,7 @@ namespace Visits.Validations
         }
         public string Pas
         {
-            get { return us.User.Password; }
+            get { return _pas; }
             set
             {
                 _pas = value;
@@ -125,7 +126,7 @@ namespace Visits.Validations
         }
         public string Pasp
         {
-            get { return us.User.Password; }
+            get { return _pasp; }
             set
             {
                 _pasp = value;
@@ -148,7 +149,8 @@ namespace Visits.Validations
             get { return us.MondayWorkingTime.Start; }
             set
             {
-                us.MondayWorkingTime.Start = value;
+                
+                us.MondayWorkingTime.Start =value;
                 OnPropertyChanged("PS");
             }
         }

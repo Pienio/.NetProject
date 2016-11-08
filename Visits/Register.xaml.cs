@@ -43,13 +43,9 @@ namespace Visits
         public Register(List<Specialization> a)
         {
             InitializeComponent();
-            //this.Loaded += delegate { AddTriggers(); };
-            SpecList = a;
-            Spec.ItemsSource = a;
-            Spec.SelectedIndex = 0;
             DoForDoctor();
-
-
+            SpecList = a;
+            Spec.ItemsSource = SpecList;
 
         }
         private void DoForPatient()
@@ -112,14 +108,12 @@ namespace Visits
         private void BindValRul(string name, DependencyObject con, bool d)
         {
             Binding myBinding = new Binding();
-            if (d)
-                myBinding.Source = NewPatient;
-            else
-                myBinding.Source = NewDoctor;
+            myBinding.Source = NewDoctor;
             myBinding.Path = new PropertyPath(name);
             myBinding.Mode = BindingMode.TwoWay;
-            myBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            myBinding.UpdateSourceTrigger = UpdateSourceTrigger.LostFocus;
             IntegerValidation abc = new IntegerValidation() { MaxValue = 24, MinValue = 0 };
+            myBinding.ValidatesOnDataErrors = true;
             myBinding.ValidationRules.Add(abc);
             BindingOperations.SetBinding(con, TextBox.TextProperty, myBinding);
             
@@ -132,8 +126,9 @@ namespace Visits
             Bind("FirstName", Imi, false);
             Bind("LastName", Nazw, false);
             
+            
+            Spec.SelectedIndex = 0;
             BindPassword();
-            //AddTriggers();
             BindValRul("PS", PS, false);
             BindValRul("PE", PE, false);
             BindValRul("WS", WS, false);
@@ -146,18 +141,7 @@ namespace Visits
             BindValRul("PIE", PIE, false);
 
         }
-        private void AddTriggers()
-        {
-           
-            DataTrigger trigger = new DataTrigger();
-            trigger.Value = false;
-            trigger.Binding = new Binding() { ElementName = "PS", Path = new PropertyPath(Validation.HasErrorProperty) };
-            Setter setter = new Setter();
-            setter.Property = Button.IsEnabledProperty;
-            setter.Value = true;
-            trigger.Setters.Add(setter);
-            Reg.Style.Triggers.Add(trigger);
-        }
+      
         public bool GetResult()
         {
             return result;
@@ -220,17 +204,16 @@ namespace Visits
             if(NewPatient!=null)
             {
                 ((ValPac)DataContext).Pas = passwordBox.Password;
-                RoutedEventArgs newEventArgs = new RoutedEventArgs(PasswordBox.PasswordChangedEvent);
-
-                passwordBox1.RaiseEvent(newEventArgs);
+               
             } 
             else
             {
                 ((ValDoc)DataContext).Pas = passwordBox.Password;
-                RoutedEventArgs newEventArgs = new RoutedEventArgs(PasswordBox.PasswordChangedEvent);
-                passwordBox1.RaiseEvent(newEventArgs);
-            }
                 
+            }
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(PasswordBox.PasswordChangedEvent);
+            passwordBox1.RaiseEvent(newEventArgs);
+
         }
         private void MyPassword_Changed1(object sender, RoutedEventArgs e)
         {
@@ -243,6 +226,11 @@ namespace Visits
             {
                 ((ValDoc)DataContext).Pasp = passwordBox1.Password;
             }
+        }
+
+        private void Spec_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ((ValDoc)DataContext).Spec = SpecList[Spec.SelectedIndex];
         }
     }
 }
