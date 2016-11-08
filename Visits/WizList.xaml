@@ -1,0 +1,25 @@
+﻿<Window x:Class="Visits.WizList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Visits"
+        mc:Ignorable="d"
+        Title="Twoje wizyty" Height="300" Width="608.411">
+    <Grid>
+        <Button x:Name="button" Content="Planowane" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="115" Height="38" Click="button_Click"/>
+        <Button x:Name="button1" Content="Archiwalne" HorizontalAlignment="Left" Margin="462,10,0,0" VerticalAlignment="Top" Width="115" Height="38" Click="button1_Click"/>
+        <GroupBox x:Name="groupBox" Header="Planowane" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top" Height="207" Width="567">
+            <ListView x:Name="Listawizyt" HorizontalAlignment="Left" Height="178" Margin="10,10,-3.4,-3.2" VerticalAlignment="Top" Width="547">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Nazwisko lekarza"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Specialization}" Header="Specjalizacja"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding DataWizyty, StringFormat=\{0:dd.MM.yyyy hh:mm\}}" Header="Data Wizyty"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
+
+    </Grid>
+</Window>

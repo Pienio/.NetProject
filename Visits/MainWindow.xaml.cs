@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DatabaseAccess;
 using System.Data.Entity;
 using System.Security.Cryptography;
+using System.Collections;
 
 namespace Visits
 {
@@ -29,6 +30,7 @@ namespace Visits
             InitializeComponent();
            
             EdProf.Visibility = Visibility.Collapsed;
+            TwWiz.Visibility = Visibility.Collapsed;
             var a = new ApplicationDataFactory();
             using (var db = a.CreateApplicationData())
             {
@@ -53,6 +55,7 @@ namespace Visits
             Login.Content = "Wyloguj się";
             Register.Visibility = Visibility.Collapsed;
             EdProf.Visibility = Visibility.Visible;
+            TwWiz.Visibility = Visibility.Visible;
         }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
@@ -90,6 +93,7 @@ namespace Visits
                 User.Content = "Witaj, gościu!";
                 Register.Visibility = Visibility.Visible;
                 EdProf.Visibility = Visibility.Collapsed;
+                TwWiz.Visibility = Visibility.Collapsed;
             }
 
         }
@@ -254,6 +258,34 @@ namespace Visits
 
     }
 
-       
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            using (var db = new ApplicationDataFactory().CreateApplicationData())
+            {
+                DateTime now = DateTime.Now;
+               
+                Predicate<Visit> isValid = (doc) => doc.Patient.User.Key == ActuallyLogged.Key&& DateTime.Compare(doc.Date, now)>0;
+                try
+                {
+                    db.Visits.Load();
+                     var da = from d in db.Visits.Local
+                                     where isValid(d)
+                                     select new { DoctorId = d.Key, Name = d.Doctor.User.Name, Specialization = d.Doctor.Specialization, DataWizyty = d.Date };
+
+                    Predicate<Visit> isValid1 = (doc) => doc.Patient.User.Key == ActuallyLogged.Key&& DateTime.Compare(doc.Date, now) <= 0;
+                    var dar = from d in db.Visits.Local
+                                      where isValid1(d)
+                                      select new { DoctorId = d.Key, Name = d.Doctor.User.Name, Specialization = d.Doctor.Specialization, DataWizyty = d.Date };
+                   
+                    WizList op = new WizList(da, dar);
+                    op.ShowDialog();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+              
+            }
+        }
     }
 }
