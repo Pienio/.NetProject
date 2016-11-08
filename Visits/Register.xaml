@@ -153,7 +153,7 @@
                             Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                     <Condition Binding="{Binding ElementName=PIS,
                             Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
-                                    <Condition Binding="{Binding ElementName=PES,
+                                    <Condition Binding="{Binding ElementName=PIE,
                             Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
                                 </MultiDataTrigger.Conditions>
                             </MultiDataTrigger>

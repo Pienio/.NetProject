@@ -125,8 +125,7 @@ namespace Visits
             Bind("Pesel", Pes, false);
             Bind("FirstName", Imi, false);
             Bind("LastName", Nazw, false);
-            
-            
+
             Spec.SelectedIndex = 0;
             BindPassword();
             BindValRul("PS", PS, false);
@@ -164,10 +163,14 @@ namespace Visits
         }
         public Patient GetPatient()
         {
+            if (NewPatient == null)
+                return null;
             return NewPatient.GetPat();
         }
         public Doctor GetDoctor()
-        { 
+        {
+            if (NewDoctor == null)
+                return null;
             return NewDoctor.GetDoc();
         }
         private string HashPassword(string input)

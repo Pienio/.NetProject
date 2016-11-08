@@ -27,6 +27,10 @@ namespace Visits.Validations
             us.User.Password = "";
            
         }
+        public void SetPac(Patient a)
+        {
+            us = a;
+        }
         private Patient us;
         private string _pas="";
         private string _pasp="";

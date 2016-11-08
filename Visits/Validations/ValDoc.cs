@@ -35,6 +35,12 @@ namespace Visits.Validations
             us.User.PESEL = "";
             us.User.Password = "";
         }
+        public void SetDoc(Doctor a)
+        {
+            us = a;
+
+
+        }
         public Doctor GetDoc()
         {
             return us;
