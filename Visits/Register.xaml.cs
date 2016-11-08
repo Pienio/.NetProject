@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DatabaseAccess;
 using System.Security.Cryptography;
+using Visits.Validations;
+using System.Security;
 
 namespace Visits
 {
@@ -22,27 +24,123 @@ namespace Visits
     public partial class Register : Window
     {
         private bool result=false;
-        private Patient NewPatient = null;
-        private Doctor NewDoctor=null;
+        private ValPac NewPatient = null;
+        private ValDoc NewDoctor=null;
         private Specialization NewSpec = null;
         private List<Specialization> SpecList;
+        public static readonly DependencyProperty SecurePasswordProperty =
+        DependencyProperty.RegisterAttached("Pas", typeof(string), typeof(Register));
+        public static readonly DependencyProperty SecurePasswordProperty1 =
+        DependencyProperty.RegisterAttached("Pasp", typeof(string), typeof(Register));
+
         public Register()
         {
             InitializeComponent();
-            label4.Visibility = Visibility.Collapsed;
-            Spec.Visibility = Visibility.Collapsed;
-            GP.Visibility = Visibility.Collapsed;
-            AddSpec.Visibility = Visibility.Collapsed;
+            DoForPatient();
+            
+
         }
         public Register(List<Specialization> a)
         {
             InitializeComponent();
+            DoForDoctor();
             SpecList = a;
-            Spec.ItemsSource = a;
-            Spec.SelectedIndex = 0;
+            Spec.ItemsSource = SpecList;
+
+        }
+        private void DoForPatient()
+        {
+            label4.Visibility = Visibility.Collapsed;
+            Spec.Visibility = Visibility.Collapsed;
+            GP.Visibility = Visibility.Collapsed;
+            AddSpec.Visibility = Visibility.Collapsed;
+            NewPatient = new ValPac();
+            Bind("Pesel", Pes,true);
+            Bind("FirstName", Imi, true);
+            Bind("LastName", Nazw, true);
+             BindPassword();
+
 
 
         }
+        private void BindPassword()
+        {
+            if (NewPatient != null)
+                DataContext = NewPatient;
+            else
+                DataContext = NewDoctor;// created somewhere
+
+            // create a binding by code
+            Binding passwordBinding = new Binding(SecurePasswordProperty.Name);
+            if (NewPatient != null)
+                passwordBinding.Source = NewPatient;
+            else
+                passwordBinding.Source = NewDoctor;      
+            passwordBinding.ValidatesOnDataErrors = true;
+            passwordBinding.Mode = BindingMode.TwoWay;
+            passwordBinding.UpdateSourceTrigger = UpdateSourceTrigger.LostFocus;
+            passwordBox.SetBinding(SecurePasswordProperty, passwordBinding);
+            
+            Binding passwordBinding1 = new Binding(SecurePasswordProperty1.Name);
+            if (NewPatient != null)
+                passwordBinding1.Source = NewPatient;
+            else
+                passwordBinding1.Source = NewDoctor;
+            passwordBinding1.ValidatesOnDataErrors = true;
+            passwordBinding1.Mode = BindingMode.TwoWay;
+            passwordBinding1.UpdateSourceTrigger = UpdateSourceTrigger.LostFocus;
+            passwordBox1.SetBinding(SecurePasswordProperty1, passwordBinding1);
+            
+        }
+        private void Bind(string name,DependencyObject con,bool d)
+        {
+            Binding myBinding = new Binding();
+            if (d)
+                myBinding.Source = NewPatient;
+            else
+                myBinding.Source = NewDoctor;
+            myBinding.Path = new PropertyPath(name);
+            myBinding.Mode = BindingMode.TwoWay;
+            myBinding.UpdateSourceTrigger = UpdateSourceTrigger.LostFocus;
+            myBinding.ValidatesOnDataErrors = true;
+            BindingOperations.SetBinding(con, TextBox.TextProperty, myBinding);
+        }
+        private void BindValRul(string name, DependencyObject con, bool d)
+        {
+            Binding myBinding = new Binding();
+            myBinding.Source = NewDoctor;
+            myBinding.Path = new PropertyPath(name);
+            myBinding.Mode = BindingMode.TwoWay;
+            myBinding.UpdateSourceTrigger = UpdateSourceTrigger.LostFocus;
+            IntegerValidation abc = new IntegerValidation() { MaxValue = 24, MinValue = 0 };
+            myBinding.ValidatesOnDataErrors = true;
+            myBinding.ValidationRules.Add(abc);
+            BindingOperations.SetBinding(con, TextBox.TextProperty, myBinding);
+            
+
+        }
+        private void DoForDoctor()
+        {
+            NewDoctor = new ValDoc();
+            Bind("Pesel", Pes, false);
+            Bind("FirstName", Imi, false);
+            Bind("LastName", Nazw, false);
+
+            Spec.SelectedIndex = 0;
+            BindPassword();
+            BindValRul("PS", PS, false);
+            BindValRul("PE", PE, false);
+            BindValRul("WS", WS, false);
+            BindValRul("WE", WE, false);
+            BindValRul("SS", SS, false);
+            BindValRul("SE", SE, false);
+            BindValRul("CS", CS, false);
+            BindValRul("CE", CE, false);
+            BindValRul("PIS", PIS, false);
+            BindValRul("PIE", PIE, false);
+
+        }
+      
         public bool GetResult()
         {
             return result;
@@ -60,53 +158,20 @@ namespace Visits
         private void Reg_Click(object sender, RoutedEventArgs e)
         {
             result = true;
-            if(!label4.IsVisible)
-            {
-                NewPatient = new Patient();
-                NewPatient.User = new User() { Name = new PersonName() };
-                NewPatient.User.Name.Name = Imi.Text;
-                NewPatient.User.Name.Surname = Nazw.Text;
-                NewPatient.User.PESEL = Pes.Text;
-                NewPatient.User.Password = HashPassword(passwordBox.Password);
-                NewPatient.User.Kind = DocOrPat.Patient;
-
-            }
-            else
-            {
-                NewDoctor = new Doctor();
-                NewDoctor.User = new User() { Name = new PersonName() };
-                NewDoctor.User.Name.Name = Imi.Text;
-                NewDoctor.User.Name.Surname = Nazw.Text;
-                NewDoctor.User.PESEL = Pes.Text;
-                NewDoctor.User.Password = HashPassword(passwordBox.Password);
-                NewDoctor.User.Kind = DocOrPat.Doctor;
-                NewDoctor.Specialization =(Specialization)Spec.SelectedItem;
-                NewDoctor.MondayWorkingTime = new WorkingTime();
-                NewDoctor.MondayWorkingTime.Start = Int32.Parse(PS.Text);
-                NewDoctor.MondayWorkingTime.End = Int32.Parse(PE.Text);
-                NewDoctor.TuesdayWorkingTime = new WorkingTime();
-                NewDoctor.TuesdayWorkingTime.Start = Int32.Parse(WS.Text);
-                NewDoctor.TuesdayWorkingTime.End = Int32.Parse(WE.Text);
-                NewDoctor.WednesdayWorkingTime = new WorkingTime();
-                NewDoctor.WednesdayWorkingTime.Start = Int32.Parse(SS.Text);
-                NewDoctor.WednesdayWorkingTime.End = Int32.Parse(SE.Text);
-                NewDoctor.ThursdayWorkingTime = new WorkingTime();
-                NewDoctor.ThursdayWorkingTime.Start = Int32.Parse(CS.Text);
-                NewDoctor.ThursdayWorkingTime.End = Int32.Parse(CE.Text);
-                NewDoctor.FridayWorkingTime = new WorkingTime();
-                NewDoctor.FridayWorkingTime.Start = Int32.Parse(PIS.Text);
-                NewDoctor.FridayWorkingTime.End = Int32.Parse(PIE.Text);
-
-            }
+            
             this.Close();
         }
         public Patient GetPatient()
         {
-            return NewPatient;
+            if (NewPatient == null)
+                return null;
+            return NewPatient.GetPat();
         }
         public Doctor GetDoctor()
-        { 
-            return NewDoctor;
+        {
+            if (NewDoctor == null)
+                return null;
+            return NewDoctor.GetDoc();
         }
         private string HashPassword(string input)
         {
@@ -135,6 +200,40 @@ namespace Visits
                 Spec.ItemsSource = SpecList;
 
             }
+        }
+        private void MyPassword_Changed(object sender, RoutedEventArgs e)
+        {
+            // this should trigger binding and therefore validation
+            if(NewPatient!=null)
+            {
+                ((ValPac)DataContext).Pas = passwordBox.Password;
+               
+            } 
+            else
+            {
+                ((ValDoc)DataContext).Pas = passwordBox.Password;
+                
+            }
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(PasswordBox.PasswordChangedEvent);
+            passwordBox1.RaiseEvent(newEventArgs);
+
+        }
+        private void MyPassword_Changed1(object sender, RoutedEventArgs e)
+        {
+            if (NewPatient != null)
+            {
+                ((ValPac)DataContext).Pasp = passwordBox1.Password;
+            }
+
+            else
+            {
+                ((ValDoc)DataContext).Pasp = passwordBox1.Password;
+            }
+        }
+
+        private void Spec_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ((ValDoc)DataContext).Spec = SpecList[Spec.SelectedIndex];
         }
     }
 }

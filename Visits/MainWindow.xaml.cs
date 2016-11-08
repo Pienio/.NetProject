@@ -100,53 +100,57 @@ namespace Visits
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            var lekpac = new LekPac();
-            lekpac.ShowDialog();
-            if (lekpac.GetResult() != 0)
-            {
-                var a = new ApplicationDataFactory();
-                var specs = new List<Specialization>();
-                using (var db = a.CreateApplicationData())
+          
+                var lekpac = new LekPac();
+                lekpac.ShowDialog();
+                if (lekpac.GetResult() != 0)
                 {
-                    specs.AddRange(db.Specializations);
-                    specs.RemoveAt(1);
-                 
-                Register zar;
-                if (lekpac.GetResult() == 1)
-                    zar = new Register(specs);
-                else
-                    zar = new Register();
+                    var a = new ApplicationDataFactory();
+                    var specs = new List<Specialization>();
+                    using (var db = a.CreateApplicationData())
+                    {
+                        specs.AddRange(db.Specializations);
+                        specs.RemoveAt(1);
 
-                zar.ShowDialog();
-                    if (zar.GetResult())
-                {
-                        string us = "";
-                        string pas = "";
+                        Register zar;
                         if (lekpac.GetResult() == 1)
-                        {
-                            Specialization newspec = zar.GetSpec();
-                            if (newspec != null)
-                                db.AddSpecialization(newspec);
+                            zar = new Register(specs);
+                        else
+                            zar = new Register();
 
-                            db.AddDoctor(zar.GetDoctor());
-                            us = zar.GetDoctor().User.PESEL;
-                            pas = zar.GetDoctor().User.Password;                
-                        }
-                     else
+                        zar.ShowDialog();
+                        if (zar.GetResult())
                         {
-                            db.AddPatient(zar.GetPatient());
-                            us = zar.GetPatient().User.PESEL;
-                            pas = zar.GetPatient().User.Password;
-                        }
-                        var usr = db.Users.Select(n => n).Where(p => p.PESEL == us && p.Password == pas);
-                        if (usr.Count() != 0)
-                        {
-                            ActuallyLogged = usr.First();
-                            LoggedChanges();
+                            string us = "";
+                            string pas = "";
+                            if (lekpac.GetResult() == 1)
+                            {
+                                Specialization newspec = zar.GetSpec();
+                                if (newspec != null)
+                                    db.AddSpecialization(newspec);
+
+                                db.AddDoctor(zar.GetDoctor());
+                                us = zar.GetDoctor().User.PESEL;
+                                pas = zar.GetDoctor().User.Password;
+                            }
+                            else
+                            {
+                                db.AddPatient(zar.GetPatient());
+                                us = zar.GetPatient().User.PESEL;
+                                pas = zar.GetPatient().User.Password;
+                            }
+                            var usr = db.Users.Select(n => n).Where(p => p.PESEL == us && p.Password == pas);
+                            if (usr.Count() != 0)
+                            {
+                                ActuallyLogged = usr.First();
+                                LoggedChanges();
+                            }
                         }
                     }
                 }
-            }
+            
+          
+           
             
         }
 
@@ -202,59 +206,62 @@ namespace Visits
         
         private void EdProf_Click(object sender, RoutedEventArgs e)
         {
-            var a = new ApplicationDataFactory();
-            using (var db = a.CreateApplicationData())
-            {
-                Edit ed=new Edit();
-                if (ActuallyLogged.Kind == DocOrPat.Doctor)
+            
+                var a = new ApplicationDataFactory();
+                using (var db = a.CreateApplicationData())
                 {
-                    var usr = db.Doctors.Select(n => n).Where(p => p.User.Key == ActuallyLogged.Key);
-                    if(usr.Count()!=0)
+                    Edit ed = new Edit();
+                    if (ActuallyLogged.Kind == DocOrPat.Doctor)
                     {
-                        var specs = new List<Specialization>();
-                        specs.AddRange(db.Specializations);
-                        specs.RemoveAt(1);
-                        ed = new Edit(specs, usr.First());
-                        
+                        var usr = db.Doctors.Select(n => n).Where(p => p.User.Key == ActuallyLogged.Key);
+                        if (usr.Count() != 0)
+                        {
+                            var specs = new List<Specialization>();
+                            specs.AddRange(db.Specializations);
+                            specs.RemoveAt(1);
+                            ed = new Edit(specs, usr.First());
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("non?");
+                        }
+
                     }
                     else
                     {
-                        MessageBox.Show("non?");
-                    }
-                  
-                }
-                else
-                {
-                    var usr = db.Patients.Select(n => n).Where(p => p.User.Key == ActuallyLogged.Key);
-                    if (usr.Count() != 0)
-        {
-                        ed = new Edit(usr.First());
-                    }
-                        
-                }
-                ed.ShowDialog();
-                if (ed.GetResult())
-                {
-                    if(ed.GetPatient()!=null)
-            {
-                        db.UpdatePatient(ed.GetPatient());
-                        
-            }
-            else
-            {
-                        if (ed.GetSpec() != null)
-                            db.AddSpecialization(ed.GetSpec());
-                        db.UpdateDoctor(ed.GetDoctor());
-                    }
-                    var usr = db.Users.Select(n => n).Where(p => p.Key == ActuallyLogged.Key);
-                    if (usr.Count() != 0)
-                    {
-                        ActuallyLogged = usr.First();
-                        LoggedChanges();
-                    }
-            }
+                        var usr = db.Patients.Select(n => n).Where(p => p.User.Key == ActuallyLogged.Key);
+                        if (usr.Count() != 0)
+                        {
+                            ed = new Edit(usr.First());
+                        }
 
-        }
+                    }
+                    ed.ShowDialog();
+                    if (ed.GetResult())
+                    {
+                        if (ed.GetPatient() != null)
+                        {
+                            db.UpdatePatient(ed.GetPatient());
+
+                        }
+                        else
+                        {
+                            if (ed.GetSpec() != null)
+                                db.AddSpecialization(ed.GetSpec());
+                            db.UpdateDoctor(ed.GetDoctor());
+                        }
+                        var usr = db.Users.Select(n => n).Where(p => p.Key == ActuallyLogged.Key);
+                        if (usr.Count() != 0)
+                        {
+                            ActuallyLogged = usr.First();
+                            LoggedChanges();
+                        }
+                    }
+
+                }
+            
+            
 
     }
 

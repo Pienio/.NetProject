@@ -4,33 +4,73 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
+        xmlns:conv="clr-namespace:Visits.Converters"
         mc:Ignorable="d"
         Title="Rejestracja" SizeToContent="Height" Width="413">
+    <Window.Resources>
+        <ControlTemplate x:Key="errorTemplate">
+            <DockPanel LastChildFill="true">
+                <Border Background="OrangeRed" DockPanel.Dock="right"
+                    Margin="3,0,0,0" Width="20" Height="20" CornerRadius="5"
+                    ToolTip="{Binding ElementName=adoner,
+                        Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                    <TextBlock Text="!" VerticalAlignment="center" HorizontalAlignment="center"
+                           FontWeight="Bold" Foreground="white" />
+                </Border>
+                <AdornedElementPlaceholder Name="adoner" VerticalAlignment="Center">
+                    <Border BorderBrush="OrangeRed" BorderThickness="1" />
+                </AdornedElementPlaceholder>
+            </DockPanel>
+        </ControlTemplate>
+        <Style x:Key="textBoxError" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="passwordBoxError" TargetType="PasswordBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <StackPanel Margin="10">
-        <DockPanel>
+        <DockPanel Margin="0,0,10.4,0">
             <Label x:Name="label" Content="PESEL:" Width="94"/>
-            <TextBox x:Name="Pes" Height="26"/>
+            <TextBox x:Name="Pes" Height="26" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" />
         </DockPanel>
-        <DockPanel Margin="0,5,0,0">
+        <DockPanel Margin="0,5,10.4,0">
             <Label x:Name="label2" Content="Imię:" Width="94"/>
-            <TextBox x:Name="Imi" Height="26" />
+            <TextBox x:Name="Imi" Height="26" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" />
         </DockPanel>
-        <DockPanel Margin="0,5,0,0">
+        <DockPanel Margin="0,5,10.4,0">
             <Label x:Name="label3" Content="Nazwisko:" Width="94"/>
-            <TextBox x:Name="Nazw" Height="26"/>
+            <TextBox x:Name="Nazw" Height="26" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}"/>
         </DockPanel>
-        <DockPanel Margin="0,10,0,0">
+        <DockPanel Margin="0,10,10.4,0">
             <Label x:Name="label1" Content="Hasło:" Width="94"/>
-            <PasswordBox x:Name="passwordBox" Height="26"/>
+            <PasswordBox x:Name="passwordBox" Height="26" PasswordChanged="MyPassword_Changed" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource passwordBoxError}" />
         </DockPanel>
-        <DockPanel Margin="0,5,0,0">
+        <DockPanel Margin="0,5,10.4,0">
             <Label x:Name="label5" Content="Powtórz hasło:" Width="94"/>
-            <PasswordBox x:Name="passwordBox1" Height="26"/>
+            <PasswordBox x:Name="passwordBox1" Height="26" PasswordChanged="MyPassword_Changed1" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource passwordBoxError}" />
         </DockPanel>
         <DockPanel Margin="0,10,0,0">
             <Label x:Name="label4" Content="Specjalizacja:" Width="94" DockPanel.Dock="Left"/>
             <Button x:Name="AddSpec" Content="+" Width="26" Height="26" DockPanel.Dock="Right" Click="AddSpec_Click"/>
-            <ComboBox x:Name="Spec" Height="26" Margin="0,0,5,0"/>
+            <ComboBox x:Name="Spec" Height="26" Margin="0,0,5,0" SelectionChanged="Spec_SelectionChanged"/>
         </DockPanel>
         <GroupBox x:Name="GP" Header="Godziny przyjęć" Margin="0,5,0,0">
             <Grid Margin="0,0,0,20">
@@ -54,20 +94,74 @@
                 <Label x:Name="label10" Content="Czwartek" HorizontalAlignment="Left" Margin="46,0,0,0" VerticalAlignment="Top" Grid.Row="4" Height="26" Width="58"/>
                 <Label x:Name="label11" Content="Piątek" HorizontalAlignment="Left" Margin="46,0,0,0" VerticalAlignment="Top" Grid.Row="5" Height="26" Width="42"/>
                 <Label x:Name="label12" Content="Poniedziałek" HorizontalAlignment="Left" Margin="46,1,0,0" VerticalAlignment="Top" Grid.Row="1" Grid.RowSpan="2" Height="26" Width="76"/>
-                <TextBox x:Name="PS" HorizontalAlignment="Left" Height="23" Margin="46,2,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="1"/>
-                <TextBox x:Name="PE" HorizontalAlignment="Left" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="1"/>
-                <TextBox x:Name="WS" HorizontalAlignment="Left" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="2"/>
-                <TextBox x:Name="WE" HorizontalAlignment="Left" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="2"/>
-                <TextBox x:Name="SS" HorizontalAlignment="Left" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="3"/>
-                <TextBox x:Name="SE" HorizontalAlignment="Left" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="3"/>
-                <TextBox x:Name="CS" HorizontalAlignment="Left" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="4"/>
-                <TextBox x:Name="CE" HorizontalAlignment="Left" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="4"/>
-                <TextBox x:Name="PIS" HorizontalAlignment="Left" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="5"/>
-                <TextBox x:Name="PIE" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Margin="19,2,0,0" Grid.Column="2" Grid.Row="5"/>
+                <TextBox x:Name="PS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="1"/>
+                <TextBox x:Name="PE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="1"/>
+                <TextBox x:Name="WS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="2"/>
+                <TextBox x:Name="WE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="2"/>
+                <TextBox x:Name="SS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="3"/>
+                <TextBox x:Name="SE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="3"/>
+                <TextBox x:Name="CS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="4"/>
+                <TextBox x:Name="CE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="4"/>
+                <TextBox x:Name="PIS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="5"/>
+                <TextBox x:Name="PIE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Height="23" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Margin="19,2,0,0" Grid.Column="2" Grid.Row="5"/>
             </Grid>
         </GroupBox>
         <Grid Margin="0,15,0,10">
-            <Button x:Name="Reg" Content="Zarejestruj się!" HorizontalAlignment="Right"  Width="110" Height="25" Click="Reg_Click"/>
+            <Button x:Name="Reg" Content="Zarejestruj się!" HorizontalAlignment="Right"  Width="110" Height="25" Click="Reg_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="false" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <Setter Property="IsEnabled" Value="true" />
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=Imi,
+                            Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=Nazw,
+                            Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=Pes,
+                            Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=passwordBox,
+                            Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=passwordBox1,
+                            Path=(Validation.HasError)}" Value="false" />                         
+                                    <Condition Binding="{Binding ElementName=PS,
+                            Path=(Validation.HasError),TargetNullValue=false }" Value="false" />
+                                    <Condition Binding="{Binding ElementName=PE,
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=WS,
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=WE,
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=SS,
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=SE,
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=CS,
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=CE,
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=PIS,
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=PIE,
+                            Path=(Validation.HasError),TargetNullValue=false}" Value="false" />
+                                </MultiDataTrigger.Conditions>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
             <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="110" Height="25" Click="Anul_Click" Margin="0,0,115,0"/>
         </Grid>
     </StackPanel>

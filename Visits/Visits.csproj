@@ -77,6 +77,9 @@
     <Compile Include="RegVisit.xaml.cs">
       <DependentUpon>RegVisit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Validations\IntegerValidation.cs" />
+    <Compile Include="Validations\ValDoc.cs" />
+    <Compile Include="Validations\ValPac.cs" />
     <Compile Include="WizList.xaml.cs">
       <DependentUpon>WizList.xaml</DependentUpon>
     </Compile>
