@@ -1,27 +1,38 @@
 ﻿<Window x:Class="Visits.RegVisit"
+        x:Name="mainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
+        xmlns:viewmodel="clr-namespace:Visits.ViewModels"
+        xmlns:conv="clr-namespace:Visits.Converters"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="Wybierz termin wizyty" Height="403" Width="642">
+    <Window.Resources>
+        <conv:DoctorsNameConverter x:Key="doctorsName"/>
+    </Window.Resources>
     <DockPanel>
-        <TextBlock x:Name="textBlock" Margin="10" Text="Lekarz: " FontSize="16" FontWeight="SemiBold" DockPanel.Dock="Top"/>
-        <TextBlock x:Name="weekTxt" Margin="10,5,10,10" Text="Aktualny tydzień: " DockPanel.Dock="Top" FontSize="13"/>
+        <TextBlock Margin="10" Text="{Binding CurrentDoctor.User.Name, Converter={StaticResource doctorsName}}" FontSize="16" FontWeight="SemiBold" DockPanel.Dock="Top"/>
+        <TextBlock x:Name="weekTxt" Margin="10,5,10,10" Text="{Binding CurrentWeek.Title}" DockPanel.Dock="Top" FontSize="13"/>
         <Grid DockPanel.Dock="Bottom" Height="42">
-            <Button x:Name="nextWeek" Content="Następny tydzień" HorizontalAlignment="Right" Margin="0,0,19,12" Width="120" Click="nextWeek_Click"/>
-            <Button x:Name="prevWeek" Content="Poprzedni tydzień" HorizontalAlignment="Left" Margin="11,0,0,10" IsEnabled="False" Width="120" Click="prevWeek_Click"/>
-
+            <Button x:Name="nextWeek" Content="Następny tydzień" HorizontalAlignment="Right" Margin="0,0,19,12" Width="120" Command="{Binding ChangeWeekCmd}" CommandParameter="7"/>
+            <Button x:Name="prevWeek" Content="Poprzedni tydzień" HorizontalAlignment="Left" Margin="11,0,0,10" Width="120" Command="{Binding ChangeWeekCmd}" CommandParameter="-7"/>
         </Grid>
         <ScrollViewer Margin="0,0,0,10">
-            <DataGrid x:Name="daysOfWeek" Margin="10,0,0,0" ItemsSource="{Binding}" AutoGenerateColumns="False" ColumnHeaderHeight="0" RowHeaderWidth="0">
+            <DataGrid x:Name="daysOfWeek" Margin="10,0,0,0" ItemsSource="{Binding CurrentWeek.Days}" AutoGenerateColumns="False" RowHeaderWidth="0">
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Cursor" Value="Hand"/>
+                    </Style>
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel VerticalAlignment="Center" Margin="10">
-                                    <TextBlock Text="{Binding DayOfWeek}" FontSize="14" FontWeight="Bold"/>
+                                <StackPanel HorizontalAlignment="Left" Margin="10">
+                                    <TextBlock Text="{Binding DayName}" FontWeight="Bold" FontSize="15"/>
                                     <TextBlock Text="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -30,7 +41,14 @@
                     <DataGridTemplateColumn Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ListBox Cursor="Hand" ItemsSource="{Binding Hours}" ItemStringFormat="{}{0:HH:mm}" MouseDoubleClick="ListBox_MouseDoubleClick"/>
+                                <ListBox x:Name="hoursList" ItemStringFormat="{}{0:HH:mm}" ItemsSource="{Binding Slots}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                            <i:InvokeCommandAction Command="{Binding ElementName=mainWindow, Path=DataContext.RegisterVisitCmd}" 
+                                                                   CommandParameter="{Binding ElementName=hoursList, Path=SelectedItem}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ListBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

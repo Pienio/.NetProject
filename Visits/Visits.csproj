@@ -40,6 +40,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -64,6 +65,8 @@
     <Compile Include="ChangePass.xaml.cs">
       <DependentUpon>ChangePass.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Command.cs" />
+    <Compile Include="Converters\DoctorsNameConverter.cs" />
     <Compile Include="Converters\IsEnabledConverter.cs" />
     <Compile Include="Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
@@ -80,6 +83,7 @@
     <Compile Include="Validations\IntegerValidation.cs" />
     <Compile Include="Validations\ValDoc.cs" />
     <Compile Include="Validations\ValPac.cs" />
+    <Compile Include="ViewModels\RegVisitViewModel.cs" />
     <Compile Include="WizList.xaml.cs">
       <DependentUpon>WizList.xaml</DependentUpon>
     </Compile>
