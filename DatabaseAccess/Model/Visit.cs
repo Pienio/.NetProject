@@ -11,5 +11,14 @@ namespace DatabaseAccess.Model
         public virtual Patient Patient { get; set; }
         public virtual Doctor Doctor { get; set; }
         public DateTime Date { get; set; } 
+
+        public Visit() { }
+
+        public Visit(Patient patient, Doctor doctor, DateTime date)
+        {
+            Patient = patient;
+            Doctor = doctor;
+            Date = date;
+        }
     }
 }
