@@ -8,6 +8,7 @@ namespace DatabaseAccess
 {
     public interface IApplicationDataFactory
     {
-        IApplicationData CreateApplicationData(); 
+        IApplicationData CreateApplicationData();
+        ITransactionalApplicationData CreateTransactionalApplicationData();
     }
 }

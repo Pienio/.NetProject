@@ -1,4 +1,5 @@
 ﻿using DatabaseAccess;
+using DatabaseAccess.Model;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,11 +28,6 @@ namespace Visits
             InitializeComponent();
 
             DataContext = new RegVisitViewModel(doctor, loggedPatient);
-        }
-
-        private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            
         }
     }
 }

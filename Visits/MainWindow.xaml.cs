@@ -16,6 +16,7 @@ using DatabaseAccess;
 using System.Data.Entity;
 using System.Security.Cryptography;
 using System.Collections;
+using DatabaseAccess.Model;
 
 namespace Visits
 {
@@ -34,7 +35,7 @@ namespace Visits
             var a = new ApplicationDataFactory();
             using (var db = a.CreateApplicationData())
             {
-                    db.Fill();
+                db.Fill();
 
                 var specs = new List<Specialization>();
                 specs.Add(new Specialization("- brak -"));
@@ -139,7 +140,8 @@ namespace Visits
                                 us = zar.GetPatient().User.PESEL;
                                 pas = zar.GetPatient().User.Password;
                             }
-                            var usr = db.Users.Select(n => n).Where(p => p.PESEL == us && p.Password == pas);
+                            var usr = db.
+                            Users.Select(n => n).Where(p => p.PESEL == us && p.Password == pas);
                             if (usr.Count() != 0)
                             {
                                 ActuallyLogged = usr.First();
@@ -176,7 +178,7 @@ namespace Visits
             try
             { 
                 var a = new ApplicationDataFactory();
-                using (var db = a.CreateApplicationData())
+                using (var db = a.CreateApplicationData(false))
                 {
                     db.Doctors.Load();
                     
@@ -279,7 +281,7 @@ namespace Visits
                                      where isValid(d)
                                      select new { DoctorId = d.Key, Name = d.Doctor.User.Name, Specialization = d.Doctor.Specialization, DataWizyty = d.Date };
 
-                    Predicate<Visit> isValid1 = (doc) => doc.Patient.User.Key == ActuallyLogged.Key&& DateTime.Compare(doc.Date, now) <= 0;
+                    Predicate<Visit> isValid1 = (doc) => doc.Patient.User.Key == ActuallyLogged.Key && DateTime.Compare(doc.Date, now) <= 0;
                     var dar = from d in db.Visits.Local
                                       where isValid1(d)
                                       select new { DoctorId = d.Key, Name = d.Doctor.User.Name, Specialization = d.Doctor.Specialization, DataWizyty = d.Date };

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatabaseAccess.Model;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -14,12 +15,24 @@ namespace DatabaseAccess
         DbSet<Doctor> Doctors { get; set; }
         DbSet<Specialization> Specializations { get; set; }
         DbSet<Visit> Visits { get; set; }
+        
         void Fill();
-        void AddPatient(Patient nowy);
-        void AddSpecialization(Specialization nowy);
-        void AddDoctor(Doctor nowy);
-        void AddVisit(Visit nowy);
-        void UpdateDoctor(Doctor nowy);
-        void UpdatePatient(Patient nowy);
+
+        //void AddPatient(Patient nowy);
+        //void AddSpecialization(Specialization nowy);
+        //void AddDoctor(Doctor nowy);
+        //void AddVisit(Visit nowy);
+        //void UpdateDoctor(Doctor nowy);
+        //void UpdatePatient(Patient nowy);
+    }
+    
+    public interface ITransactionalApplicationData : IApplicationData
+    {
+        bool IsTransactionRunning { get; }
+        bool CommitUnfinishedTransaction { get; set; }
+
+        void BeginTransaction();
+        void Commit();
+        void Rollback();
     }
 }

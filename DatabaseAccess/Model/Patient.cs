@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatabaseAccess
+namespace DatabaseAccess.Model
 {
-    public enum DocOrPat
+    public class Patient : Entity, IPerson
     {
-        Doctor = 0,
-        Patient = 1,
+        public virtual User User { get; set; }
     }
 }

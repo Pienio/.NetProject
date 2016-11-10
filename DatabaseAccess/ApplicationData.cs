@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatabaseAccess
+namespace DatabaseAccess.Model
 {
-    class ApplicationData : DbContext, IApplicationData
+    class ApplicationData : DbContext, ITransactionalApplicationData
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Patient> Patients { get; set; }
@@ -15,12 +15,17 @@ namespace DatabaseAccess
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<Visit> Visits { get; set; }
 
-        public ApplicationData(string nameOrConnectionString) : base(nameOrConnectionString)
-        {
-        }
+        public bool IsTransactionRunning { get; private set; } = false;
+        public bool CommitUnfinishedTransaction { get; set; } = true;
+        private bool IsDisposed { get; set; } = false;
 
-        public ApplicationData() : base()
+        public ApplicationData(bool runTransaction) : base()
         {
+            if (runTransaction)
+            {
+                Database.BeginTransaction();
+                IsTransactionRunning = true;
+            }
         }
 
         public void Fill()
@@ -75,48 +80,110 @@ namespace DatabaseAccess
                 }
                 this.SaveChanges();
             }
-          
+
         }
-        public void AddDoctor(Doctor nowy)
+
+        //public void AddDoctor(Doctor nowy)
+        //{
+        //    Doctors.Add(nowy);
+        //    this.SaveChanges();
+        //}
+        //public void AddPatient(Patient nowy)
+        //{
+        //    Patients.Add(nowy);
+        //    this.SaveChanges();
+        //}
+        //public void AddSpecialization(Specialization nowy)
+        //{
+        //    Specializations.Add(nowy);
+        //    this.SaveChanges();
+        //}
+        //public void AddVisit(Visit nowy)
+        //{
+        //    Visits.Add(nowy);
+        //    this.SaveChanges();
+        //}
+        //public void UpdateDoctor(Doctor nowy)
+        //{
+        //    this.Users.Attach(nowy.User);
+        //    var entry = this.Entry(nowy.User);
+        //    entry.State= EntityState.Modified;
+        //    this.Doctors.Attach(nowy);
+        //    var entry1 = this.Entry(nowy);
+        //    entry1.State = EntityState.Modified;
+        //    this.SaveChanges();
+
+        //}
+        //public void UpdatePatient(Patient nowy)
+        //{
+        //    this.Users.Attach(nowy.User);
+        //    var entry = this.Entry(nowy.User);
+        //    entry.State = EntityState.Modified;
+        //    this.Patients.Attach(nowy);
+        //    var entry1 = this.Entry(nowy);
+        //    entry1.State = EntityState.Modified;
+        //    this.SaveChanges();
+        //}
+
+        public void BeginTransaction()
         {
-            Doctors.Add(nowy);
-            this.SaveChanges();
+            if (IsTransactionRunning)
+                throw new InvalidOperationException("Nie można rozpocząć transakcji, ponieważ poprzednia nie została zakończona.");
+            Database.BeginTransaction();
+            IsTransactionRunning = true;
         }
-        public void AddPatient(Patient nowy)
+
+        public void Commit()
         {
-            Patients.Add(nowy);
-            this.SaveChanges();
+            if (IsTransactionRunning)
+            {
+                try
+                {
+                    SaveChanges();
+                    Database.CurrentTransaction.Commit();
+                    IsTransactionRunning = false;
+                }
+                catch
+                {
+                    Database.CurrentTransaction.Rollback();
+                    IsTransactionRunning = false;
+                    throw;
+                }
+            }
+            else
+                throw new InvalidOperationException("Brak aktywnej transakcji.");
         }
-        public void AddSpecialization(Specialization nowy)
+
+        public void Rollback()
         {
-            Specializations.Add(nowy);
-            this.SaveChanges();
+            if (IsTransactionRunning)
+            {
+                Database.CurrentTransaction.Rollback();
+                IsTransactionRunning = false;
+            }
+            else
+                throw new InvalidOperationException("Brak aktywnej transakcji.");
         }
-        public void AddVisit(Visit nowy)
+
+        protected override void Dispose(bool disposing)
         {
-            Visits.Add(nowy);
-            this.SaveChanges();
-        }
-        public void UpdateDoctor(Doctor nowy)
-        {
-            this.Users.Attach(nowy.User);
-            var entry = this.Entry(nowy.User);
-            entry.State= EntityState.Modified;
-            this.Doctors.Attach(nowy);
-            var entry1 = this.Entry(nowy);
-            entry1.State = EntityState.Modified;
-            this.SaveChanges();
-            
-        }
-        public void UpdatePatient(Patient nowy)
-        {
-            this.Users.Attach(nowy.User);
-            var entry = this.Entry(nowy.User);
-            entry.State = EntityState.Modified;
-            this.Patients.Attach(nowy);
-            var entry1 = this.Entry(nowy);
-            entry1.State = EntityState.Modified;
-            this.SaveChanges();
+            if (IsDisposed)
+            {
+                if (disposing)
+                    throw new InvalidOperationException("Nie można zwolnić DBContext ponownie.");
+                return;
+            }
+            IsDisposed = true;
+
+            if (IsTransactionRunning)
+            {
+                if (CommitUnfinishedTransaction)
+                    Commit();
+                else
+                    Rollback();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

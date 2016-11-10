@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatabaseAccess
+namespace DatabaseAccess.Model
 {
     /// <summary>
     /// Zakładamy, że godziny dotyczą tego samego dnia, tj Start < End

@@ -1,4 +1,5 @@
 ﻿using DatabaseAccess;
+using DatabaseAccess.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,12 +35,38 @@ namespace Visits.ViewModels
             set { _currentWeek = value; OnPropertyChanged(nameof(CurrentWeek)); }
         }
 
-        public ICommand ChangeWeekCmd => new Command((p) => CurrentWeek = new Week(CurrentDoctor, CurrentWeek.Days[0].Date.AddDays(int.Parse(p.ToString()))));
-
-        public ICommand RegisterVisitCmd => new Command(p => RegisterVisit((DateTime)p));
+        public ICommand ChangeWeekCmd => new Command((p) => CurrentWeek = new Week(CurrentDoctor, CurrentWeek.From.AddDays(int.Parse(p.ToString()))));
+        public ICommand RegisterVisitCmd => new Command(p =>
+        {
+            {
+                DateTime selectedDate = (DateTime)p;
+                if (LoggedPatient == null)
+                {
+                    Login login = new Login();
+                    login.ShowDialog();
+                    if (!login.GetResult())
+                        return;
+                }
+                if (MessageBox.Show(string.Format("Czy na pewno chcesz zarejestrować się do {0} na termin dnia {1:dd.MM.yyyy} o godzinie {1:HH:mm}?",
+                    CurrentDoctor.User.Name, selectedDate), App.ResourceAssembly.GetName().Name,
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                    return;
+                //dodac sprawdzenie, czy na pewno dany termin jest wolny
+                using (var db = new ApplicationDataFactory().CreateApplicationData())
+                {
+                    db.AddVisit(new Visit()
+                    {
+                        Date = selectedDate,
+                        Doctor = (from d in db.Doctors where d.Key == CurrentDoctor.Key select d).First(),
+                        Patient = db.Patients.First()
+                    });
+                }
+                CurrentWeek = new Week(CurrentDoctor, CurrentWeek.Days[0].Date);
+                MessageBox.Show("Wizyta została zarejestrowana", App.ResourceAssembly.GetName().Name, MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        });
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -56,48 +83,21 @@ namespace Visits.ViewModels
             CurrentWeek = new Week(doctor, first.Date);
         }
 
-        private void RegisterVisit(DateTime selectedDate)
-        {
-            //ListBox box = null;// sender as ListBox;
-            //if (box.SelectedItem == null)
-            //    return;
-            if (LoggedPatient == null)
-            {
-                Login login = new Login();
-                login.ShowDialog();
-                if (!login.GetResult())
-                    return;
-            }
-            if (MessageBox.Show(string.Format("Czy na pewno chcesz zarejestrować się do {0} na termin dnia {1:dd.MM.yyyy} o godzinie {1:HH:mm}?",
-                CurrentDoctor.User.Name, selectedDate), App.ResourceAssembly.GetName().Name,
-                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                return;
-            //dodac sprawdzenie, czy na pewno dany termin jest wolny
-            using (var db = new ApplicationDataFactory().CreateApplicationData())
-            {
-                db.AddVisit(new Visit()
-                {
-                    Date = selectedDate,
-                    Doctor = (from d in db.Doctors where d.Key == CurrentDoctor.Key select d).First(),
-                    Patient = db.Patients.First()
-                });
-            }
-            CurrentWeek = new Week(CurrentDoctor, CurrentWeek.Days[0].Date);
-            MessageBox.Show("Wizyta została zarejestrowana", App.ResourceAssembly.GetName().Name, MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
         public class Week
         {
-            public Day[] Days { get; } = new Day[5];
-            public string Title => string.Format("Aktualny tydzień: {0:dd.MM.yyyy} - {1:dd.MM.yyyy}", Days[0].Date, Days[0].Date.AddDays(6));
+            public Day[] Days { get; }
+            public DateTime From { get; }
+            public string Title => string.Format("Aktualny tydzień: {0:dd.MM.yyyy} - {1:dd.MM.yyyy}", From, From.AddDays(6));
 
             public Week(Doctor doc, DateTime monday)
             {
                 if (doc == null)
                     throw new ArgumentNullException(nameof(doc));
+                From = monday.Date;
                 int i = 0;
                 using (var db = new ApplicationDataFactory().CreateApplicationData())
                 {
+                    List<Day> days = new List<Day>();
                     foreach (var time in doc.WeeklyWorkingTime)
                     {
                         List<DateTime> slots = new List<DateTime>();
@@ -113,7 +113,9 @@ namespace Visits.ViewModels
                                     slots.Add(s);
                             
                         }
-                        Days[i] = new Day(current.Date, slots.ToArray());
+                        if (slots.Count > 0)
+                            days.Add(new Day(current.Date, slots.ToArray()));
+                        Days = days.ToArray();
                         i++;
                     }
                 }

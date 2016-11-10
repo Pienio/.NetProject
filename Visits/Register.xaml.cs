@@ -15,6 +15,7 @@ using DatabaseAccess;
 using System.Security.Cryptography;
 using Visits.Validations;
 using System.Security;
+using DatabaseAccess.Model;
 
 namespace Visits
 {
