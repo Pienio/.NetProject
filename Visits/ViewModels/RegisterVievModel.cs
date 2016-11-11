@@ -316,7 +316,7 @@ namespace Visits.ViewModels
         private async Task AddSpec(Specialization item, ITransactionalApplicationData context)
         {
             await App.Current.Dispatcher.BeginInvoke((Action)(() => { context.Specializations.Add(item); }));
-           // await Task.Run(() => context.Specializations.Add(item));
+           
         }
         private string HashPassword(string input)
         {
