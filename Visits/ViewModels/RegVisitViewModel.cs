@@ -11,26 +11,26 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Visits.Services;
 
 namespace Visits.ViewModels
 {
-    class RegVisitViewModel : INotifyPropertyChanged
+    public class RegVisitViewModel : INotifyPropertyChanged
     {
         private Doctor _currentDoctor;
-        private Patient _loggedPatient;
         private Week _currentWeek;
 
         private IApplicationDataFactory _applicationDataFactory;
+        private ILogUserService _loggedUser;
+        private Patient LoggedPatient
+        {
+            get { return _loggedUser.Logged as Patient; }
+        }
 
         public Doctor CurrentDoctor
         {
             get { return _currentDoctor; }
             set { _currentDoctor = value; OnPropertyChanged(nameof(CurrentDoctor)); }
-        }
-        public Patient LoggedPatient
-        {
-            get { return _loggedPatient; }
-            set { _loggedPatient = value; OnPropertyChanged(nameof(LoggedPatient)); }
         }
         public Week CurrentWeek
         {
@@ -48,6 +48,12 @@ namespace Visits.ViewModels
                 login.ShowDialog();
                 if (!login.GetResult())
                     return;
+                await _loggedUser.LogIn(login.GetUser(), login.GetHashedPassword(), _applicationDataFactory.CreateApplicationData());
+                if (!(_loggedUser.Logged is Patient))
+                {
+                    MessageBox.Show("Tylko pacjenci mogą rejestrować się na wizyty", App.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
             if (MessageBox.Show(string.Format("Czy na pewno chcesz zarejestrować się do {0} na termin dnia {1:dd.MM.yyyy} o godzinie {1:HH:mm}?",
                 CurrentDoctor.User.Name, selectedDate), App.ResourceAssembly.GetName().Name,
@@ -55,11 +61,7 @@ namespace Visits.ViewModels
                 return;
             //dodac sprawdzenie, czy na pewno dany termin jest wolny
             var db = _applicationDataFactory.CreateTransactionalApplicationData();
-
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             await AddVisit(new Visit(db.Patients.First(), (from d in db.Doctors where d.Key == CurrentDoctor.Key select d).First(), selectedDate), db);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
             db.Commit();
             CurrentWeek = await Week.Create(CurrentDoctor, CurrentWeek.Days[0].Date, db);
             MessageBox.Show("Wizyta została zarejestrowana", App.ResourceAssembly.GetName().Name, MessageBoxButton.OK, MessageBoxImage.Information);
@@ -72,15 +74,17 @@ namespace Visits.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public RegVisitViewModel(Doctor doctor, Patient loggedPatient)
+        public RegVisitViewModel(ILogUserService user, IApplicationDataFactory factory)
         {
-            CurrentDoctor = doctor;
-            LoggedPatient = loggedPatient;
+            if (user.Logged != null && !(user.Logged is Patient))
+                throw new InvalidOperationException("Widok rejestracji wizyt jest dostępny tylko dla pacjentów i anonimowych użytkowników.");
+            _loggedUser = user;
+            _applicationDataFactory = factory;
         }
 
         public async Task Load()
         {
-            var first = CurrentDoctor.FirstFreeSlot();
+            var first = CurrentDoctor.FirstFreeSlot;
             first = first.AddDays(-Week.DayOfWeekNo(first));
             CurrentWeek = await Week.Create(CurrentDoctor, first.Date, _applicationDataFactory.CreateApplicationData());
         }
@@ -88,6 +92,12 @@ namespace Visits.ViewModels
         private async Task AddVisit(Visit item, ITransactionalApplicationData context)
         {
             await Task.Run(() => context.Visits.Add(item));
+        }
+
+        public async void Initialize(Doctor doctor)
+        {
+            CurrentDoctor = doctor;
+            await Load();
         }
 
         public class Week

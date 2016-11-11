@@ -9,8 +9,8 @@ namespace DatabaseAccess.Model
     /// <summary>
     /// Tutaj będą lądować wspólne metody i właściwości dla Doctor i Patient by wywoływać je z GUI
     /// </summary>
-    public interface IPerson
+    public abstract class Person : Entity
     {
-        User User { get; set; }
+        public User User { get; set; }
     }
 }

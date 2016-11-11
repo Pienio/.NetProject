@@ -6,28 +6,35 @@
         xmlns:local="clr-namespace:Visits"
         xmlns:conv="clr-namespace:Visits.Converters"
         mc:Ignorable="d"
-        Title="System rezerwacji wizyt" SizeToContent="Height" Width="775.062">
+        Title="System rezerwacji wizyt" SizeToContent="Height" Width="775.062" Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.Resources>
         <conv:IsEnabledConverter x:Key="enabledConv"/>
+        <conv:UserNameConverter x:Key="userName"/>
+        <conv:LoginButtonContentConverter x:Key="loginContent"/>
+        <conv:VisibilityConverter x:Key="visibilityParam"/>
     </Window.Resources>
     <StackPanel Margin="10">
         <Grid Margin="0,10,0,10">
-            <Label x:Name="User" Content="Witaj, gościu" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="15"/>
-            <Button x:Name="Login" Content="Zaloguj się" HorizontalAlignment="Right" Margin="0,2,98,-1" VerticalAlignment="Top" Width="85" Height="29" Click="Login_Click"/>
-            <Button x:Name="Register" Content="Zarejestruj się" HorizontalAlignment="Right" Margin="0,2,10,-1" VerticalAlignment="Top" Width="83" Height="29" Click="Register_Click"/>
-            <Button x:Name="EdProf" Content="Edytuj profil" HorizontalAlignment="Right" Margin="0,2,188,-1" VerticalAlignment="Top" Width="85" Height="29" Click="EdProf_Click" RenderTransformOrigin="1.271,0.724"/>
-            <Button x:Name="TwWiz" Content="Twoje wizyty" HorizontalAlignment="Right" Margin="0,2,278,-1" VerticalAlignment="Top" Width="84" Height="29" Click="button1_Click"/>
+            <Label x:Name="User" Content="{Binding LoggedUserName, Converter={StaticResource userName}}" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="15"/>
+            <Button x:Name="Login" Content="{Binding LoggedUserName, Converter={StaticResource loginContent}}" HorizontalAlignment="Right" Margin="0,2,98,-1" VerticalAlignment="Top" Width="85" Height="29"
+                    Command="{Binding LoginCmd}"/>
+            <Button x:Name="Register" Content="Zarejestruj się" HorizontalAlignment="Right" Margin="0,2,10,-1" VerticalAlignment="Top" Width="83" Height="29"  
+                    Command="{Binding RegisterCmd}" Visibility="{Binding LoggedUserName, Converter={StaticResource visibilityParam}, ConverterParameter=True}"/>
+            <Button x:Name="EdProf" Content="Edytuj profil" HorizontalAlignment="Right" Margin="0,2,188,-1" VerticalAlignment="Top" Width="85" Height="29" 
+                    Command="{Binding EditProfileCmd}" Visibility="{Binding LoggedUserName, Converter={StaticResource visibilityParam}, ConverterParameter=False}"/>
+            <Button x:Name="TwWiz" Content="Twoje wizyty" HorizontalAlignment="Right" Margin="0,2,278,-1" VerticalAlignment="Top" Width="84" Height="29" 
+                    Command="{Binding VisitsViewCmd}" Visibility="{Binding LoggedUserName, Converter={StaticResource visibilityParam}, ConverterParameter=False}"/>
         </Grid>
         <GroupBox Header="Kryterium wyszukiwanie">
             <StackPanel Margin="10">
                 <StackPanel Orientation="Horizontal" >
                     <Label x:Name="Lsz" Content="Wyszukaj lekarza według specjalizacji:" Margin="0,0,5,0"/>
-                    <ComboBox x:Name="Spec" Width="150" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="Spec" Width="150" Margin="0,0,5,0" ItemsSource="{Binding Specializations}" SelectedItem="{Binding SelectedSpecialization}" SelectedIndex="0"/>
                     <Label x:Name="Lsz2" Content="i/lub nazwiska" Margin="0,0,5,0"/>
-                    <TextBox x:Name="Nazwisko" Height="26" Width="150" Margin="0,0,5,0"/>
-                    <Button x:Name="Search" Content="Wyszukaj" Width="89" Height="26" Click="Search_Click"/>
+                    <TextBox x:Name="Nazwisko" Height="26" Width="150" Margin="0,0,5,0" Text="{Binding SearchByNameTxt}"/>
+                    <Button x:Name="Search" Content="Wyszukaj" Width="89" Height="26" Command="{Binding SearchCmd}"/>
                 </StackPanel>
-                <ListView x:Name="WynikiWyszukiwania" Margin="0,10,0,0" BorderThickness="0">
+                <ListView x:Name="WynikiWyszukiwania" Margin="0,10,0,0" BorderThickness="0" ItemsSource="{Binding Doctors}"  SelectedItem="{Binding SelectedDoctor, Mode=OneWayToSource}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">
                             <Setter Property="Height" Value="30"/>
@@ -35,14 +42,15 @@
                     </ListView.ItemContainerStyle>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Nazwisko lekarza"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding User.Name}" Header="Nazwisko lekarza"/>
                             <GridViewColumn DisplayMemberBinding="{Binding Specialization}" Header="Specjalizacja"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding NextSlot, StringFormat=\{0:dd.MM.yyyy hh:mm\}}" Header="Następna możliwa wizyta"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding FirstFreeSlot, StringFormat=\{0:dd.MM.yyyy hh:mm\}}" Header="Następna możliwa wizyta"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
             </StackPanel>
         </GroupBox>
-        <Button x:Name="button" Content="Zarezerwuj wizytę" Margin="0,10,0,15" Width="119" IsEnabled="{Binding SelectedItem, Converter={StaticResource enabledConv}, ElementName=WynikiWyszukiwania}" Click="ZW_Click" Height="24"/>
+        <Button x:Name="button" Content="Zarezerwuj wizytę" Margin="0,10,0,15" Width="119" Command="{Binding RegisterVisitCmd}"
+                IsEnabled="{Binding SelectedItem, Converter={StaticResource enabledConv}, ElementName=WynikiWyszukiwania}" Height="24"/>
     </StackPanel>
 </Window>

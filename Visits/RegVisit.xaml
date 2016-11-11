@@ -9,7 +9,7 @@
         xmlns:conv="clr-namespace:Visits.Converters"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="Wybierz termin wizyty" Height="403" Width="642">
+        Title="Wybierz termin wizyty" Height="403" Width="642" Loaded="mainWindow_Loaded">
     <Window.Resources>
         <conv:DoctorsNameConverter x:Key="doctorsName"/>
     </Window.Resources>

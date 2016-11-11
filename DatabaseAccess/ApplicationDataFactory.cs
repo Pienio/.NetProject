@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess
 {
-    public class ApplicationDataFactory : IApplicationDataFactory
+    class ApplicationDataFactory : IApplicationDataFactory
     {
         private static ITransactionalApplicationData instance;
 
@@ -19,6 +19,12 @@ namespace DatabaseAccess
         public ITransactionalApplicationData CreateTransactionalApplicationData()
         {
             return CreateDbContext(true);
+        }
+
+        public void Dispose()
+        {
+            if (instance != null)
+                instance.Dispose();
         }
 
         private ITransactionalApplicationData CreateDbContext(bool beginTransaction)

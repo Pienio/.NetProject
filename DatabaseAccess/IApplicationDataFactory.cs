@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess
 {
-    public interface IApplicationDataFactory
+    public interface IApplicationDataFactory : IDisposable
     {
         IApplicationData CreateApplicationData();
         ITransactionalApplicationData CreateTransactionalApplicationData();

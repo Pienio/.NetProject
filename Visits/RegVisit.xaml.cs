@@ -1,5 +1,6 @@
 ﻿using DatabaseAccess;
 using DatabaseAccess.Model;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,11 +24,23 @@ namespace Visits
     /// </summary>
     public partial class RegVisit : Window
     {
-        public RegVisit(Doctor doctor, Patient loggedPatient)
+        [Dependency]
+        public RegVisitViewModel ViewModel
+        {
+            get { return DataContext as RegVisitViewModel; }
+            set { DataContext = value; }
+        }
+
+        public Doctor SelectedDoctor { get; set; }
+
+        public RegVisit()
         {
             InitializeComponent();
+        }
 
-            DataContext = new RegVisitViewModel(doctor, loggedPatient);
+        private void mainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel?.Initialize(SelectedDoctor);
         }
     }
 }

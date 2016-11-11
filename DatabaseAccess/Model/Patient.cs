@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess.Model
 {
-    public class Patient : Entity, IPerson
+    public class Patient : Person
     {
-        public virtual User User { get; set; }
+
     }
 }

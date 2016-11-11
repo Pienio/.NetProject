@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess.Model
 {
-    public class Doctor : Entity, IPerson
+    public class Doctor : Person
     {
-        public virtual User User { get; set; }
-
         public virtual Specialization Specialization { get; set; }
 
         //poniższe właściwości muszą mieć w nazwie dzień tygodnia po angielsku, inaczej funkcja GetWorkingTime nie będzie działać
@@ -35,11 +33,11 @@ namespace DatabaseAccess.Model
         /// Zwraca najbliższy możliwy termin wizyty z uwzględnieniem innych zaplanowanych wizyt i godzin pracy
         /// </summary>
         /// <returns></returns>
-        public DateTime FirstFreeSlot()
+        public DateTime FirstFreeSlot
         {
-            var factory = new ApplicationDataFactory();
-            using (var db = factory.CreateApplicationData())
+            get
             {
+                IApplicationData db = new ApplicationDataFactory().CreateApplicationData();
                 var visits = (from v in db.Visits
                               where v.Doctor.Key == Key
                               select v.Date).ToList();
@@ -58,7 +56,6 @@ namespace DatabaseAccess.Model
                 }
                 return NextSlot(visits[visits.Count - 1].AddMinutes(30));
             }
-
         }
 
         /// <summary>
