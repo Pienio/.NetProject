@@ -89,53 +89,30 @@ namespace Visits.ViewModels
 
         });
 
-        public ICommand RegisterCmd => new Command(async parameter =>
+        
+        public ICommand RegisterCmd => new Command(parameter =>
         {
 
             var lekpac = new LekPac();
             lekpac.ShowDialog();
             if (lekpac.GetResult() != 0)
             {
-                var specs = new List<Specialization>();
                 var db = DbFactory.CreateApplicationData();
-                specs.AddRange(db.Specializations);
-
-                Register zar;
-                if (lekpac.GetResult() == 1)
-                    zar = new Register(specs);
-                else
-                    zar = new Register();
-
-                zar.ShowDialog();
-                if (zar.GetResult())
-                {
-                    var transaction = DbFactory.CreateTransactionalApplicationData();
-                    string us = "";
-                    string pas = "";
-                    if (lekpac.GetResult() == 1)
-                    {
-                        Specialization newspec = zar.GetSpec();
-                        if (newspec != null)
-                            db.Specializations.Add(newspec);
-
-                        db.Doctors.Add(zar.GetDoctor());
-                        us = zar.GetDoctor().User.PESEL;
-                        pas = zar.GetDoctor().User.Password;
-                    }
+              
+                    
+                    
+                    var wnd = App.Container.Resolve<Register>();
+                    if (lekpac.GetResult() == 2)
+                        wnd.WH = false;
                     else
-                    {
-                        transaction.Patients.Add(zar.GetPatient());
-                        us = zar.GetPatient().User.PESEL;
-                        pas = zar.GetPatient().User.Password;
-                    }
-                    transaction.Commit();
-                    var usr = db.Users.Select(n => n).Where(p => p.PESEL == us && p.Password == pas);
-                    if (usr.Count() != 0)
-                    {
-                        await LoggingService.LogIn(us, pas, db);
-                        OnPropertyChanged(nameof(LoggedUserName));
-                    }
-                }
+                        wnd.WH = true;
+
+                
+                    wnd.Show();
+           
+                
+
+               
             }
         });
 

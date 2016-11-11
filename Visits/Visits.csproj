@@ -82,6 +82,7 @@
       <DependentUpon>ChangePass.xaml</DependentUpon>
     </Compile>
     <Compile Include="Command.cs" />
+    <Compile Include="Converters\BoolVisibilityConverter.cs" />
     <Compile Include="Converters\DoctorsNameConverter.cs" />
     <Compile Include="Converters\IsEnabledConverter.cs" />
     <Compile Include="Converters\LoginButtonContentConverter.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Validations\ValDoc.cs" />
     <Compile Include="Validations\ValPac.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\RegisterVievModel.cs" />
     <Compile Include="ViewModels\RegVisitViewModel.cs" />
     <Compile Include="WizList.xaml.cs">
       <DependentUpon>WizList.xaml</DependentUpon>
