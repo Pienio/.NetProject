@@ -21,5 +21,17 @@ namespace DatabaseAccess.Model
         {
             return Name;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Specialization)
+                return ((Specialization)obj).Name == Name;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

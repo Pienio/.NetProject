@@ -20,5 +20,18 @@ namespace DatabaseAccess.Model
             Doctor = doctor;
             Date = date;
         }
+
+        public override bool Equals(object obj)
+        {
+            Visit v = obj as Visit;
+            if (v != null)
+                return Patient.Equals(v.Patient) && Doctor.Equals(Doctor) && Date == v.Date;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Key.GetHashCode() ^ Doctor.GetHashCode() ^ Patient.GetHashCode() ^ Date.GetHashCode();
+        }
     }
 }
