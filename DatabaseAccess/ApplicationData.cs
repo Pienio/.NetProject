@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite.CodeFirst;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -19,6 +20,11 @@ namespace DatabaseAccess.Model
         public bool CommitUnfinishedTransaction { get; set; } = true;
         private bool IsDisposed { get; set; } = false;
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<ApplicationData>(modelBuilder);
+            Database.SetInitializer(sqliteConnectionInitializer);
+        }
         public ApplicationData(bool runTransaction) : base()
         {
             if (runTransaction)
