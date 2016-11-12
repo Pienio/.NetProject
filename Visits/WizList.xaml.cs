@@ -33,14 +33,12 @@ namespace Visits
         {
             InitializeComponent();
 
-
+            visitsTypeBox.ItemsSource = Enum.GetValues(typeof(WizListViewModel.VisitsType));
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
             ViewModel?.Initialize();
-
         }
     }
 }
