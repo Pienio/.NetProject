@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DatabaseAccess.Model;
 
 
-namespace DatabaseAcessTest
+namespace DatabaseTest
 {
     [TestClass]
     public class BasicTest: DataTest
@@ -12,12 +12,12 @@ namespace DatabaseAcessTest
         public void Specialization_BasicTest()
         {
             Specialization a = new Specialization() { Name = "Anastezjolog" };
-            this.DataBase.Specializations.Add(a);
+            this.Database.Specializations.Add(a);
 
-            this.DataBase.SaveChangesOn();            
-            this.DataBase.DetachOn();
+            this.Database.SaveChangesOn();            
+            this.Database.DetachOn();
 
-            var s2 = this.DataBase.Specializations.Find(a.Key);
+            var s2 = Database.Specializations.Find(a.Key);
 
             //Assert:
             Assert.IsTrue(a != s2);

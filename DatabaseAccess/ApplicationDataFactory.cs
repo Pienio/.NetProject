@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess
 {
-    class ApplicationDataFactory : IApplicationDataFactory
+    public class ApplicationDataFactory : IApplicationDataFactory
     {
         private static ITransactionalApplicationData instance;
 
