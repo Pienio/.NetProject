@@ -108,12 +108,15 @@
     </Compile>
     <Compile Include="Command.cs" />
     <Compile Include="Converters\BoolVisibilityConverter.cs" />
+    <Compile Include="Converters\ColumnHeaderConverter.cs" />
     <Compile Include="Converters\DoctorsNameConverter.cs" />
     <Compile Include="Converters\IsEnabledConverter.cs" />
     <Compile Include="Converters\LoginButtonContentConverter.cs" />
     <Compile Include="Converters\ReversedBoolVisibilityConverter.cs" />
     <Compile Include="Converters\UserNameConverter.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
+    <Compile Include="Converters\VisitParticipantConverter.cs" />
+    <Compile Include="Converters\VisitsWindowConverter.cs" />
     <Compile Include="Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
     </Compile>

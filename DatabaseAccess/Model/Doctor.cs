@@ -98,5 +98,7 @@ namespace DatabaseAccess.Model
                     where p.Name.Contains(day.ToString()) && p.PropertyType == typeof(WorkingTime)
                     select p.GetValue(this) as WorkingTime).FirstOrDefault();
         }
+
+        public override string ToString() => string.Format("{0} ({1})", User.Name, Specialization);
     }
 }
