@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -159,7 +161,28 @@ namespace DatabaseAccess.Model
             else
                 throw new InvalidOperationException("Brak aktywnej transakcji.");
         }
+        //I to dodałem
+        public void SaveChangesOn()
+        {
+            this.SaveChanges();
 
+        }
+        public void DetachOn()
+        {
+          ObjectContext a= (ObjectContext)((IObjectContextAdapter)this).ObjectContext;
+            unchecked
+            {
+                foreach (var entry in a.ObjectStateManager.GetObjectStateEntries(
+                    EntityState.Added | EntityState.Deleted | EntityState.Modified | EntityState.Unchanged))
+                {
+                    if (entry.Entity != null)
+                    {
+                        a.Detach(entry.Entity);
+                    }
+                }
+            }
+
+        }
         public void Rollback()
         {
             if (IsTransactionRunning)

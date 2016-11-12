@@ -17,6 +17,9 @@ namespace DatabaseAccess
         DbSet<Visit> Visits { get; set; }
         
         void Fill();
+        //To Dodałem
+        void SaveChangesOn();
+        void DetachOn();
 
         //void AddPatient(Patient nowy);
         //void AddSpecialization(Specialization nowy);
