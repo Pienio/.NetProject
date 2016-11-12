@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace DatabaseAccess.Model
 {
-    class ApplicationData : DbContext, ITransactionalApplicationData
+    //zmienilm na public
+    public class ApplicationData : DbContext, ITransactionalApplicationData
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Patient> Patients { get; set; }

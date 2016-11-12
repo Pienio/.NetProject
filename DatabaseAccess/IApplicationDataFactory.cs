@@ -10,5 +10,6 @@ namespace DatabaseAccess
     {
         IApplicationData CreateApplicationData();
         ITransactionalApplicationData CreateTransactionalApplicationData();
+       
     }
 }

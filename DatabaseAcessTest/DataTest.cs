@@ -1,4 +1,5 @@
 ﻿using DatabaseAccess;
+using DatabaseAccess.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace DatabaseAcessTest
             [TestInitialize]
             public void Initialize()
             {
-                DataBase = DbFactory.CreateTransactionalApplicationData();
+                DataBase = new ApplicationData(true);
 
             }
 
