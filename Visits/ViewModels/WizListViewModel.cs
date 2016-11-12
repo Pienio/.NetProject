@@ -13,7 +13,7 @@ using Visits.Services;
 
 namespace Visits.ViewModels
 {
-    public class WizListViewModel: INotifyPropertyChanged
+    public class WizListViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private IApplicationDataFactory _applicationDataFactory;
@@ -24,6 +24,8 @@ namespace Visits.ViewModels
         private IEnumerable<Visit> wizytyarc;
         private IEnumerable<Visit> _wat;
         private bool _WHO;
+        private VisitsType _selectedType;
+
         public WizListViewModel(ILogUserService user, IApplicationDataFactory factory)
         {
             _loggedUser = user;
@@ -41,30 +43,26 @@ namespace Visits.ViewModels
             }
         }
         public IEnumerable<Visit> Wat
+        {
+            get { return _wat; }
+            set
             {
-                get { return _wat; }
-                set
-                {
-                    _wat = value;
-                     OnPropertyChanged("Wat");
-
-                 }
+                _wat = value;
+                OnPropertyChanged("Wat");
             }
-
-        public ICommand Change1 => new Command(p =>
+        }
+        public VisitsType SelectedType
         {
+            get { return _selectedType; }
+            set
+            {
+                _selectedType = value;
+                OnPropertyChanged(nameof(SelectedType));
 
-            Wat = wizytyakt;
-            OnPropertyChanged("Wat");
+                Wat = value == VisitsType.Planowane ? wizytyakt : wizytyarc;
+            }
+        }
 
-        });
-        public ICommand Change2 => new Command(p =>
-        {
-
-            Wat = wizytyarc;
-            OnPropertyChanged("Wat");
-
-        });
         virtual protected void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -80,16 +78,16 @@ namespace Visits.ViewModels
                     _Patient = _loggedUser.Logged as Patient;
 
                     DateTime now = DateTime.Now;
-                    
+
                     var da = from v in db.Visits.Local
                              where v.Patient.Key == _Patient.Key && DateTime.Compare(v.Date, now) > 0
-                             select new Visit {Key=v.Key,Version=v.Version, Doctor = v.Doctor, Patient=v.Patient, Date = v.Date };
+                             select new Visit { Key = v.Key, Version = v.Version, Doctor = v.Doctor, Patient = v.Patient, Date = v.Date };
 
                     var dar = from v in db.Visits.Local
                               where v.Patient.Key == _Patient.Key && DateTime.Compare(v.Date, now) <= 0
                               select new Visit { Key = v.Key, Version = v.Version, Doctor = v.Doctor, Patient = v.Patient, Date = v.Date };
                     wizytyakt = da;
-                     wizytyarc = dar;
+                    wizytyarc = dar;
                     Who = false;
 
                 }
@@ -110,16 +108,18 @@ namespace Visits.ViewModels
                     Who = true;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
 
             }
-          
+
             Wat = wizytyakt;
             OnPropertyChanged("Wat");
             OnPropertyChanged("Who");
 
         }
-     }
+
+        public enum VisitsType { Planowane, Archiwalne }
+    }
 }
