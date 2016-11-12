@@ -46,8 +46,8 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <StackPanel Margin="10">
-        <DockPanel Margin="0,0,10.4,0">
+    <StackPanel Margin="10,10,30,10">
+        <DockPanel Margin="0,0,10,0">
             <Label x:Name="label" Content="PESEL:" Width="94"/>
             <TextBox x:Name="Pes" Height="26" Validation.ErrorTemplate="{StaticResource errorTemplate}"
          Style="{StaticResource textBoxError}" Text="{Binding Pesel, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
@@ -239,7 +239,7 @@
                 </Button.Style>
             </Button>
 
-            <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="110" Height="25"  Margin="0,0,115,0" Command="{Binding Close}" CommandParameter="{Binding ElementName=EditWindow}"/>
+            <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="110" Height="25"  Margin="0,0,115,0" Command="{Binding Close}" CommandParameter="{Binding ElementName=RegisterWindow}"/>
         </Grid>
     </StackPanel>
 </Window>
