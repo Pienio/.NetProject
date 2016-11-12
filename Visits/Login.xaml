@@ -4,20 +4,85 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
+         xmlns:conv="clr-namespace:Visits.Converters"
+        xmlns:viewmodel="clr-namespace:Visits.ViewModels"
+        xmlns:vali="clr-namespace:Visits.Validations"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d" ResizeMode="NoResize"
-        Title="Zaloguj" Height="182.255" Width="319">
+        x:Name="LoginWindow"
+        Title="Zaloguj" Height="182.255" Width="319" Loaded="Window_Loaded">
+    <Window.Resources>
+        <ControlTemplate x:Key="errorTemplate">
+            <DockPanel LastChildFill="true">
+                <Border Background="OrangeRed" DockPanel.Dock="right"
+                    Margin="3,0,0,0" Width="20" Height="20" CornerRadius="5"
+                    ToolTip="{Binding ElementName=adoner,
+                        Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                    <TextBlock Text="!" VerticalAlignment="center" HorizontalAlignment="center"
+                           FontWeight="Bold" Foreground="white" />
+                </Border>
+                <AdornedElementPlaceholder Name="adoner" VerticalAlignment="Center">
+                    <Border BorderBrush="OrangeRed" BorderThickness="1" />
+                </AdornedElementPlaceholder>
+            </DockPanel>
+        </ControlTemplate>
+        <Style x:Key="textBoxError" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="passwordBoxError" TargetType="PasswordBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <StackPanel Margin="20">
         <DockPanel>
             <Label x:Name="label" Content="PESEL" Width="60" DockPanel.Dock="Left"/>
-            <TextBox x:Name="usr" Height="27"/>
+            <TextBox x:Name="usr" Height="27" Validation.ErrorTemplate="{StaticResource errorTemplate}"
+         Style="{StaticResource textBoxError}" Text="{Binding Pesel, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
         </DockPanel>
         <DockPanel Margin="0,5,0,0">
             <Label x:Name="label1" Content="Hasło" Width="60" DockPanel.Dock="Left"/>
-            <PasswordBox x:Name="password" Height="26"/>
+            <PasswordBox x:Name="password" Height="26" Validation.ErrorTemplate="{StaticResource errorTemplate}" Tag="{Binding Pas, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+         Style="{StaticResource passwordBoxError}" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PasswordChanged">
+                        <i:InvokeCommandAction Command="{Binding ChangePass}"  CommandParameter="{Binding ElementName=password}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </PasswordBox>
         </DockPanel>
         <Grid Margin="0,15,0,0">
-            <Button x:Name="Log" Content="Zaloguj" HorizontalAlignment="Right" Width="90" Height="26" Click="Log_Click"/>
-            <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="90" Height="26" Click="Anul_Click" Margin="0,0,95,0"/>
+            <Button x:Name="Log" Content="Zaloguj" HorizontalAlignment="Right" Width="90" Height="26" Command="{Binding LoginUser}" CommandParameter="{Binding ElementName=LoginWindow}" >
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="false" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <Setter Property="IsEnabled" Value="true" />
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=usr,
+                            Path=(Validation.HasError)}" Value="false" />
+                                    <Condition Binding="{Binding ElementName=password,
+                            Path=(Validation.HasError)}" Value="false" />
+                                </MultiDataTrigger.Conditions>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="90" Height="26"  Margin="0,0,95,0" Command="{Binding Close}" CommandParameter="{Binding ElementName=LoginWindow}" />
+               
         </Grid>
     </StackPanel>
 </Window>

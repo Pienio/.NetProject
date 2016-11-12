@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Visits.Services;
+using Microsoft.Practices.Unity;
 
 namespace Visits.ViewModels
 {
@@ -42,13 +43,15 @@ namespace Visits.ViewModels
         public ICommand RegisterVisitCmd => new Command(async p =>
         {
             var selectedDate = (DateTime)p;
+            var db = _applicationDataFactory.CreateApplicationData();
             if (LoggedPatient == null)
             {
-                Login login = new Login();
-                login.ShowDialog();
-                if (!login.GetResult())
+               
+                var wnd = App.Container.Resolve<Login>();
+                wnd.ShowDialog();
+                if (_loggedUser.Logged == null)
                     return;
-                await _loggedUser.LogIn(login.GetUser(), login.GetHashedPassword(), _applicationDataFactory.CreateApplicationData());
+               
                 if (!(_loggedUser.Logged is Patient))
                 {
                     MessageBox.Show("Tylko pacjenci mogą rejestrować się na wizyty", App.Name, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -60,12 +63,15 @@ namespace Visits.ViewModels
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
             //dodac sprawdzenie, czy na pewno dany termin jest wolny
-            var db = _applicationDataFactory.CreateTransactionalApplicationData();
-            await AddVisit(new Visit(db.Patients.First(), (from d in db.Doctors where d.Key == CurrentDoctor.Key select d).First(), selectedDate), db);
-            db.Commit();
-            CurrentWeek = await Week.Create(CurrentDoctor, CurrentWeek.Days[0].Date, db);
-            MessageBox.Show("Wizyta została zarejestrowana", App.ResourceAssembly.GetName().Name, MessageBoxButton.OK, MessageBoxImage.Information);
-        });
+           
+                var db1 = _applicationDataFactory.CreateTransactionalApplicationData();
+                await AddVisit(new Visit(LoggedPatient, (from d in db1.Doctors where d.Key == CurrentDoctor.Key select d).First(), selectedDate), db1);
+                db1.Commit();
+                CurrentWeek = await Week.Create(CurrentDoctor, CurrentWeek.Days[0].Date, db1);
+                MessageBox.Show("Wizyta została zarejestrowana", App.ResourceAssembly.GetName().Name, MessageBoxButton.OK, MessageBoxImage.Information);
+
+          
+            });
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

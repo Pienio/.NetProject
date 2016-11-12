@@ -1,4 +1,5 @@
 ﻿using DatabaseAccess;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Visits.ViewModels;
 
 namespace Visits
 {
@@ -21,27 +23,24 @@ namespace Visits
     /// </summary>
     public partial class WizList : Window
     {
-        private IEnumerable wizytyakt; 
-        private IEnumerable wizytyarc; 
-        public WizList(IEnumerable wizyta, IEnumerable wizytar)
+        [Dependency]
+        public WizListViewModel ViewModel
+        {
+            get { return DataContext as WizListViewModel; }
+            set { DataContext = value; }
+        }
+        public WizList()
         {
             InitializeComponent();
-            wizytyakt = wizyta;
-            wizytyarc = wizytar;
-            Listawizyt.ItemsSource = wizytyakt;
+
 
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            groupBox.Header = "Planowane";
-            Listawizyt.ItemsSource = wizytyakt;
-        }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            groupBox.Header = "Archiwalne";
-            Listawizyt.ItemsSource = wizytyarc;
+            ViewModel?.Initialize();
+
         }
     }
 }

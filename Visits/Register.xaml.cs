@@ -27,9 +27,9 @@ namespace Visits
     public partial class Register : Window
     {
         [Dependency]
-        public RegisterVievModel ViewModel
+        public RegisterViewModel ViewModel
         {
-            get { return DataContext as RegisterVievModel; }
+            get { return DataContext as RegisterViewModel; }
             set { DataContext = value; }
         }
         public bool WH { get; set; }
@@ -49,9 +49,6 @@ namespace Visits
 
        
 
-        private void Anul_Click_1(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        
     }
 }

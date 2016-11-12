@@ -14,7 +14,7 @@ using Visits.Services;
 
 namespace Visits.ViewModels
 {
-    public class RegisterVievModel : INotifyPropertyChanged, IDataErrorInfo
+    public class RegisterViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private User _User;
@@ -28,7 +28,7 @@ namespace Visits.ViewModels
         private bool _Who;
        
 
-        public RegisterVievModel(ILogUserService user, IApplicationDataFactory factory)
+        public RegisterViewModel(ILogUserService user, IApplicationDataFactory factory)
         {
             _loggedUser = user;
             _applicationDataFactory = factory;
@@ -131,7 +131,7 @@ namespace Visits.ViewModels
                 {
 
                     if (Pas.Length < 6)
-                        result = "Hasło musi mieć 6 cyfr!";
+                        result = "Hasło musi mieć 6 znaków!";
                   
                 }
 
@@ -339,6 +339,13 @@ namespace Visits.ViewModels
             PasswordBox a = (PasswordBox)p;
             Pas = a.Password;
             OnPropertyChanged("Pasp");
+        });
+        public ICommand Close => new Command(p =>
+        {
+
+            Window k = p as Window;
+            k.Close();
+
         });
         public ICommand ChangePass1 => new Command(p =>
         {

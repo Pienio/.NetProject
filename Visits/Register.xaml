@@ -119,24 +119,78 @@
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
-                <TextBox x:Name="PE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" Text="{Binding PE}"
-         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="1"/>
-                <TextBox x:Name="WS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" Text="{Binding WS}"
-         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="2"/>
-                <TextBox x:Name="WE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" Text="{Binding WE}"
-         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="2"/>
-                <TextBox x:Name="SS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" Text="{Binding SS}"
-         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="3"/>
-                <TextBox x:Name="SE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" Text="{Binding SE}"
-         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="3"/>
-                <TextBox x:Name="CS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" Text="{Binding CS}"
-         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="4"/>
-                <TextBox x:Name="CE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" Text="{Binding CE}"
-         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="4"/>
-                <TextBox x:Name="PIS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" Text="{Binding PIS}"
-         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="5"/>
-                <TextBox x:Name="PIE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" Text="{Binding PIE}"
-         Style="{StaticResource textBoxError}" Height="23" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Margin="19,2,0,0" Grid.Column="2" Grid.Row="5"/>
+                <TextBox x:Name="PE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" 
+         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="1">
+                    <Binding  Path="PE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
+                        <Binding.ValidationRules>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+                <TextBox x:Name="WS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" 
+         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="2">
+                    <Binding  Path="WS"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
+                        <Binding.ValidationRules>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+                <TextBox x:Name="WE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" 
+         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="2">
+                    <Binding  Path="WE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
+                        <Binding.ValidationRules>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+                <TextBox x:Name="SS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" 
+         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="3">
+                    <Binding  Path="SS"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
+                        <Binding.ValidationRules>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+                <TextBox x:Name="SE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" 
+         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="3">
+                    <Binding  Path="SE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
+                        <Binding.ValidationRules>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+                <TextBox x:Name="CS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" 
+         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="4">
+                    <Binding  Path="CS"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
+                        <Binding.ValidationRules>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+                <TextBox x:Name="CE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" 
+         Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="4">
+                    <Binding  Path="CE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
+                        <Binding.ValidationRules>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+                <TextBox x:Name="PIS" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" 
+         Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="5">
+                    <Binding  Path="PIS"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
+                        <Binding.ValidationRules>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+                <TextBox x:Name="PIE" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource errorTemplate}" 
+         Style="{StaticResource textBoxError}" Height="23" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Margin="19,2,0,0" Grid.Column="2" Grid.Row="5">
+                    <Binding  Path="PIE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
+                        <Binding.ValidationRules>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
             </Grid>
         </GroupBox>
         <Grid Margin="0,15,0,10">
@@ -185,7 +239,7 @@
                 </Button.Style>
             </Button>
 
-            <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="110" Height="25"  Margin="0,0,115,0" Click="Anul_Click_1"/>
+            <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="110" Height="25"  Margin="0,0,115,0" Command="{Binding Close}" CommandParameter="{Binding ElementName=EditWindow}"/>
         </Grid>
     </StackPanel>
 </Window>

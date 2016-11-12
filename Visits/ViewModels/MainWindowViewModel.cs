@@ -24,7 +24,12 @@ namespace Visits.ViewModels
         private Specialization _selectedSpecialization;
         private string _searchByName;
 
-        public string LoggedUserName => LoggingService?.Logged?.User?.Name?.ToString();
+        //public string LoggedUserName => LoggingService?.Logged?.User?.Name?.ToString();
+        public string LoggedUserName
+        {
+            get { return LoggingService?.Logged?.User?.Name?.ToString(); }
+           
+        }
         public IEnumerable<Doctor> Doctors
         {
             get { return _doctors; }
@@ -67,25 +72,24 @@ namespace Visits.ViewModels
             OnPropertyChanged(nameof(LoggedUserName));
         }
 
-        public ICommand LoginCmd => new Command(async p =>
+        public ICommand LoginCmd => new Command(p =>
         {
-            if (LoggingService.Logged == null)
-            {
-                var zal = new Login();
-                zal.ShowDialog();
-                if (zal.GetResult())
+            
+                if (LoggingService.Logged == null)
                 {
-                    var db = DbFactory.CreateApplicationData();
-                    string us = zal.GetUser();
-                    string pas = zal.GetHashedPassword();
-                    await LoggingService.LogIn(us, pas, DbFactory.CreateApplicationData());
+                var db = DbFactory.CreateApplicationData();
+                var wnd = App.Container.Resolve<Login>();
+                wnd.ShowDialog();
+
+            }
+                else
+                {
+                    LoggingService.LogOut();
                 }
-            }
-            else
-            {
-                LoggingService.LogOut();
-            }
-            OnPropertyChanged(nameof(LoggedUserName));
+                OnPropertyChanged(nameof(LoggedUserName));
+            
+           
+            
 
         });
 
@@ -151,39 +155,12 @@ namespace Visits.ViewModels
         public ICommand EditProfileCmd => new Command(parameter =>
         {
             var db = DbFactory.CreateApplicationData();
-            Edit ed = new Edit();
+            var wnd = App.Container.Resolve<Edit>();
+            wnd.ShowDialog();
+            OnPropertyChanged(nameof(LoggedUserName));
 
-            if (LoggingService.Logged is Doctor)
-            {
-                var specs = new List<Specialization>();
-                specs.AddRange(db.Specializations);
-                ed = new Edit(specs, LoggingService.Logged as Doctor);
-            }
-            else if (LoggingService.Logged is Patient)
-            {
-                ed = new Edit(LoggingService.Logged as Patient);
-            }
-            ed.ShowDialog();
-            if (ed.GetResult())
-            {
-                var transaction = DbFactory.CreateTransactionalApplicationData();
-                if (ed.GetPatient() != null)
-                {
-                    //db.UpdatePatient(ed.GetPatient());
-                }
-                else
-                {
-                    if (ed.GetSpec() != null)
-                        transaction.Specializations.Add(ed.GetSpec());
-                    //db.UpdateDoctor(ed.GetDoctor());
-                }
-                var usr = db.Users.Select(n => n).Where(p => p.Key == LoggingService.Logged.User.Key);
-                if (usr.Count() != 0)
-                {
-                    LoggingService.LogIn(usr.First().PESEL, usr.First().Password, db);
-                }
 
-            }
+
         });
 
         public ICommand VisitsViewCmd => new Command(p =>
@@ -194,16 +171,9 @@ namespace Visits.ViewModels
             try
             {
                 db.Visits.Load();
-                var da = from v in db.Visits.Local
-                         where v.Patient.Key == LoggingService.Logged.Key && DateTime.Compare(v.Date, now) > 0
-                         select new { DoctorId = v.Doctor.Key, Name = v.Doctor.User.Name, Specialization = v.Doctor.Specialization, DataWizyty = v.Date };
-
-                var dar = from v in db.Visits.Local
-                          where v.Patient.User.Key == LoggingService.Logged.Key && DateTime.Compare(v.Date, now) <= 0
-                          select new { DoctorId = v.Doctor.Key, Name = v.Doctor.User.Name, Specialization = v.Doctor.Specialization, DataWizyty = v.Date };
-
-                WizList op = new WizList(da, dar);
-                op.ShowDialog();
+                var wnd = App.Container.Resolve<WizList>();
+                wnd.ShowDialog();
+               
             }
             catch (Exception ex)
             {
