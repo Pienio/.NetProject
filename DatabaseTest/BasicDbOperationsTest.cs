@@ -16,7 +16,7 @@ namespace DatabaseTest
             Specialization s1 = new Specialization() { Name = "Anastezjolog" };
             this.Database.Specializations.Add(s1);
 
-            this.Database.SaveChangesOn();            
+            this.Database.SaveChangesOn();
             this.Database.DetachOn();
 
             var s2 = Database.Specializations.Find(s1.Key);
@@ -25,7 +25,7 @@ namespace DatabaseTest
             Assert.IsTrue(s1 != s2);
             Assert.IsTrue(s1.IsDeepEqual(s2));
 
-         
+
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace DatabaseTest
         {
             var spec = new Specialization();
             spec.Name = "Okulista";
-            Doctor g = new Doctor() { User = new User()};
+            Doctor g = new Doctor() { User = new User() };
             g.Specialization = spec;
             g.User.Name = new PersonName();
             g.User.Name.Name = "Jan";
@@ -80,30 +80,69 @@ namespace DatabaseTest
             g.User.Kind = DocOrPat.Doctor;
             g.User.Password = "96e79218965eb72c92a549dd5a330112";
             g.MondayWorkingTime = new WorkingTime();
-            g.MondayWorkingTime.Start = 8 ;
+            g.MondayWorkingTime.Start = 8;
             g.MondayWorkingTime.End = 12;
             g.TuesdayWorkingTime = new WorkingTime();
-            g.TuesdayWorkingTime.Start = 8 ;
-            g.TuesdayWorkingTime.End = 12 ;
+            g.TuesdayWorkingTime.Start = 8;
+            g.TuesdayWorkingTime.End = 12;
             g.WednesdayWorkingTime = new WorkingTime();
-            g.WednesdayWorkingTime.Start = 8 ;
-            g.WednesdayWorkingTime.End = 12 ;
+            g.WednesdayWorkingTime.Start = 8;
+            g.WednesdayWorkingTime.End = 12;
             g.ThursdayWorkingTime = new WorkingTime();
-            g.ThursdayWorkingTime.Start = 8 ;
-            g.ThursdayWorkingTime.End = 12 ;
+            g.ThursdayWorkingTime.Start = 8;
+            g.ThursdayWorkingTime.End = 12;
             g.FridayWorkingTime = new WorkingTime();
-            g.FridayWorkingTime.Start = 8 ;
-            g.FridayWorkingTime.End = 12 ;
+            g.FridayWorkingTime.Start = 8;
+            g.FridayWorkingTime.End = 12;
             this.Database.Doctors.Add(g);
             this.Database.SaveChangesOn();
             this.Database.DetachOn();
-            
+
             var g2 = Database.Doctors.Find(g.Key);
-            
+
             //Asset:
             Assert.IsTrue(g != g2);
             //Assert.IsTrue(g.User.IsDeepEqual(g2.User));
             Assert.IsTrue(g.IsDeepEqual(g2));
+
+
+        }
+
+        [TestMethod]
+        public void CheckGetVisitTest()
+        {
+            
+            Doctor a = this.Database.Doctors.Find(1);
+            var b = a.FirstFreeSlot;
+            Patient c = this.Database.Patients.Find(1);
+            Visit vis = new Visit();
+            vis.Patient = c;
+            vis.Doctor = a;
+            vis.Date = b;
+
+            this.Database.Visits.Add(vis);
+            this.Database.SaveChangesOn();
+         //   this.Database.DetachOn();
+            Visit vis1 = this.Database.Visits.Find(vis.Key);
+
+            //Check add
+           // Assert.IsTrue(vis != vis1);
+            Assert.IsTrue(vis.IsDeepEqual(vis1));
+
+            Visit vis2 = new Visit();
+            vis2.Patient = c;
+            vis2.Doctor = a;
+            vis2.Date = a.FirstFreeSlot;
+        //    Assert.IsTrue(vis2.Date != vis1.Date);
+
+            this.Database.Visits.Add(vis2);
+            this.Database.SaveChangesOn();
+          //  this.Database.DetachOn();
+            Visit vis3 = this.Database.Visits.Find(vis2.Key);
+
+            //Check add
+           // Assert.IsTrue(vis2 != vis3);
+            Assert.IsTrue(vis2.IsDeepEqual(vis3));
 
 
         }
