@@ -14,22 +14,16 @@ using Visits.Services;
 
 namespace Visits.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : ViewModel
     {
-        private ILogUserService LoggingService { get; set; }
-        private IApplicationDataFactory DbFactory { get; set; }
         private IEnumerable<Doctor> _doctors;
         private IEnumerable<Specialization> _specializations;
         private Doctor _selectedDoctor;
         private Specialization _selectedSpecialization;
         private string _searchByName;
 
-        //public string LoggedUserName => LoggingService?.Logged?.User?.Name?.ToString();
-        public string LoggedUserName
-        {
-            get { return LoggingService?.Logged?.User?.Name?.ToString(); }
-           
-        }
+        public string LoggedUserName => _loggedUser?.Logged?.User?.Name?.ToString();
+
         public IEnumerable<Doctor> Doctors
         {
             get { return _doctors; }
@@ -55,36 +49,25 @@ namespace Visits.ViewModels
             get { return _searchByName; }
             set { _searchByName = value; OnPropertyChanged(nameof(SearchByNameText)); }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
+        
+        public MainWindowViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public MainWindowViewModel(ILogUserService user, IApplicationDataFactory factory)
-        {
-            LoggingService = user;
-            DbFactory = factory;
-
-            LoggingService.LoggedChanged += (o, e) =>
-            OnPropertyChanged(nameof(LoggedUserName));
+            _loggedUser.LoggedChanged += (o, e) => OnPropertyChanged(nameof(LoggedUserName));
         }
 
         public ICommand LoginCmd => new Command(p =>
         {
             
-                if (LoggingService.Logged == null)
+                if (_loggedUser.Logged == null)
                 {
-                var db = DbFactory.CreateApplicationData();
+                var db = _applicationDataFactory.CreateApplicationData();
                 var wnd = App.Container.Resolve<Login>();
                 wnd.ShowDialog();
 
             }
                 else
                 {
-                    LoggingService.LogOut();
+                _loggedUser.LogOut();
                 }
                 OnPropertyChanged(nameof(LoggedUserName));
             
@@ -101,7 +84,7 @@ namespace Visits.ViewModels
             lekpac.ShowDialog();
             if (lekpac.GetResult() != 0)
             {
-                var db = DbFactory.CreateApplicationData();
+                var db = _applicationDataFactory.CreateApplicationData();
               
                     
                     
@@ -122,7 +105,7 @@ namespace Visits.ViewModels
 
         public ICommand RegisterVisitCmd => new Command(parameter =>
         {
-            var db = DbFactory.CreateApplicationData();
+            var db = _applicationDataFactory.CreateApplicationData();
             var wnd = App.Container.Resolve<RegVisit>();
             wnd.SelectedDoctor = SelectedDoctor;
             wnd.Show();
@@ -131,7 +114,7 @@ namespace Visits.ViewModels
 
         public ICommand SearchCmd => new Command(p =>
         {
-            var db = DbFactory.CreateApplicationData();
+            var db = _applicationDataFactory.CreateApplicationData();
             db.Doctors.Load();
 
             Predicate<Doctor> isValid;
@@ -154,18 +137,15 @@ namespace Visits.ViewModels
 
         public ICommand EditProfileCmd => new Command(parameter =>
         {
-            var db = DbFactory.CreateApplicationData();
+            var db = _applicationDataFactory.CreateApplicationData();
             var wnd = App.Container.Resolve<Edit>();
             wnd.ShowDialog();
             OnPropertyChanged(nameof(LoggedUserName));
-
-
-
         });
 
         public ICommand VisitsViewCmd => new Command(p =>
         {
-            var db = DbFactory.CreateApplicationData();
+            var db = _applicationDataFactory.CreateApplicationData();
             DateTime now = DateTime.Now;
 
             try
@@ -184,7 +164,7 @@ namespace Visits.ViewModels
 
         public void Initialize()
         {
-            var db = DbFactory.CreateApplicationData();
+            var db = _applicationDataFactory.CreateApplicationData();
 
             var specs = new List<Specialization>();
             specs.Add(new Specialization("- brak -"));

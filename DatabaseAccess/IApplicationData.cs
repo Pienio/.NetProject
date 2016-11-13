@@ -19,7 +19,6 @@ namespace DatabaseAccess
         void Fill();
 
         void SaveChangesOn();
-        void DetachOn();
     }
     
     public interface ITransactionalApplicationData : IApplicationData

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DatabaseAccess.Model;
+using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Visits.ViewModels;
 
 namespace Visits
 {
@@ -19,33 +22,22 @@ namespace Visits
     /// </summary>
     public partial class AddSpec : Window 
     {
-        private bool result = false;
-        private string name;
-         
+        [Dependency]
+        public AddSpecViewModel ViewModel
+        {
+            get { return DataContext as AddSpecViewModel; }
+            set { DataContext = value; }
+        }
+        public Specialization Specialization  { get; private set; }
+
         public AddSpec()
         {
             InitializeComponent();
         }
-        public bool GetResult()
-        {
-            return result;
-        }
-        public string GetName()
-        {
-            return name;
-        }
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            result = false;
-            this.Close();
-        }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            name = textBox.Text;
-            result = true;
-            this.Close();
-
+            ViewModel.CloseRequested += (o, args) => { DialogResult = args.DialogResult; Close(); };
         }
     }
 }

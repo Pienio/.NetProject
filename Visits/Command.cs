@@ -12,8 +12,6 @@ namespace Visits
         private readonly Func<object, bool> _canExecute;
         private readonly Action<object> _execute;
 
-        private bool couldExecute = false;
-
         public Command(Action<object> execute, Func<object, bool> canExecute = null)
         {
             if (execute == null)
@@ -22,14 +20,15 @@ namespace Visits
             _execute = execute;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public bool CanExecute(object parameter)
         {
-            bool res = _canExecute == null ? true : _canExecute(parameter);
-            //if (res != couldExecute && CanExecuteChanged != null)
-            //    CanExecuteChanged(this, EventArgs.Empty);
-            return res;
+            return _canExecute == null ? true : _canExecute(parameter);
         }
 
         public void Execute(object parameter)

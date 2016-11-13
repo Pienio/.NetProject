@@ -15,31 +15,17 @@ using Microsoft.Practices.Unity;
 
 namespace Visits.ViewModels
 {
-    public class EditViewModel : INotifyPropertyChanged, IDataErrorInfo
+    public class EditViewModel : ViewModel, IDataErrorInfo
     {
         private User _User;
-        private IApplicationDataFactory _applicationDataFactory;
-        private ILogUserService _loggedUser;
         private IEnumerable<Specialization> _SpecList;
         private Patient _Patient;
         private Doctor us;
         private string _pas = "";
         private bool _Who;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public EditViewModel(ILogUserService user, IApplicationDataFactory factory)
-        {
-            _loggedUser = user;
-            _applicationDataFactory = factory;
-
-
-        }
-
-        virtual protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public EditViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user) { }
+        
         public bool Who
         {
             get { return _Who; }

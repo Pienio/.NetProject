@@ -14,27 +14,14 @@ using Visits.Services;
 
 namespace Visits.ViewModels
 {
-    public class ChangePassViewModel:INotifyPropertyChanged, IDataErrorInfo
+    public class ChangePassViewModel : ViewModel, IDataErrorInfo
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private IApplicationDataFactory _applicationDataFactory;
-        private ILogUserService _loggedUser;
         private string _org = "";
         private string _pas = "";
         private string _pasp = "";
-        public ChangePassViewModel(ILogUserService user, IApplicationDataFactory factory)
-        {
-            _loggedUser = user;
-            _applicationDataFactory = factory;
 
+        public ChangePassViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user) { }
 
-        }
-
-        virtual protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
         public string Error
         {
             get { return String.Empty; }

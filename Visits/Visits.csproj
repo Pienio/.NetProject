@@ -120,6 +120,7 @@
     <Compile Include="Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventArgsTypes\CloseRequestedEventArgs.cs" />
     <Compile Include="LekPac.xaml.cs">
       <DependentUpon>LekPac.xaml</DependentUpon>
     </Compile>
@@ -132,14 +133,17 @@
     <Compile Include="Services\ILogUserService.cs" />
     <Compile Include="Services\LogUserService.cs" />
     <Compile Include="Validations\IntegerValidation.cs" />
+    <Compile Include="Validations\NameValidation.cs" />
     <Compile Include="Validations\ValDoc.cs" />
     <Compile Include="Validations\ValPac.cs" />
+    <Compile Include="ViewModels\AddSpecViewModel.cs" />
     <Compile Include="ViewModels\ChangePassViewModel.cs" />
     <Compile Include="ViewModels\EditViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\RegVisitViewModel.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\WizListViewModel.cs" />
     <Compile Include="WizList.xaml.cs">
       <DependentUpon>WizList.xaml</DependentUpon>

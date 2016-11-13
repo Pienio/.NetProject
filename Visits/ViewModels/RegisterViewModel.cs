@@ -1,5 +1,6 @@
 ﻿using DatabaseAccess;
 using DatabaseAccess.Model;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,27 +15,19 @@ using Visits.Services;
 
 namespace Visits.ViewModels
 {
-    public class RegisterViewModel : INotifyPropertyChanged, IDataErrorInfo
+    public class RegisterViewModel : ViewModel, IDataErrorInfo
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         private User _User;
-        private IApplicationDataFactory _applicationDataFactory;
-        private ILogUserService _loggedUser;
         private IEnumerable<Specialization> _SpecList;
         private Patient _Patient;
         private Doctor us;
         private string _pas = "";
         private string _pasp = "";
         private bool _Who;
-       
 
-        public RegisterViewModel(ILogUserService user, IApplicationDataFactory factory)
-        {
-            _loggedUser = user;
-            _applicationDataFactory = factory;
-            
 
-        }
+        public RegisterViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user) { }
+
         public bool Who
         {
             get { return _Who; }
@@ -44,7 +37,7 @@ namespace Visits.ViewModels
 
             }
         }
-       // public ICommand CloseWindow => new Command(p => { App.Current.MainWindo });
+
         public ICommand RegisterUser => new Command(async p =>
         {
             var db = _applicationDataFactory.CreateTransactionalApplicationData();
@@ -70,30 +63,19 @@ namespace Visits.ViewModels
 
 
         });
-        public ICommand RegisterSpecialization => new Command(async p =>
+        public ICommand RegisterSpecialization => new Command(p =>
         {
-            var db = _applicationDataFactory.CreateTransactionalApplicationData();
-            AddSpec a = new AddSpec();
+            AddSpec a = App.Container.Resolve<AddSpec>();
             a.ShowDialog();
-            if (a.GetResult())
-            {
-                await AddSpec(new Specialization(a.GetName()), db);
-            }
+            if (!a.DialogResult.GetValueOrDefault(false))
+                return;
+            var db = _applicationDataFactory.CreateApplicationData();
 
-            db.Commit();
-            var dc = _applicationDataFactory.CreateApplicationData();
             var Spec = new List<Specialization>();
-            
-            Spec.AddRange(dc.Specializations);
+            Spec.AddRange(db.Specializations);
             SpecList = Spec;
-
         });
-
-        virtual protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
         public string Error
         {
             get { return String.Empty; }
@@ -312,11 +294,6 @@ namespace Visits.ViewModels
         {
             await App.Current.Dispatcher.BeginInvoke((Action)(() => { context.Doctors.Add(item); }));
             
-        }
-        private async Task AddSpec(Specialization item, ITransactionalApplicationData context)
-        {
-            await App.Current.Dispatcher.BeginInvoke((Action)(() => { context.Specializations.Add(item); }));
-           
         }
         private string HashPassword(string input)
         {

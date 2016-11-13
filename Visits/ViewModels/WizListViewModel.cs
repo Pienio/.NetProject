@@ -13,19 +13,12 @@ using Visits.Services;
 
 namespace Visits.ViewModels
 {
-    public class WizListViewModel : INotifyPropertyChanged
+    public class WizListViewModel : ViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private IApplicationDataFactory _applicationDataFactory;
-        private ILogUserService _loggedUser;
         private IEnumerable<Visit> _visits;
         private VisitsType _selectedType;
 
-        public WizListViewModel(ILogUserService user, IApplicationDataFactory factory)
-        {
-            _loggedUser = user;
-            _applicationDataFactory = factory;
-        }
+        public WizListViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user) { }
 
         public Person LoggedUser => _loggedUser.Logged;
 
@@ -66,12 +59,6 @@ namespace Visits.ViewModels
             MessageBox.Show("Odwołano wizytę z powodzeniem", App.Name, MessageBoxButton.OK, MessageBoxImage.Information);
         });
 
-        virtual protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private async Task SetVisits()
         {
             var db = _applicationDataFactory.CreateApplicationData();
@@ -86,12 +73,6 @@ namespace Visits.ViewModels
                                             where v.Doctor.Key == _loggedUser.Logged.Key && (SelectedType == VisitsType.Archiwalne ? v.Date <= now : v.Date > now)
                                             select v);
             Visits = visits;
-        }
-
-
-
-        public void Initialize()
-        {
         }
 
         public enum VisitsType { Planowane, Archiwalne }

@@ -23,6 +23,7 @@ namespace DatabaseTest
         [TestCleanup]
         public void Cleanup()
         {
+            Database.Rollback();
             Database.Dispose();
         }
     }
