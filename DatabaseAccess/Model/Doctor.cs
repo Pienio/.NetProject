@@ -9,7 +9,8 @@ namespace DatabaseAccess.Model
 {
     public class Doctor : Person
     {
-        public virtual Specialization Specialization { get; set; }
+        [Required]
+        public virtual Specialization Specialization { get; set; } = new Specialization();
 
         //poniższe właściwości muszą mieć w nazwie dzień tygodnia po angielsku, inaczej funkcja GetWorkingTime nie będzie działać
         public WorkingTime MondayWorkingTime { get; set; }
@@ -38,12 +39,12 @@ namespace DatabaseAccess.Model
             get
             {
                 IApplicationData db = new ApplicationDataFactory().CreateApplicationData();
+                DateTime current = NextSlot(DateTime.Now.AddMinutes(60));
                 var visits = (from v in db.Visits
-                              where v.Doctor.Key == Key
+                              where v.Doctor.Key == Key && v.Date >= current
                               select v.Date).ToList();
                 visits.Sort((v1, v2) => DateTime.Compare(v1, v2));
 
-                DateTime current = NextSlot(DateTime.Now.AddMinutes(60));
                 if (visits.Count == 0 || current < visits[0])
                 {
                     return current;
