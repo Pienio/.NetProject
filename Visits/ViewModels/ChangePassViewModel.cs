@@ -108,9 +108,9 @@ namespace Visits.ViewModels
 
             var db = _applicationDataFactory.CreateTransactionalApplicationData();
             
-            if (HashPassword(Org) == _loggedUser.Logged.User.Password)
+            if (PasswordHasher.CreateHash(Org) == _loggedUser.Logged.User.Password)
             {
-                _loggedUser.Logged.User.Password = HashPassword(Pasp);
+                _loggedUser.Logged.User.Password =PasswordHasher.CreateHash(Pasp);
                 db.Commit();
                 Window k = p as Window;
                 k.Close();
@@ -140,20 +140,6 @@ namespace Visits.ViewModels
             OnPropertyChanged("Org");
             OnPropertyChanged("Pas");
         }
-        private string HashPassword(string input)
-        {
-            StringBuilder sBuilder = new StringBuilder();
-            using (MD5 md5Hash = MD5.Create())
-            {
-
-                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-                for (int i = 0; i < data.Length; i++)
-                {
-                    sBuilder.Append(data[i].ToString("x2"));
-                }
-            }
-
-            return sBuilder.ToString();
-        }
+      
     }
 }

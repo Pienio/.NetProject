@@ -21,7 +21,7 @@ namespace Visits.Validations
                 return new ValidationResult(false, "Podana wartość nie jest liczbą!");
             else
                 if (i < (MinValue ?? i) || i > (MaxValue ?? i))
-                return new ValidationResult(false,"Liczba musi być z zakresu 0 - 24");
+                return new ValidationResult(false,"Liczba musi być z zakresu 0 - 23");
             else
                 return ValidationResult.ValidResult;
         }

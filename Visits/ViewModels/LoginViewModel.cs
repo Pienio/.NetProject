@@ -41,7 +41,7 @@ namespace Visits.ViewModels
             var e = db.Users.Select(d => d).Where(s => s.PESEL == Pesel && s.Password == pps).ToList();
             if (e.Count != 0)
             {
-                await _loggedUser.LogIn(e.First().PESEL, e.First().Password, db);
+                await _loggedUser.LogIn(e.First().PESEL, e.First().Password, db);       
                 OnCloseRequested(true);
             }
             else
