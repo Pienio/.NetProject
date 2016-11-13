@@ -92,47 +92,7 @@ namespace DatabaseAccess.Model
 
         }
 
-        //public void AddDoctor(Doctor nowy)
-        //{
-        //    Doctors.Add(nowy);
-        //    this.SaveChanges();
-        //}
-        //public void AddPatient(Patient nowy)
-        //{
-        //    Patients.Add(nowy);
-        //    this.SaveChanges();
-        //}
-        //public void AddSpecialization(Specialization nowy)
-        //{
-        //    Specializations.Add(nowy);
-        //    this.SaveChanges();
-        //}
-        //public void AddVisit(Visit nowy)
-        //{
-        //    Visits.Add(nowy);
-        //    this.SaveChanges();
-        //}
-        //public void UpdateDoctor(Doctor nowy)
-        //{
-        //    this.Users.Attach(nowy.User);
-        //    var entry = this.Entry(nowy.User);
-        //    entry.State= EntityState.Modified;
-        //    this.Doctors.Attach(nowy);
-        //    var entry1 = this.Entry(nowy);
-        //    entry1.State = EntityState.Modified;
-        //    this.SaveChanges();
 
-        //}
-        //public void UpdatePatient(Patient nowy)
-        //{
-        //    this.Users.Attach(nowy.User);
-        //    var entry = this.Entry(nowy.User);
-        //    entry.State = EntityState.Modified;
-        //    this.Patients.Attach(nowy);
-        //    var entry1 = this.Entry(nowy);
-        //    entry1.State = EntityState.Modified;
-        //    this.SaveChanges();
-        //}
 
         public void BeginTransaction()
         {
