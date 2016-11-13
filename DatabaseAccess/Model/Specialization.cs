@@ -11,6 +11,7 @@ namespace DatabaseAccess.Model
     {
         [Required]
         public virtual string Name { get; set; }
+        public IList<Doctor> Doctors { get; set; } = new List<Doctor>();
          
         public Specialization() : base() { }
         public Specialization(string name) : base()

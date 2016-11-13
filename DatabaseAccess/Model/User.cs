@@ -14,7 +14,7 @@ namespace DatabaseAccess.Model
         [Required]
         public string Password { get; set; }
         [Required]
-        public virtual PersonName Name { get; set; }
+        public virtual PersonName Name { get; set; } = new PersonName();
 
         [Required]
         public DocOrPat Kind { get; set; }

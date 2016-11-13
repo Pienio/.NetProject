@@ -18,13 +18,12 @@ namespace DatabaseTest
         {
             var factory = new ApplicationDataFactory();
             Database = factory.CreateTransactionalApplicationData();
-            Database.Commit();
+            Database.CommitUnfinishedTransaction = false;
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            Database.Rollback();
             Database.Dispose();
         }
     }

@@ -69,6 +69,9 @@
       <Private>True</Private>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Visits">
+      <HintPath>..\Visits\bin\Debug\Visits.exe</HintPath>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -89,6 +92,7 @@
     <Compile Include="DataExtensions.cs" />
     <Compile Include="DataTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UITests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseAccess", "DatabaseAccess\DatabaseAccess.csproj", "{A4928E46-1FBA-4D87-B427-42F69E6BF52A}"
 EndProject
@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visits", "Visits\Visits.csp
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseTest", "DatabaseTest\DatabaseTest.csproj", "{57B97AC0-E911-44DA-993E-F26E0E26F3A2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A4928E46-1FBA-4D87-B427-42F69E6BF52A} = {A4928E46-1FBA-4D87-B427-42F69E6BF52A}
+		{57574697-10C2-45E8-8EBF-012A0C780F83} = {57574697-10C2-45E8-8EBF-012A0C780F83}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

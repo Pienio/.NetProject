@@ -3,6 +3,7 @@ using DeepEqual;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DatabaseAccess.Model;
 using DeepEqual.Syntax;
+using System.Linq;
 
 namespace DatabaseTest
 {
@@ -145,9 +146,65 @@ namespace DatabaseTest
             Assert.IsTrue(vis2 != vis3);
             Assert.IsTrue(vis2.IsDeepEqual(vis3));
             Assert.IsTrue(vis2.Date!=vis.Date);
+        }
 
 
+        [TestMethod]
+        public void ListTest()
+        {
+            Database.BeginTransaction();
+            Patient p = new Patient();
+            p.User = new User()
+            {
+                Name = new PersonName() { Name = "F", Surname = "M" },
+                Kind = DocOrPat.Patient,
+                Password = "96e79218965eb72c92a549dd5a330112",
+                PESEL = "95122907757"
+            };
 
+            var spec = new Specialization();
+            spec.Name = "Okulista";
+            Doctor g = new Doctor() { User = new User() };
+            g.Specialization = spec;
+            g.User.Name = new PersonName();
+            g.User.Name.Name = "Jan";
+            g.User.Name.Surname = "Janowski";
+            g.User.PESEL = "77777777777";
+            g.User.Kind = DocOrPat.Doctor;
+            g.User.Password = "96e79218965eb72c92a549dd5a330112";
+            g.MondayWorkingTime = new WorkingTime();
+            g.MondayWorkingTime.Start = 8;
+            g.MondayWorkingTime.End = 12;
+            g.TuesdayWorkingTime = new WorkingTime();
+            g.TuesdayWorkingTime.Start = 8;
+            g.TuesdayWorkingTime.End = 12;
+            g.WednesdayWorkingTime = new WorkingTime();
+            g.WednesdayWorkingTime.Start = 8;
+            g.WednesdayWorkingTime.End = 12;
+            g.ThursdayWorkingTime = new WorkingTime();
+            g.ThursdayWorkingTime.Start = 8;
+            g.ThursdayWorkingTime.End = 12;
+            g.FridayWorkingTime = new WorkingTime();
+            g.FridayWorkingTime.Start = 8;
+            g.FridayWorkingTime.End = 12;
+
+            Visit v = new Visit(p, g, g.FirstFreeSlot);
+            p.Visits.Add(v);
+            //Database.Users.Add(p.User);
+            //Database.Users.Add(g.User);
+            Database.Patients.Add(p);
+            Database.Doctors.Add(g);
+
+            Database.SaveChangesOn();
+            Database.DetachOn();
+
+            //Assert:
+            Assert.IsTrue(Database.Visits.Any());
+            var v1 = Database.Visits.OrderByDescending(vi => vi.Key).First();
+            bool pr = v1.IsDeepEqual(v);
+            Assert.IsTrue(pr);
+            Assert.IsTrue(v1.Doctor.IsDeepEqual(g), "v.D != first.D");
+            Assert.IsTrue(v1.Patient.IsDeepEqual(p), "v.P != first.P");
         }
     }
 }
