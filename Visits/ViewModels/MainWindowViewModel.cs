@@ -166,8 +166,6 @@ namespace Visits.ViewModels
             db.Users.Load();
             db.Doctors.Load();
             Doctors = db.Doctors.Local;
-
-            _loggedUser.LogIn("95122907757", PasswordHasher.CreateHash("panda2"), _applicationDataFactory.CreateApplicationData());
         }
     }
 }
