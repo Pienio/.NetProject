@@ -1,4 +1,5 @@
 ﻿using DatabaseAccess.Model;
+using MahApps.Metro.Controls;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Visits
     /// <summary>
     /// Interaction logic for AddSpec.xaml
     /// </summary>
-    public partial class AddSpec : Window 
+    public partial class AddSpec : MetroWindow 
     {
         [Dependency]
         public AddSpecViewModel ViewModel

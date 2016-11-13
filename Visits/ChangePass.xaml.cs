@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using MahApps.Metro.Controls;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Visits
     /// <summary>
     /// Interaction logic for ChangePass.xaml
     /// </summary>
-    public partial class ChangePass : Window
+    public partial class ChangePass : MetroWindow
     {
         [Dependency]
         public ChangePassViewModel ViewModel

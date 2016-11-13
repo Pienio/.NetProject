@@ -1,4 +1,4 @@
-﻿<Window x:Class="Visits.Register"
+﻿<metro:MetroWindow x:Class="Visits.Register"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,13 +7,14 @@
         xmlns:conv="clr-namespace:Visits.Converters"
         xmlns:viewmodel="clr-namespace:Visits.ViewModels"
         xmlns:vali="clr-namespace:Visits.Validations"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        x:Name="RegisterWindow"
+        x:Name="RegisterWindow" Style="{StaticResource windowStyle}"
         Title="Rejestracja" SizeToContent="Height" Width="413" Loaded="Window_Loaded">
-    <Window.Resources>
+    <metro:MetroWindow.Resources>
         <conv:BoolVisibilityConverter x:Key="visibilityBool"/>
-    </Window.Resources>
+    </metro:MetroWindow.Resources>
     <StackPanel Margin="10,10,30,10">
         <DockPanel Margin="0,0,10,0">
             <Label x:Name="label" Content="PESEL:" Width="94"/>
@@ -162,9 +163,9 @@
             </Grid>
         </GroupBox>
         <Grid Margin="0,15,0,10">
-            <Button x:Name="Reg" Content="Zarejestruj się!" HorizontalAlignment="Right"  Width="110" Height="25" Command="{Binding RegisterUser}" CommandParameter="{Binding ElementName=RegisterWindow}">
+            <Button x:Name="Reg" Content="Zarejestruj się" HorizontalAlignment="Right"  Width="110" Height="25" Command="{Binding RegisterUser}" CommandParameter="{Binding ElementName=RegisterWindow}">
                 <Button.Style>
-                    <Style TargetType="Button">
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                         <Setter Property="IsEnabled" Value="false" />
                         <Style.Triggers>
                             <MultiDataTrigger>
@@ -210,4 +211,4 @@
             <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="110" Height="25"  Margin="0,0,115,0" Command="{Binding Close}" CommandParameter="{Binding ElementName=RegisterWindow}"/>
         </Grid>
     </StackPanel>
-</Window>
+</metro:MetroWindow>

@@ -20,13 +20,14 @@ using DatabaseAccess.Model;
 using Visits.Services;
 using Microsoft.Practices.Unity;
 using Visits.ViewModels;
+using MahApps.Metro.Controls;
 
 namespace Visits
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         [Dependency]
         public MainWindowViewModel ViewModel

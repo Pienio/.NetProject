@@ -23,7 +23,7 @@ namespace DatabaseTest
 
             //Assert:
             Assert.IsTrue(s1 != s2);
-            Assert.IsTrue(s1.Equals(s2));
+            Assert.IsTrue(s1.IsDeepEqual(s2));
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace DatabaseTest
 
             //Assert:
             Assert.IsTrue(s1 != s2);
-            Assert.IsTrue(s1.Equals(s2));
+            Assert.IsTrue(s1.IsDeepEqual(s2));
         }
 
         [TestMethod]

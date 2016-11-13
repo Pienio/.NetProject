@@ -100,17 +100,5 @@ namespace DatabaseAccess.Model
         }
 
         public override string ToString() => string.Format("{0} ({1})", User.Name, Specialization);
-
-        public override bool Equals(object obj)
-        {
-            if (obj is Doctor)
-                return ((Doctor)obj).Key == Key && ((Doctor)obj).User.Equals(User);
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return Key.GetHashCode() ^ User.Key.GetHashCode();
-        }
     }
 }

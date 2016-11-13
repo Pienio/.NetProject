@@ -12,17 +12,5 @@ namespace DatabaseAccess.Model
         {
             return User.Name.ToString();
         }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is Patient)
-                return ((Patient)obj).Key == Key && ((Patient)obj).User.Equals(User);
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return Key.GetHashCode() ^ User.Key.GetHashCode();
-        }
     }
 }

@@ -1,20 +1,21 @@
-﻿<Window x:Class="Visits.WizList"
+﻿<metro:MetroWindow x:Class="Visits.WizList"
         x:Name="visitsWnd"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
          xmlns:conv="clr-namespace:Visits.Converters"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Style="{StaticResource windowStyle}"
         Title="Twoje wizyty" SizeToContent="Height" Width="608.411">
-    <Window.Resources>
+    <metro:MetroWindow.Resources>
         <conv:BoolVisibilityConverter x:Key="visibilityBool"/>
         <conv:ReversedBoolVisibilityConverter x:Key="rvisibilityBool"/>
         <conv:ColumnHeaderConverter x:Key="columnHeader"/>
         <conv:VisitParticipantConverter x:Key="visitParticipant"/>
         <conv:VisitsWindowConverter x:Key="visibility"/>
-    </Window.Resources>
+    </metro:MetroWindow.Resources>
     <StackPanel Margin="10">
         <TextBlock Text="Wybrane wizyty:"/>
         <ComboBox x:Name="visitsTypeBox" Width="150" Height="23" HorizontalAlignment="Left" Margin="0,5,0,0"
@@ -58,4 +59,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </StackPanel>
-</Window>
+</metro:MetroWindow>

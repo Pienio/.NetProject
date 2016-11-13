@@ -1,10 +1,11 @@
-﻿<Window x:Class="Visits.LekPac"
+﻿<metro:MetroWindow x:Class="Visits.LekPac"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
-        mc:Ignorable="d"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d" Style="{StaticResource windowStyle}"
         Title="Rejestracja" Height="172.322" Width="503.53">
     <StackPanel>
         <Label x:Name="label" Content="Rejestracja jako lekarz czy pacjent?" HorizontalAlignment="Center" Margin="0,20,0,20"/>
@@ -18,4 +19,4 @@
         </Grid>
 
     </StackPanel>
-</Window>
+</metro:MetroWindow>
