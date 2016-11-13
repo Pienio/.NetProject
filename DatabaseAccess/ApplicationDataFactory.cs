@@ -33,7 +33,7 @@ namespace DatabaseAccess
                 instance = new ApplicationData(beginTransaction);
             else if (beginTransaction && !instance.IsTransactionRunning)
                 instance.BeginTransaction();
-            else if (instance.IsTransactionRunning)
+            else if (beginTransaction && instance.IsTransactionRunning)
             {
                 if (instance.CommitUnfinishedTransaction)
                     instance.Commit();
