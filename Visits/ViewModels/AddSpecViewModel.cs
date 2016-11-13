@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using Visits.EventArgsTypes;
 using Visits.Services;
+using Visits.Utils;
 
 namespace Visits.ViewModels
 {
@@ -40,7 +41,7 @@ namespace Visits.ViewModels
             OnCloseRequested(true);
         }, p =>
         {
-            return !string.IsNullOrWhiteSpace(Specialization.Name);
+            return !string.IsNullOrWhiteSpace(Specialization?.Name);
         });
 
         public ICommand CancelCmd => new Command(p =>

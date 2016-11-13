@@ -16,28 +16,17 @@
         <conv:VisitParticipantConverter x:Key="visitParticipant"/>
         <conv:VisitsWindowConverter x:Key="visibility"/>
     </metro:MetroWindow.Resources>
+    <metro:MetroWindow.LeftWindowCommands>
+        <metro:WindowCommands>
+            <ComboBox x:Name="visitsTypeBox" Width="150" Height="10" SelectedItem="{Binding SelectedType, Mode=OneWayToSource}" SelectedIndex="0"/>
+        </metro:WindowCommands>
+    </metro:MetroWindow.LeftWindowCommands>
     <StackPanel Margin="10">
-        <TextBlock Text="Wybrane wizyty:"/>
-        <ComboBox x:Name="visitsTypeBox" Width="150" Height="23" HorizontalAlignment="Left" Margin="0,5,0,0"
-                  SelectedItem="{Binding SelectedType, Mode=OneWayToSource}" SelectedIndex="0"/>
         <FrameworkElement Visibility="Collapsed" x:Name="element"/> <!--Nie usuwać-->
-        <DataGrid Height="178" Margin="0,20,0,0" ItemsSource="{Binding Visits}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0"
-                  GridLinesVisibility="None">
-            <DataGrid.Resources>
-                <Style x:Key="cellStyle" TargetType="{x:Type DataGridCell}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                <Grid Background="{TemplateBinding Background}">
-                                    <ContentPresenter VerticalAlignment="Center" Margin="3,0,0,0"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </DataGrid.Resources>
+        <DataGrid Height="178" ItemsSource="{Binding Visits}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0"
+                  GridLinesVisibility="None" CanUserReorderColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Nazwisko" Width="*" CellStyle="{StaticResource cellStyle}">
+                <DataGridTextColumn Header="Nazwisko" Width="*" SortMemberPath="User.Name.Surname">
                     <DataGridTextColumn.Binding>
                         <MultiBinding Converter="{StaticResource visitParticipant}">
                             <Binding ElementName="visitsWnd" Path="DataContext.LoggedUser"/>
@@ -45,10 +34,10 @@
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Specjalizacja" Binding="{Binding Doctor.Specialization}" Width="*" CellStyle="{StaticResource cellStyle}"
+                <DataGridTextColumn Header="Specjalizacja" Binding="{Binding Doctor.Specialization}" Width="*" SortMemberPath="Name"
                                     Visibility="{Binding Source={x:Reference element}, Path=DataContext.LoggedUser, Converter={StaticResource visibility}}">
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Header="Data wizyty" Width="*" CellStyle="{StaticResource cellStyle}"/>
+                <DataGridTextColumn Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Header="Data wizyty" Width="*" />
                 <DataGridTemplateColumn Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

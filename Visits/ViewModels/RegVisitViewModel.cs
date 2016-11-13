@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Visits.Services;
 using Microsoft.Practices.Unity;
+using Visits.Utils;
 
 namespace Visits.ViewModels
 {

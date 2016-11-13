@@ -27,18 +27,16 @@ namespace Visits
         public LoginViewModel ViewModel
         {
             get { return DataContext as LoginViewModel; }
-            set { DataContext = value; }
+            set
+            {
+                DataContext = value;
+                value.CloseRequested += (o, e) => { DialogResult = e.DialogResult; Close(); };
+            }
         }
+
         public Login()
         {
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            ViewModel?.Initialize();
-
         }
     }
 }
