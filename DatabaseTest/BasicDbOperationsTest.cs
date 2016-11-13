@@ -13,6 +13,7 @@ namespace DatabaseTest
         [TestMethod]
         public void AddTest()
         {
+            Database.BeginTransaction();
             //Act:
             Specialization s1 = new Specialization() { Name = "Anastezjolog" };
             this.Database.Specializations.Add(s1);
@@ -32,6 +33,7 @@ namespace DatabaseTest
         [TestMethod]
         public void UpdateTest()
         {
+            Database.BeginTransaction();
             //Act:
             Specialization s1 = new Specialization() { Name = "Anastezjolog" };
             this.Database.Specializations.Add(s1);
@@ -53,6 +55,7 @@ namespace DatabaseTest
         [TestMethod]
         public void DeleteTest()
         {
+            Database.BeginTransaction();
             //Act:
             Specialization s1 = new Specialization() { Name = "Anastezjolog" };
             this.Database.Specializations.Add(s1);
@@ -71,8 +74,8 @@ namespace DatabaseTest
         public void AddJoinTest()
         {
             Database.BeginTransaction();
-            var spec = new Specialization();
-            spec.Name = "Okulista";
+            var spec = Database.Specializations.Find(1);
+            //spec.Name = "Okulista";
             Doctor g = new Doctor() { User = new User() };
             g.Specialization = spec;
             g.User.Name = new PersonName();
@@ -101,7 +104,7 @@ namespace DatabaseTest
             this.Database.DetachOn();
 
             var g2 = Database.Doctors.Find(g.Key);
-            g.Specialization = spec;
+            //g.Specialization = spec;
             //Asset:
             Assert.IsTrue(g != g2);
             //Assert.IsTrue(g.User.IsDeepEqual(g2.User));
@@ -113,6 +116,7 @@ namespace DatabaseTest
         [TestMethod]
         public void CheckGetVisitTest()
         {
+            
             Database.BeginTransaction();
             Doctor a = this.Database.Doctors.Find(1);
             var b = a.FirstFreeSlot;
