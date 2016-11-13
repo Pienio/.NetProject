@@ -137,8 +137,8 @@ namespace Visits.ViewModels
         });
         public void Initialize()
         {
-            OnPropertyChanged("Org");
-            OnPropertyChanged("Pas");
+            //OnPropertyChanged("Org");
+            //OnPropertyChanged("Pas");
         }
       
     }

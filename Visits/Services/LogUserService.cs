@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Visits.Services
 {
-    class LogUserService : ILogUserService
+    public class LogUserService : ILogUserService
     {
         public Person Logged { get; private set; }
 

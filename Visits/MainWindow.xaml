@@ -24,9 +24,9 @@
         </metro:WindowCommands>
     </metro:MetroWindow.RightWindowCommands>
     <metro:MetroWindow.Resources>
-        <conv:IsEnabledConverter x:Key="enabledConv"/>
+        <conv:ReversedBoolVisibilityConverter x:Key="visibilityBool"/>
     </metro:MetroWindow.Resources>
-    <DockPanel Margin="10">
+    <DockPanel Margin="10" IsEnabled="{Binding}">
         <GroupBox Header="Filtry" Width="225">
             <StackPanel Margin="5">
                 <Label x:Name="Lsz" Content="Specjalizacja"/>
@@ -39,15 +39,18 @@
                 </DockPanel>
             </StackPanel>
         </GroupBox>
-        <Button x:Name="button" Content="Zarezerwuj wizytę" Command="{Binding RegisterVisitCmd}" Margin="10,10,0,5" DockPanel.Dock="Bottom"
-                IsEnabled="{Binding SelectedItem, Converter={StaticResource enabledConv}, ElementName=WynikiWyszukiwania}" Height="26"/>
-        <DataGrid x:Name="WynikiWyszukiwania" Margin="10,10,0,0" ItemsSource="{Binding Doctors}" SelectedItem="{Binding SelectedDoctor, Mode=OneWayToSource}"
-                  AutoGenerateColumns="False" IsReadOnly="True">
-            <DataGrid.Columns>
+        <Button x:Name="button" Content="Zarezerwuj wizytę" Command="{Binding RegisterVisitCmd}" Margin="10,10,0,5" DockPanel.Dock="Bottom" Height="26"/>
+        <Grid>
+            <DataGrid x:Name="WynikiWyszukiwania" Margin="10,10,0,0" ItemsSource="{Binding Doctors}" SelectedItem="{Binding SelectedDoctor, Mode=OneWayToSource}"
+                  AutoGenerateColumns="False" IsReadOnly="True" IsEnabled="{Binding AnyDoctors}">
+                <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding User.Name}" Header="Nazwisko lekarza" Width="*"/>
                 <DataGridTextColumn Binding="{Binding Specialization}" Header="Specjalizacja" Width="*"/>
-                <DataGridTextColumn Binding="{Binding FirstFreeSlot, StringFormat=\{0:dd.MM.yyyy hh:mm\}}" Header="Następna możliwa wizyta" Width="*"/>
+                <DataGridTextColumn Binding="{Binding FirstFreeSlot, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Header="Następna możliwa wizyta" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+            <TextBlock Text="Brak lekarzy do wyświetlenia" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"
+                       Visibility="{Binding AnyDoctors, Converter={StaticResource visibilityBool}}"/>
+        </Grid>
     </DockPanel>
 </metro:MetroWindow>

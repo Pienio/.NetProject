@@ -10,9 +10,10 @@
         xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d" Style="{StaticResource windowStyle}"
-        Title="Wybierz termin wizyty" Height="403" Width="642" Loaded="mainWindow_Loaded">
+        Title="Wybierz termin wizyty" Height="431" Width="597" Loaded="mainWindow_Loaded">
     <metro:MetroWindow.Resources>
         <conv:DoctorsNameConverter x:Key="doctorsName"/>
+        <conv:ReversedBoolVisibilityConverter x:Key="visibility"/>
     </metro:MetroWindow.Resources>
     <DockPanel>
         <TextBlock Margin="10" Text="{Binding CurrentDoctor.User.Name, Converter={StaticResource doctorsName}}" FontSize="16" FontWeight="SemiBold" DockPanel.Dock="Top"/>
@@ -21,57 +22,44 @@
             <Button x:Name="nextWeek" Content="Następny tydzień" HorizontalAlignment="Right" Margin="0,0,19,12" Width="120" Command="{Binding ChangeWeekCmd}" CommandParameter="7"/>
             <Button x:Name="prevWeek" Content="Poprzedni tydzień" HorizontalAlignment="Left" Margin="11,0,0,10" Width="120" Command="{Binding ChangeWeekCmd}" CommandParameter="-7"/>
         </Grid>
-        <ScrollViewer Margin="0,0,0,10">
-            <DataGrid x:Name="daysOfWeek" Margin="10,0,0,0" ItemsSource="{Binding CurrentWeek.Days}" AutoGenerateColumns="False" RowHeaderWidth="0" GridLinesVisibility="Horizontal">
-                <DataGrid.Resources>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Cursor" Value="Hand"/>
-                    </Style>
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel HorizontalAlignment="Left" Margin="10">
-                                    <TextBlock Text="{Binding DayName}" FontWeight="Bold" FontSize="15"/>
-                                    <TextBlock Text="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ListBox x:Name="hoursList" ItemStringFormat="{}{0:HH:mm}" ItemsSource="{Binding Slots}">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="{x:Type ListBoxItem}">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsSelected" Value="true">
-                                                    <Setter Property="Foreground" Value="Black"/>
-                                                    <Setter Property="Background" Value="YellowGreen"/>
-                                                </Trigger>
-                                                <Trigger Property="IsMouseOver" Value="true">
-                                                    <Setter Property="Foreground" Value="Black"/>
-                                                    <Setter Property="Background" Value="YellowGreen"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                            <Style.Resources>
-                                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Red"/>
-                                            </Style.Resources>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding ElementName=mainWindow, Path=DataContext.RegisterVisitCmd}" 
+        <Grid>
+            <ScrollViewer Margin="0,0,0,10">
+                <DataGrid x:Name="daysOfWeek" Margin="10,0,0,0" ItemsSource="{Binding CurrentWeek.Days}" AutoGenerateColumns="False" RowHeaderWidth="0" 
+                      GridLinesVisibility="Horizontal" IsEnabled="{Binding AnyVisits}">
+                    <DataGrid.Resources>
+                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Dzień">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel HorizontalAlignment="Left" Margin="10">
+                                        <TextBlock Text="{Binding DayName}" FontWeight="Bold" FontSize="15"/>
+                                        <TextBlock Text="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Dostępne wizyty" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ListBox x:Name="hoursList" ItemStringFormat="{}{0:HH:mm}" ItemsSource="{Binding Slots}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                <i:InvokeCommandAction Command="{Binding ElementName=mainWindow, Path=DataContext.RegisterVisitCmd}" 
                                                                    CommandParameter="{Binding ElementName=hoursList, Path=SelectedItem}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </ListBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </ScrollViewer>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ListBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+            <TextBlock Text="Brak wizyt do wyświetlenia" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Visibility="{Binding AnyVisits, Converter={StaticResource visibility}}"/>
+        </Grid>
     </DockPanel>
 </metro:MetroWindow>

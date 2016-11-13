@@ -28,7 +28,7 @@ namespace Visits.ViewModels
         public IEnumerable<Doctor> Doctors
         {
             get { return _doctors; }
-            set { _doctors = value; OnPropertyChanged(nameof(Doctors)); }
+            set { _doctors = value; OnPropertyChanged(nameof(Doctors)); OnPropertyChanged(nameof(AnyDoctors)); }
         }
         public IEnumerable<Specialization> Specializations
         {
@@ -50,6 +50,8 @@ namespace Visits.ViewModels
             get { return _searchByName; }
             set { _searchByName = value; OnPropertyChanged(nameof(SearchByNameText)); }
         }
+
+        public bool AnyDoctors => _doctors == null ? false : _doctors.Count() > 0;
 
         public MainWindowViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user)
         {
@@ -96,29 +98,31 @@ namespace Visits.ViewModels
             var wnd = App.Container.Resolve<RegVisit>();
             wnd.SelectedDoctor = SelectedDoctor;
             wnd.Show();
+        }, p =>
+        {
+            return !(_loggedUser.Logged is Doctor) && SelectedDoctor != null;
         });
 
 
-        public ICommand SearchCmd => new Command(p =>
+        public ICommand SearchCmd => new Command(async p =>
         {
             var db = _applicationDataFactory.CreateApplicationData();
             db.Doctors.Load();
-
-            Predicate<Doctor> isValid = (doc) => true;
-            if (SelectedSpecialization != null)
+            
+            IList<Doctor> doctors;
+            string name = SearchByNameText?.ToLower();
+            if (SelectedSpecialization == null)
+                doctors = db.Doctors.Local;
+            else
+                doctors = SelectedSpecialization.Doctors;
+            if (string.IsNullOrWhiteSpace(name))
             {
-                if (SearchByNameText == null)
-                    isValid = (doc) => doc.Specialization.Name == SelectedSpecialization.ToString();
-                else
-                    isValid = (doc) => doc.Specialization.Name == SelectedSpecialization.ToString() && doc.User.Name.ToString().ToLower().Contains(SearchByNameText.ToLower());
+                Doctors = doctors;
+                return;
             }
-            else if (SearchByNameText != null)
-                isValid = (doc) => doc.User.Name.ToString().ToLower().Contains(SearchByNameText.ToLower());
-            else return;
-
-            Doctors = from d in db.Doctors.Local
-                      where isValid(d)
-                      select d;
+            Doctors = await Task.Run(() => from d in db.Doctors.Local
+                                           where d.User.Name.ToString().ToLower().Contains(name)
+                                           select d);
         });
 
         public ICommand EditProfileCmd => new Command(parameter =>
@@ -134,18 +138,9 @@ namespace Visits.ViewModels
             var db = _applicationDataFactory.CreateApplicationData();
             DateTime now = DateTime.Now;
 
-            try
-            {
-                db.Visits.Load();
-                var wnd = App.Container.Resolve<WizList>();
-                wnd.ShowDialog();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
+            db.Visits.Load();
+            var wnd = App.Container.Resolve<WizList>();
+            wnd.ShowDialog();
         });
 
         public ICommand ClearFilters => new Command(p =>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Visits.Utils
 {
-    static class PasswordHasher
+    public static class PasswordHasher
     {
         public static string CreateHash(string input)
         {

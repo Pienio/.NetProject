@@ -22,6 +22,7 @@ namespace Visits.ViewModels
         public WizListViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user) { }
 
         public Person LoggedUser => _loggedUser.Logged;
+        public bool AnyVisits => _visits == null ? false : _visits.Count() > 0;
 
         public IEnumerable<Visit> Visits
         {
@@ -30,6 +31,7 @@ namespace Visits.ViewModels
             {
                 _visits = value;
                 OnPropertyChanged(nameof(Visits));
+                OnPropertyChanged(nameof(AnyVisits));
             }
         }
 

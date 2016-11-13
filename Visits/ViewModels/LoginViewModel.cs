@@ -38,7 +38,7 @@ namespace Visits.ViewModels
         {
             var db = _applicationDataFactory.CreateApplicationData();
             string pps = PasswordHasher.CreateHash(((PasswordBox)p).Password);
-            var e = db.Users.Select(d => d).Where(s => s.PESEL == Pesel && s.Password == pps).ToList();
+            var e = db.Users.Where(s => s.PESEL == Pesel && s.Password == pps).ToList();
             if (e.Count != 0)
             {
                 await _loggedUser.LogIn(e.First().PESEL, e.First().Password, db);       
@@ -46,7 +46,7 @@ namespace Visits.ViewModels
             }
             else
             {
-                MessageBox.Show("Zły login lub hasło");
+                MessageBox.Show("Nieprawidłowy login lub hasło", App.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         });
 

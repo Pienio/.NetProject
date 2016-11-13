@@ -10,8 +10,8 @@
         xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d" ResizeMode="NoResize"
-        x:Name="LoginWindow" Style="{StaticResource windowStyle}"
-        Title="Zaloguj" Height="160.224" Width="272.809">
+        x:Name="LoginWindow" Style="{StaticResource windowStyle}" SaveWindowPosition="False" WindowStartupLocation="CenterScreen"
+        Title="Zaloguj" Height="148.676" Width="264.148">
     <StackPanel Margin="10">
         <DockPanel>
             <Label x:Name="label" Content="PESEL" Width="60" DockPanel.Dock="Left"/>

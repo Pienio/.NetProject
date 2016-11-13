@@ -8,11 +8,10 @@
         xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
          xmlns:conv="clr-namespace:Visits.Converters"
         mc:Ignorable="d" Style="{StaticResource windowStyle}"
-        Title="Twoje wizyty" SizeToContent="Height" Width="608.411">
+        Title="Twoje wizyty" Width="444.411" Height="293">
     <metro:MetroWindow.Resources>
         <conv:BoolVisibilityConverter x:Key="visibilityBool"/>
         <conv:ReversedBoolVisibilityConverter x:Key="rvisibilityBool"/>
-        <conv:ColumnHeaderConverter x:Key="columnHeader"/>
         <conv:VisitParticipantConverter x:Key="visitParticipant"/>
         <conv:VisitsWindowConverter x:Key="visibility"/>
     </metro:MetroWindow.Resources>
@@ -21,31 +20,35 @@
             <ComboBox x:Name="visitsTypeBox" Width="150" Height="10" SelectedItem="{Binding SelectedType, Mode=OneWayToSource}" SelectedIndex="0"/>
         </metro:WindowCommands>
     </metro:MetroWindow.LeftWindowCommands>
-    <StackPanel Margin="10">
+    <Grid Margin="10">
         <FrameworkElement Visibility="Collapsed" x:Name="element"/> <!--Nie usuwać-->
-        <DataGrid Height="178" ItemsSource="{Binding Visits}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0"
-                  GridLinesVisibility="None" CanUserReorderColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nazwisko" Width="*" SortMemberPath="User.Name.Surname">
-                    <DataGridTextColumn.Binding>
-                        <MultiBinding Converter="{StaticResource visitParticipant}">
-                            <Binding ElementName="visitsWnd" Path="DataContext.LoggedUser"/>
-                            <Binding Path="."/>
-                        </MultiBinding>
-                    </DataGridTextColumn.Binding>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Specjalizacja" Binding="{Binding Doctor.Specialization}" Width="*" SortMemberPath="Name"
+        <Grid>
+            <DataGrid ItemsSource="{Binding Visits}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0"
+                  GridLinesVisibility="None" CanUserReorderColumns="False" IsEnabled="{Binding AnyVisits}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nazwisko" Width="*" SortMemberPath="User.Name.Surname">
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding Converter="{StaticResource visitParticipant}">
+                                <Binding ElementName="visitsWnd" Path="DataContext.LoggedUser"/>
+                                <Binding Path="."/>
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Specjalizacja" Binding="{Binding Doctor.Specialization}" Width="*" SortMemberPath="Name"
                                     Visibility="{Binding Source={x:Reference element}, Path=DataContext.LoggedUser, Converter={StaticResource visibility}}">
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Header="Data wizyty" Width="*" />
-                <DataGridTemplateColumn Width="80">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Odwołaj" Padding="5,3,5,3" Command="{Binding ElementName=visitsWnd, Path=DataContext.DeleteVisitCmd}" CommandParameter="{Binding}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </StackPanel>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Header="Data wizyty" Width="*" />
+                    <DataGridTemplateColumn Width="80">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Odwołaj" Padding="5,3,5,3" Command="{Binding ElementName=visitsWnd, Path=DataContext.DeleteVisitCmd}" CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Text="Brak wizyt do wyświetlenia" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"
+                       Visibility="{Binding AnyVisits, Converter={StaticResource rvisibilityBool}}"/>
+        </Grid>
+    </Grid>
 </metro:MetroWindow>

@@ -65,6 +65,7 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="SQLite.CodeFirst, Version=1.2.4.16, Culture=neutral, PublicKeyToken=eb96ba0a78d831a7, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLite.CodeFirst.1.2.4.16\lib\net45\SQLite.CodeFirst.dll</HintPath>
       <Private>True</Private>
@@ -115,7 +116,6 @@
     </Compile>
     <Compile Include="Utils\Command.cs" />
     <Compile Include="Converters\BoolVisibilityConverter.cs" />
-    <Compile Include="Converters\ColumnHeaderConverter.cs" />
     <Compile Include="Converters\DoctorsNameConverter.cs" />
     <Compile Include="Converters\IsEnabledConverter.cs" />
     <Compile Include="Converters\LoginButtonContentConverter.cs" />

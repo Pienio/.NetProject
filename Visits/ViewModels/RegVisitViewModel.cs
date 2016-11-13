@@ -35,8 +35,9 @@ namespace Visits.ViewModels
         public Week CurrentWeek
         {
             get { return _currentWeek; }
-            set { _currentWeek = value; OnPropertyChanged(nameof(CurrentWeek)); }
+            set { _currentWeek = value; OnPropertyChanged(nameof(CurrentWeek)); OnPropertyChanged(nameof(AnyVisits)); }
         }
+        public bool AnyVisits => _currentWeek == null ? false : _currentWeek.Days.Length > 0;
 
         public ICommand ChangeWeekCmd => new Command(async p => CurrentWeek = await Week.Create(CurrentDoctor, CurrentWeek.From.AddDays(int.Parse(p.ToString())), _applicationDataFactory.CreateApplicationData()));
         public ICommand RegisterVisitCmd => new Command(async p =>
@@ -54,6 +55,7 @@ namespace Visits.ViewModels
                 if (!(_loggedUser.Logged is Patient))
                 {
                     MessageBox.Show("Tylko pacjenci mogą rejestrować się na wizyty", App.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                    _loggedUser.LogOut();
                     return;
                 }
             }
@@ -126,7 +128,9 @@ namespace Visits.ViewModels
                     if (time != null)
                     {
                         current = new DateTime(current.Year, current.Month, current.Day, time.Start, 0, 0);
-                        var visits = await GetVisitsDates(db, doc, current);
+                        var visits = await Task.Run(() => (from v in doc.Visits
+                                                           where v.Date.Year == current.Year && v.Date.Month == current.Month && v.Date.Day == current.Day
+                                                           select v.Date));
                         for (DateTime s = current; s.Hour < time.End; s = s.AddMinutes(30))
                             if (!visits.Contains(s) && s >= DateTime.Now.AddHours(1))
                                 slots.Add(s);
@@ -136,13 +140,6 @@ namespace Visits.ViewModels
                     i++;
                 }
                 return new Week(monday, days.ToArray());
-            }
-
-            private async static Task<List<DateTime>> GetVisitsDates(IApplicationData db, Doctor doctor, DateTime day)
-            {
-                return await (from v in db.Visits
-                              where v.Doctor.Key == doctor.Key && v.Date.Year == day.Year && v.Date.Month == day.Month && v.Date.Day == day.Day
-                              select v.Date).ToListAsync();
             }
 
             public static int DayOfWeekNo(DateTime day)
