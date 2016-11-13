@@ -9,6 +9,7 @@ namespace DatabaseAccess.Model
 {
     public class Specialization : Entity
     {
+        [Required]
         public virtual string Name { get; set; }
          
         public Specialization() : base() { }

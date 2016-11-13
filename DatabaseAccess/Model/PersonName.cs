@@ -11,7 +11,9 @@ namespace DatabaseAccess.Model
     [ComplexType]
     public class PersonName
     {
+        [Required]
         public virtual string Name { get; set; }
+        [Required]
         public virtual string Surname { get; set; }
 
         public override string ToString()

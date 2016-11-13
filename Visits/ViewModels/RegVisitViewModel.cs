@@ -70,7 +70,7 @@ namespace Visits.ViewModels
             if (contains)
                 MessageBox.Show("Dany termin został już zajęty. Nastąpi odświeżenie widoku", App.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             else
-                await AddVisit(new Visit(LoggedPatient, (from d in db1.Doctors where d.Key == CurrentDoctor.Key select d).First(), selectedDate), db1);
+                await Task.Run(() => LoggedPatient.Visits.Add(new Visit(LoggedPatient, (from d in db1.Doctors where d.Key == CurrentDoctor.Key select d).First(), selectedDate)));
             db1.Commit();
             CurrentWeek = await Week.Create(CurrentDoctor, CurrentWeek.Days[0].Date, db1);
             if (!contains)

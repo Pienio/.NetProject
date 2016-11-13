@@ -9,13 +9,14 @@ namespace DatabaseAccess.Model
 {
     public class User : Entity
     {
+        [Required]
         public string PESEL { get; set; }
-        /// <summary>
-        /// Trzeba będzie zrobić szyfrowanie przy secie 
-        /// </summary>
+        [Required]
         public string Password { get; set; }
+        [Required]
         public virtual PersonName Name { get; set; }
 
+        [Required]
         public DocOrPat Kind { get; set; }
     }
 }

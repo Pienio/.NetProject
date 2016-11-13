@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace DatabaseAccess.Model
     /// </summary>
     public abstract class Person : Entity
     {
-        public User User { get; set; }
+        [Required]
+        public virtual User User { get; set; }
+        public virtual IList<Visit> Visits { get; set; } = new List<Visit>();
     }
 }

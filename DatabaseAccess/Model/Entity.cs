@@ -14,7 +14,7 @@ namespace DatabaseAccess.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Key { get; set; }
 
-        [Timestamp]
-        public byte[] Version { get; set; }
+        [Required]
+        public DateTime Version { get; set; } = DateTime.Now;
     }
 }
