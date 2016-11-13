@@ -77,8 +77,37 @@ namespace Visits.ViewModels
                         result = "Prosze wprowadzić hasło, aby zatwierdzić zmiany!";
 
                 }
+                if (fieldName == "PE")
+                {
 
-                
+                    if (PE <= PS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "WE")
+                {
+
+                    if (WE <= WS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "SE")
+                {
+
+                    if (SE <= SS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "CE")
+                {
+
+                    if (CE <= CS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "PIE")
+                {
+
+                    if (PIE <= PIS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+
                 return result;
             }
         }

@@ -124,6 +124,36 @@ namespace Visits.ViewModels
                     if (Pas != null && Pas != Pasp)
                         result = "Hasła muszą być takie same!";
                 }
+                if (fieldName == "PE")
+                {
+
+                    if (PE<=PS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "WE")
+                {
+
+                    if (WE <= WS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "SE")
+                {
+
+                    if (SE <= SS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "CE")
+                {
+
+                    if (CE <= CS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "PIE")
+                {
+
+                    if (PIE <= PIS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
                 return result;
             }
         }
