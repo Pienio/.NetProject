@@ -18,13 +18,14 @@ using System.Security;
 using DatabaseAccess.Model;
 using Microsoft.Practices.Unity;
 using Visits.ViewModels;
+using MahApps.Metro.Controls;
 
 namespace Visits
 {
     /// <summary>
     /// Interaction logic for Register.xaml
     /// </summary>
-    public partial class Register : Window
+    public partial class Register : MetroWindow
     {
         [Dependency]
         public RegisterViewModel ViewModel

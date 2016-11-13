@@ -1,4 +1,5 @@
 ﻿using DatabaseAccess;
+using MahApps.Metro.Controls;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections;
@@ -21,7 +22,7 @@ namespace Visits
     /// <summary>
     /// Interaction logic for WizList.xaml
     /// </summary>
-    public partial class WizList : Window
+    public partial class WizList : MetroWindow
     {
         [Dependency]
         public WizListViewModel ViewModel
@@ -34,11 +35,6 @@ namespace Visits
             InitializeComponent();
 
             visitsTypeBox.ItemsSource = Enum.GetValues(typeof(WizListViewModel.VisitsType));
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ViewModel?.Initialize();
         }
     }
 }

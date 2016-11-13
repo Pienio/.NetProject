@@ -17,16 +17,8 @@ namespace DatabaseAccess
         DbSet<Visit> Visits { get; set; }
         
         void Fill();
-        //To Dodałem
-        void SaveChangesOn();
-        void DetachOn();
 
-        //void AddPatient(Patient nowy);
-        //void AddSpecialization(Specialization nowy);
-        //void AddDoctor(Doctor nowy);
-        //void AddVisit(Visit nowy);
-        //void UpdateDoctor(Doctor nowy);
-        //void UpdatePatient(Patient nowy);
+        void SaveChangesOn();
     }
     
     public interface ITransactionalApplicationData : IApplicationData

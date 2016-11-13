@@ -1,5 +1,6 @@
 ﻿using DatabaseAccess;
 using DatabaseAccess.Model;
+using MahApps.Metro.Controls;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Visits
     /// <summary>
     /// Interaction logic for Edit.xaml
     /// </summary>
-    public partial class Edit : Window
+    public partial class Edit : MetroWindow
     {
         
         [Dependency]

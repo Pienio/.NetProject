@@ -1,5 +1,6 @@
 ﻿using DatabaseAccess;
 using DatabaseAccess.Model;
+using MahApps.Metro.Controls;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Visits
     /// <summary>
     /// Interaction logic for RegVisit.xaml
     /// </summary>
-    public partial class RegVisit : Window
+    public partial class RegVisit : MetroWindow
     {
         [Dependency]
         public RegVisitViewModel ViewModel

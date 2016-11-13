@@ -8,6 +8,9 @@ namespace DatabaseAccess.Model
 {
     public class Patient : Person
     {
-
+        public override string ToString()
+        {
+            return User.Name.ToString();
+        }
     }
 }

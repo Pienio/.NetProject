@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using MahApps.Metro.Controls;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Visits
     /// <summary>
     /// Interaction logic for Login.xaml
     /// </summary>
-    public partial class Login : Window
+    public partial class Login : MetroWindow
     {
         [Dependency]
         public LoginViewModel ViewModel

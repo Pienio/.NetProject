@@ -21,7 +21,8 @@ namespace DatabaseAccess.Model
 
         public bool IsTransactionRunning { get; private set; } = false;
         public bool CommitUnfinishedTransaction { get; set; } = true;
-        private bool IsDisposed { get; set; } = false;
+
+        public bool IsDisposed { get; set; } = false;
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -162,28 +163,12 @@ namespace DatabaseAccess.Model
             else
                 throw new InvalidOperationException("Brak aktywnej transakcji.");
         }
-        //I to dodałem
+
         public void SaveChangesOn()
         {
             this.SaveChanges();
-
         }
-        public void DetachOn()
-        {
-          ObjectContext a= (ObjectContext)((IObjectContextAdapter)this).ObjectContext;
-            unchecked
-            {
-                foreach (var entry in a.ObjectStateManager.GetObjectStateEntries(
-                    EntityState.Added | EntityState.Deleted | EntityState.Modified | EntityState.Unchanged))
-                {
-                    if (entry.Entity != null)
-                    {
-                        a.Detach(entry.Entity);
-                    }
-                }
-            }
 
-        }
         public void Rollback()
         {
             if (IsTransactionRunning)

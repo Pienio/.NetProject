@@ -16,13 +16,11 @@ using Microsoft.Practices.Unity;
 
 namespace Visits.ViewModels
 {
-    public class RegVisitViewModel : INotifyPropertyChanged
+    public class RegVisitViewModel : ViewModel
     {
         private Doctor _currentDoctor;
         private Week _currentWeek;
-
-        private IApplicationDataFactory _applicationDataFactory;
-        private ILogUserService _loggedUser;
+        
         private Patient LoggedPatient
         {
             get { return _loggedUser.Logged as Patient; }
@@ -72,20 +70,11 @@ namespace Visits.ViewModels
 
           
             });
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public RegVisitViewModel(ILogUserService user, IApplicationDataFactory factory)
+        
+        public RegVisitViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user)
         {
             if (user.Logged != null && !(user.Logged is Patient))
                 throw new InvalidOperationException("Widok rejestracji wizyt jest dostępny tylko dla pacjentów i anonimowych użytkowników.");
-            _loggedUser = user;
-            _applicationDataFactory = factory;
         }
 
         public async Task Load()

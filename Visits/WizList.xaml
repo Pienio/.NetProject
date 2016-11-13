@@ -1,47 +1,62 @@
-﻿<Window x:Class="Visits.WizList"
+﻿<metro:MetroWindow x:Class="Visits.WizList"
+        x:Name="visitsWnd"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visits"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
          xmlns:conv="clr-namespace:Visits.Converters"
-        mc:Ignorable="d"
-        Title="Twoje wizyty" SizeToContent="Height" Width="608.411" Loaded="Window_Loaded">
-    <Window.Resources>
+        mc:Ignorable="d" Style="{StaticResource windowStyle}"
+        Title="Twoje wizyty" SizeToContent="Height" Width="608.411">
+    <metro:MetroWindow.Resources>
         <conv:BoolVisibilityConverter x:Key="visibilityBool"/>
         <conv:ReversedBoolVisibilityConverter x:Key="rvisibilityBool"/>
-    </Window.Resources>
+        <conv:ColumnHeaderConverter x:Key="columnHeader"/>
+        <conv:VisitParticipantConverter x:Key="visitParticipant"/>
+        <conv:VisitsWindowConverter x:Key="visibility"/>
+    </metro:MetroWindow.Resources>
     <StackPanel Margin="10">
         <TextBlock Text="Wybrane wizyty:"/>
         <ComboBox x:Name="visitsTypeBox" Width="150" Height="23" HorizontalAlignment="Left" Margin="0,5,0,0"
                   SelectedItem="{Binding SelectedType, Mode=OneWayToSource}" SelectedIndex="0"/>
-        <StackPanel Margin="0,20,0,0">
-            <ListView x:Name="Listawizyt" Visibility="{Binding Who, ConverterParameter=Inverted, Converter={StaticResource rvisibilityBool}, UpdateSourceTrigger=PropertyChanged}" 
-        		HorizontalAlignment="Stretch" Height="178" VerticalAlignment="Top" ItemsSource="{Binding Wat}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Doctor.User.Name}" Header="Nazwisko lekarza"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Doctor.Specialization}" Header="Specjalizacja"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Date, StringFormat=\{0:dd.MM.yyyy hh:mm\}}" Header="Data Wizyty"/>
-                        <GridViewColumn>
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Odwołaj" Padding="5,3,5,3"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <ListView x:Name="ListaWizyt1" Visibility="{Binding Who, ConverterParameter=True, Converter={StaticResource visibilityBool}, UpdateSourceTrigger=PropertyChanged}"  
-        		Height="219" HorizontalAlignment="Stretch" ItemsSource="{Binding Wat}" >
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Patient.User.Name}" Header="Nazwisko Pacjenta"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Date, StringFormat=\{0:dd.MM.yyyy hh:mm\}}" Header="Data Wizyty"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </StackPanel>
+        <FrameworkElement Visibility="Collapsed" x:Name="element"/> <!--Nie usuwać-->
+        <DataGrid Height="178" Margin="0,20,0,0" ItemsSource="{Binding Visits}" IsReadOnly="True" AutoGenerateColumns="False" RowHeaderWidth="0"
+                  GridLinesVisibility="None">
+            <DataGrid.Resources>
+                <Style x:Key="cellStyle" TargetType="{x:Type DataGridCell}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Grid Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center" Margin="3,0,0,0"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nazwisko" Width="*" CellStyle="{StaticResource cellStyle}">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding Converter="{StaticResource visitParticipant}">
+                            <Binding ElementName="visitsWnd" Path="DataContext.LoggedUser"/>
+                            <Binding Path="."/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Specjalizacja" Binding="{Binding Doctor.Specialization}" Width="*" CellStyle="{StaticResource cellStyle}"
+                                    Visibility="{Binding Source={x:Reference element}, Path=DataContext.LoggedUser, Converter={StaticResource visibility}}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Header="Data wizyty" Width="*" CellStyle="{StaticResource cellStyle}"/>
+                <DataGridTemplateColumn Width="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Odwołaj" Padding="5,3,5,3" Command="{Binding ElementName=visitsWnd, Path=DataContext.DeleteVisitCmd}" CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </StackPanel>
-</Window>
+</metro:MetroWindow>

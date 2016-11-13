@@ -13,44 +13,25 @@ using Visits.Services;
 
 namespace Visits.ViewModels
 {
-    public class WizListViewModel : INotifyPropertyChanged
+    public class WizListViewModel : ViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private IApplicationDataFactory _applicationDataFactory;
-        private ILogUserService _loggedUser;
-        private Patient _Patient;
-        private Doctor _Doctor;
-        private IEnumerable<Visit> wizytyakt;
-        private IEnumerable<Visit> wizytyarc;
-        private IEnumerable<Visit> _wat;
-        private bool _WHO;
+        private IEnumerable<Visit> _visits;
         private VisitsType _selectedType;
 
-        public WizListViewModel(ILogUserService user, IApplicationDataFactory factory)
-        {
-            _loggedUser = user;
-            _applicationDataFactory = factory;
+        public WizListViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user) { }
 
+        public Person LoggedUser => _loggedUser.Logged;
 
-        }
-        public bool Who
+        public IEnumerable<Visit> Visits
         {
-            get { return _WHO; }
+            get { return _visits; }
             set
             {
-                _WHO = value;
-                OnPropertyChanged("Who");
+                _visits = value;
+                OnPropertyChanged(nameof(Visits));
             }
         }
-        public IEnumerable<Visit> Wat
-        {
-            get { return _wat; }
-            set
-            {
-                _wat = value;
-                OnPropertyChanged("Wat");
-            }
-        }
+
         public VisitsType SelectedType
         {
             get { return _selectedType; }
@@ -59,65 +40,39 @@ namespace Visits.ViewModels
                 _selectedType = value;
                 OnPropertyChanged(nameof(SelectedType));
 
-                Wat = value == VisitsType.Planowane ? wizytyakt : wizytyarc;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                SetVisits();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
         }
 
-        virtual protected void OnPropertyChanged(string propertyName)
+        public ICommand DeleteVisitCmd => new Command(async p =>
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public void Initialize()
+            Visit v = p as Visit;
+            if (MessageBox.Show("Czy na pewno chcesz odwołać zaznaczoną wizytę?", App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
+            var db = _applicationDataFactory.CreateTransactionalApplicationData();
+            await Task.Run(() => db.Visits.Remove(v));
+            db.Commit();
+            await SetVisits();
+
+            MessageBox.Show("Odwołano wizytę z powodzeniem", App.Name, MessageBoxButton.OK, MessageBoxImage.Information);
+        });
+
+        private async Task SetVisits()
         {
             var db = _applicationDataFactory.CreateApplicationData();
-            try
-            {
-                if (_loggedUser.Logged is Patient)
-                {
-                    _Patient = _loggedUser.Logged as Patient;
-
-                    DateTime now = DateTime.Now;
-
-                    var da = from v in db.Visits.Local
-                             where v.Patient.Key == _Patient.Key && DateTime.Compare(v.Date, now) > 0
-                             select new Visit { Key = v.Key, Version = v.Version, Doctor = v.Doctor, Patient = v.Patient, Date = v.Date };
-
-                    var dar = from v in db.Visits.Local
-                              where v.Patient.Key == _Patient.Key && DateTime.Compare(v.Date, now) <= 0
-                              select new Visit { Key = v.Key, Version = v.Version, Doctor = v.Doctor, Patient = v.Patient, Date = v.Date };
-                    wizytyakt = da;
-                    wizytyarc = dar;
-                    Who = false;
-
-                }
-                else
-                {
-                    _Doctor = _loggedUser.Logged as Doctor;
-                    DateTime now = DateTime.Now;
-
-                    var da = from v in db.Visits.Local
-                             where v.Doctor.Key == _Doctor.Key && DateTime.Compare(v.Date, now) > 0
-                             select new Visit { Key = v.Key, Version = v.Version, Doctor = v.Doctor, Patient = v.Patient, Date = v.Date };
-
-                    var dar = from v in db.Visits.Local
-                              where v.Doctor.Key == _Doctor.Key && DateTime.Compare(v.Date, now) <= 0
-                              select new Visit { Key = v.Key, Version = v.Version, Doctor = v.Doctor, Patient = v.Patient, Date = v.Date };
-                    wizytyakt = da;
-                    wizytyarc = dar;
-                    Who = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-
-            }
-
-            Wat = wizytyakt;
-            OnPropertyChanged("Wat");
-            OnPropertyChanged("Who");
-
+            DateTime now = DateTime.Now;
+            IEnumerable<Visit> visits = null;
+            if (_loggedUser.Logged is Patient)
+                visits = await Task.Run(() => from v in db.Visits.Local
+                                            where v.Patient.Key == _loggedUser.Logged.Key && (SelectedType == VisitsType.Archiwalne ? v.Date <= now : v.Date > now)
+                                            select v);
+            else if (_loggedUser.Logged is Doctor)
+                visits = await Task.Run(() => from v in db.Visits.Local
+                                            where v.Doctor.Key == _loggedUser.Logged.Key && (SelectedType == VisitsType.Archiwalne ? v.Date <= now : v.Date > now)
+                                            select v);
+            Visits = visits;
         }
 
         public enum VisitsType { Planowane, Archiwalne }

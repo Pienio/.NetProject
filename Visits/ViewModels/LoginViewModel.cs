@@ -14,27 +14,13 @@ using Visits.Services;
 
 namespace Visits.ViewModels
 {
-    public class LoginViewModel: INotifyPropertyChanged, IDataErrorInfo
+    public class LoginViewModel: ViewModel, IDataErrorInfo
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private IApplicationDataFactory _applicationDataFactory;
-        private ILogUserService _loggedUser;
         string _pesel="";
         string _pas = "";
 
-        public LoginViewModel(ILogUserService user, IApplicationDataFactory factory)
-        {
-            _loggedUser = user;
-            _applicationDataFactory = factory;
-
-
-        }
-
-        virtual protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public LoginViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user) { }
+        
         public string Error
         {
             get { return String.Empty; }

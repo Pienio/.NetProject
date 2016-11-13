@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace Visits
     /// <summary>
     /// Interaction logic for LekPac.xaml
     /// </summary>
-    public partial class LekPac : Window
+    public partial class LekPac : MetroWindow
     {
         private int result=0;
         public LekPac()

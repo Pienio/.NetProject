@@ -29,15 +29,14 @@ namespace Visits
         {
             base.OnStartup(e);
 
-            IUnityContainer container = new UnityContainer();
-            ContainerInitializer.Initialize(container);
-            container.RegisterInstance<ILogUserService>(new LogUserService());
+            Container = new UnityContainer();
+            ContainerInitializer.Initialize(Container);
+            Container.RegisterInstance<ILogUserService>(new LogUserService());
 
-            _factory = container.Resolve<IApplicationDataFactory>();
+            _factory = Container.Resolve<IApplicationDataFactory>();
             _factory.CreateApplicationData().Fill();
 
-            MainWindow = container.Resolve<MainWindow>();
-            Container = container;
+            MainWindow = Container.Resolve<MainWindow>();
             MainWindow.Show();
         }
     } 
