@@ -124,6 +124,36 @@ namespace Visits.ViewModels
                     if (Pas != null && Pas != Pasp)
                         result = "Hasła muszą być takie same!";
                 }
+                if (fieldName == "PE")
+                {
+
+                    if (PE<=PS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "WE")
+                {
+
+                    if (WE <= WS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "SE")
+                {
+
+                    if (SE <= SS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "CE")
+                {
+
+                    if (CE <= CS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
+                if (fieldName == "PIE")
+                {
+
+                    if (PIE <= PIS)
+                        result = "Godzina końcowa musi być większa od początkowej";
+                }
                 return result;
             }
         }
@@ -173,7 +203,7 @@ namespace Visits.ViewModels
             set
             {
                 _pasp = value;
-                _User.Password = HashPassword(value);
+                _User.Password =PasswordHasher.CreateHash(value);
                 OnPropertyChanged("Pasp");
             }
         }
@@ -296,21 +326,7 @@ namespace Visits.ViewModels
             await App.Current.Dispatcher.BeginInvoke((Action)(() => { context.Doctors.Add(item); }));
             
         }
-        private string HashPassword(string input)
-        {
-            StringBuilder sBuilder = new StringBuilder();
-            using (MD5 md5Hash = MD5.Create())
-            {
-
-                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-                for (int i = 0; i < data.Length; i++)
-                {
-                    sBuilder.Append(data[i].ToString("x2"));
-                }
-            }
-
-            return sBuilder.ToString();
-        }
+    
         public ICommand ChangePass => new Command(p =>
         {
           

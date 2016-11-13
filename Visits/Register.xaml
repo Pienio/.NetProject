@@ -84,7 +84,7 @@
          Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="1">
                     <Binding  Path="PS"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
@@ -92,7 +92,7 @@
          Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="1">
                     <Binding  Path="PE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
@@ -100,7 +100,7 @@
          Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="2">
                     <Binding  Path="WS"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
@@ -108,7 +108,7 @@
          Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="2">
                     <Binding  Path="WE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
@@ -116,7 +116,7 @@
          Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="3">
                     <Binding  Path="SS"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
@@ -124,7 +124,7 @@
          Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="3">
                     <Binding  Path="SE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
@@ -132,7 +132,7 @@
          Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="4">
                     <Binding  Path="CS"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
@@ -140,7 +140,7 @@
          Style="{StaticResource textBoxError}" Height="23" Margin="19,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="2" Grid.Row="4">
                     <Binding  Path="CE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
@@ -148,7 +148,7 @@
          Style="{StaticResource textBoxError}" Height="23" Margin="46,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Grid.Column="1" Grid.Row="5">
                     <Binding  Path="PIS"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
@@ -156,7 +156,7 @@
          Style="{StaticResource textBoxError}" Height="23" TextWrapping="Wrap"  VerticalAlignment="Top" Width="38" Margin="19,2,0,0" Grid.Column="2" Grid.Row="5">
                     <Binding  Path="PIE"  ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" UpdateSourceTrigger="PropertyChanged"  >
                         <Binding.ValidationRules>
-                            <vali:IntegerValidation ValidationStep="RawProposedValue"></vali:IntegerValidation>
+                            <vali:IntegerValidation ValidationStep="RawProposedValue" MinValue="0" MaxValue="23"></vali:IntegerValidation>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
