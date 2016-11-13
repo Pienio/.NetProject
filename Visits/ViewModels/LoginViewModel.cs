@@ -10,121 +10,51 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Visits.EventArgsTypes;
 using Visits.Services;
+using Visits.Utils;
 
 namespace Visits.ViewModels
 {
-    public class LoginViewModel: ViewModel, IDataErrorInfo
+    public class LoginViewModel : ViewModel
     {
-        string _pesel="";
-        string _pas = "";
+        public event EventHandler<CloseRequestedEventArgs> CloseRequested;
+        private string _pesel = "";
+
+        public string Pesel
+        {
+            get { return _pesel; }
+            set { _pesel = value; OnPropertyChanged(nameof(Pesel)); }
+        }
 
         public LoginViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user) { }
-        
-        public string Error
-        {
-            get { return String.Empty; }
-        }
-        public ICommand ChangePass => new Command(p =>
-        {
 
-            PasswordBox a = (PasswordBox)p;
-            Pas = a.Password;
-            
-        });
         public ICommand Close => new Command(p =>
         {
-
-            Window k = p as Window;
-            k.Close();
-
+            OnCloseRequested(false);
         });
+
         public ICommand LoginUser => new Command(async p =>
         {
             var db = _applicationDataFactory.CreateApplicationData();
-            string pps = HashPassword(Pas);
+            string pps = PasswordHasher.CreateHash(((PasswordBox)p).Password);
             var e = db.Users.Select(d => d).Where(s => s.PESEL == Pesel && s.Password == pps).ToList();
-            if(e.Count!=0)
+            if (e.Count != 0)
             {
                 await _loggedUser.LogIn(e.First().PESEL, e.First().Password, db);
-                Window k = p as Window;
-                k.Close();
+                OnCloseRequested(true);
             }
             else
             {
                 MessageBox.Show("Zły login lub hasło");
             }
-            
-
         });
-        public string this[string fieldName]
+
+        protected virtual void OnCloseRequested(bool dialogResult)
         {
-            get
-            {
-                string result = null;
-                if (fieldName == "Pesel")
-                {
-
-                    if (string.IsNullOrEmpty(Pesel))
-                        result = "Pesel nie może być pusty!";
-                    int a;
-
-                    if (Int32.TryParse(Pesel, out a))
-                        result = "Pesel musi być ciągiem cyfr!";
-                    if (Pesel.Length != 11)
-                        result = "Pesel musi mieć 11 cyfr!";
-
-                }
-                if (fieldName == "Pas")
-                {
-
-                    if (Pas.Length < 6)
-                        result = "Hasło musi mieć 6 znaków!";
-
-                }
-
-                return result;
-            }
+            if (CloseRequested != null)
+                CloseRequested(this, new CloseRequestedEventArgs(dialogResult));
         }
-        public string Pesel
-        {
-            get { return _pesel; }
-            set
-            {
-                _pesel = value;
-                OnPropertyChanged("Pesel");
 
-            }
-        }
-        public string Pas
-        {
-            get { return _pas; }
-            set
-            {
-                _pas = value;
-                OnPropertyChanged("Pas");
-                
-            }
-        }
-        public void Initialize()
-        {
-            OnPropertyChanged("Pesel");
-            OnPropertyChanged("Pas");
-        }
-        private string HashPassword(string input)
-        {
-            StringBuilder sBuilder = new StringBuilder();
-            using (MD5 md5Hash = MD5.Create())
-            {
-
-                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-                for (int i = 0; i < data.Length; i++)
-                {
-                    sBuilder.Append(data[i].ToString("x2"));
-                }
-            }
-
-            return sBuilder.ToString();
-        }
     }
 }

@@ -21,6 +21,7 @@ using Visits.Services;
 using Microsoft.Practices.Unity;
 using Visits.ViewModels;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Visits
 {

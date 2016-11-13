@@ -11,26 +11,19 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d" ResizeMode="NoResize"
         x:Name="LoginWindow" Style="{StaticResource windowStyle}"
-        Title="Zaloguj" Height="160.224" Width="319" Loaded="Window_Loaded">
-    <StackPanel Margin="10,10,30,10">
+        Title="Zaloguj" Height="160.224" Width="272.809">
+    <StackPanel Margin="10">
         <DockPanel>
             <Label x:Name="label" Content="PESEL" Width="60" DockPanel.Dock="Left"/>
-            <TextBox x:Name="usr" Height="27" Validation.ErrorTemplate="{StaticResource errorTemplate}"
-         Style="{StaticResource textBoxError}" Text="{Binding Pesel, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            <TextBox x:Name="usr" Height="27" Text="{Binding Pesel, UpdateSourceTrigger=PropertyChanged}" />
         </DockPanel>
         <DockPanel Margin="0,5,0,0">
             <Label x:Name="label1" Content="Hasło" Width="60" DockPanel.Dock="Left"/>
-            <PasswordBox x:Name="password" Height="26" Validation.ErrorTemplate="{StaticResource errorTemplate}" Tag="{Binding Pas, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-         Style="{StaticResource passwordBoxError}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PasswordChanged">
-                        <i:InvokeCommandAction Command="{Binding ChangePass}"  CommandParameter="{Binding ElementName=password}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </PasswordBox>
+            <PasswordBox x:Name="password" Height="26"/>
         </DockPanel>
         <Grid Margin="0,15,0,0">
-            <Button x:Name="Log" Content="Zaloguj" HorizontalAlignment="Right" Width="90" Height="26" Command="{Binding LoginUser}" CommandParameter="{Binding ElementName=LoginWindow}" >
+            <Button x:Name="Log" Content="Zaloguj" HorizontalAlignment="Right" Width="70" Height="26" IsDefault="True"
+                    Command="{Binding LoginUser}" CommandParameter="{Binding ElementName=password}">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                         <Setter Property="IsEnabled" Value="false" />
@@ -48,8 +41,8 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="90" Height="26"  Margin="0,0,95,0" Command="{Binding Close}" CommandParameter="{Binding ElementName=LoginWindow}" />
-               
+            <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="70" Height="26" IsCancel="True"
+                    Margin="0,0,75,0" Command="{Binding Close}" CommandParameter="{Binding ElementName=LoginWindow}" />
         </Grid>
     </StackPanel>
 </metro:MetroWindow>

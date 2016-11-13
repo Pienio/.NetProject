@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Visits.Services;
+using Visits.Utils;
 
 namespace Visits.ViewModels
 {
@@ -49,7 +50,7 @@ namespace Visits.ViewModels
             get { return _searchByName; }
             set { _searchByName = value; OnPropertyChanged(nameof(SearchByNameText)); }
         }
-        
+
         public MainWindowViewModel(ILogUserService user, IApplicationDataFactory factory) : base(factory, user)
         {
             _loggedUser.LoggedChanged += (o, e) => OnPropertyChanged(nameof(LoggedUserName));
@@ -57,26 +58,21 @@ namespace Visits.ViewModels
 
         public ICommand LoginCmd => new Command(p =>
         {
-            
-                if (_loggedUser.Logged == null)
-                {
+
+            if (_loggedUser.Logged == null)
+            {
                 var db = _applicationDataFactory.CreateApplicationData();
                 var wnd = App.Container.Resolve<Login>();
                 wnd.ShowDialog();
 
             }
-                else
-                {
+            else
+            {
                 _loggedUser.LogOut();
-                }
-                OnPropertyChanged(nameof(LoggedUserName));
-            
-           
-            
-
+            }
+            OnPropertyChanged(nameof(LoggedUserName));
         });
 
-        
         public ICommand RegisterCmd => new Command(parameter =>
         {
 
@@ -85,21 +81,12 @@ namespace Visits.ViewModels
             if (lekpac.GetResult() != 0)
             {
                 var db = _applicationDataFactory.CreateApplicationData();
-              
-                    
-                    
-                    var wnd = App.Container.Resolve<Register>();
-                    if (lekpac.GetResult() == 2)
-                        wnd.WH = false;
-                    else
-                        wnd.WH = true;
-
-                
-                    wnd.Show();
-           
-                
-
-               
+                var wnd = App.Container.Resolve<Register>();
+                if (lekpac.GetResult() == 2)
+                    wnd.WH = false;
+                else
+                    wnd.WH = true;
+                wnd.Show();
             }
         });
 
@@ -117,7 +104,7 @@ namespace Visits.ViewModels
             var db = _applicationDataFactory.CreateApplicationData();
             db.Doctors.Load();
 
-            Predicate<Doctor> isValid;
+            Predicate<Doctor> isValid = (doc) => true;
             if (SelectedSpecialization != null)
             {
                 if (SearchByNameText == null)
@@ -128,11 +115,10 @@ namespace Visits.ViewModels
             else if (SearchByNameText != null)
                 isValid = (doc) => doc.User.Name.ToString().ToLower().Contains(SearchByNameText.ToLower());
             else return;
-            
+
             Doctors = from d in db.Doctors.Local
                       where isValid(d)
                       select d;
-
         });
 
         public ICommand EditProfileCmd => new Command(parameter =>
@@ -153,7 +139,7 @@ namespace Visits.ViewModels
                 db.Visits.Load();
                 var wnd = App.Container.Resolve<WizList>();
                 wnd.ShowDialog();
-               
+
             }
             catch (Exception ex)
             {
@@ -162,18 +148,26 @@ namespace Visits.ViewModels
 
         });
 
+        public ICommand ClearFilters => new Command(p =>
+        {
+            SelectedSpecialization = null;
+            SearchByNameText = "";
+
+            SearchCmd.Execute(null);
+        });
+
         public void Initialize()
         {
             var db = _applicationDataFactory.CreateApplicationData();
 
-            var specs = new List<Specialization>();
-            specs.Add(new Specialization("- brak -"));
-            specs.AddRange(db.Specializations);
-            Specializations = specs;
+            db.Specializations.Load();
+            Specializations = db.Specializations.Local;
 
             db.Users.Load();
             db.Doctors.Load();
             Doctors = db.Doctors.Local;
+
+            _loggedUser.LogIn("95122907757", PasswordHasher.CreateHash("panda2"), _applicationDataFactory.CreateApplicationData());
         }
     }
 }
