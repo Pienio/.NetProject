@@ -35,6 +35,7 @@ namespace Visits.ViewModels
             }
         }
 
+        public bool CanUserDeleteVisits => SelectedType == VisitsType.Planowane;
         public VisitsType SelectedType
         {
             get { return _selectedType; }
@@ -42,7 +43,7 @@ namespace Visits.ViewModels
             {
                 _selectedType = value;
                 OnPropertyChanged(nameof(SelectedType));
-
+                OnPropertyChanged(nameof(CanUserDeleteVisits));
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 SetVisits();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
