@@ -40,8 +40,8 @@ namespace DatabaseAccess.Model
             {
                 IApplicationData db = new ApplicationDataFactory().CreateApplicationData();
                 DateTime current = NextSlot(DateTime.Now.AddMinutes(60));
-                var visits = (from v in db.Visits
-                              where v.Doctor.Key == Key && v.Date >= current
+                var visits = (from v in Visits
+                              where v.Date >= current
                               select v.Date).ToList();
                 visits.Sort((v1, v2) => DateTime.Compare(v1, v2));
 

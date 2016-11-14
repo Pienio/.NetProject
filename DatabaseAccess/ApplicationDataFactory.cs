@@ -39,8 +39,7 @@ namespace DatabaseAccess
                     instance.Commit();
                 else
                     instance.Rollback();
-                if (beginTransaction)
-                    instance.BeginTransaction();
+                instance.BeginTransaction();
             }
             return instance;
         }

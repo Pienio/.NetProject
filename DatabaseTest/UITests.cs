@@ -27,14 +27,15 @@ namespace DatabaseTest
                 Password = PasswordHasher.CreateHash("123456"),
                 PESEL = "11111111111"
             };
+            Patient q = new Patient() { User = p.User };
             Database.Patients.Add(p);
             Database.SaveChangesOn();
             Database.DetachOn();
 
             ILogUserService log = new LogUserService();
             await log.LogIn("11111111111", PasswordHasher.CreateHash("123456"), Database);
-            Assert.IsTrue(p != log.Logged);
-            Assert.IsTrue(p.IsDeepEqual(log.Logged));
+            Assert.IsTrue(q != log.Logged);
+            Assert.IsTrue(q.IsDeepEqual(log.Logged));
         }
     }
 }
