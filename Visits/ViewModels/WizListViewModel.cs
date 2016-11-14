@@ -62,6 +62,10 @@ namespace Visits.ViewModels
             MessageBox.Show("Odwołano wizytę z powodzeniem", App.Name, MessageBoxButton.OK, MessageBoxImage.Information);
         });
 
+        public void Invoke()
+        {
+            SetVisits().Wait();
+        }
         private async Task SetVisits()
         {
             var db = _applicationDataFactory.CreateApplicationData();

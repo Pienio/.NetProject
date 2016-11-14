@@ -313,9 +313,22 @@ namespace Visits.ViewModels
 
         });
 
-      
-  
-        
+
+        public ICommand RegisterSpecialization => new Command(p =>
+        {
+            AddSpec a = App.Container.Resolve<AddSpec>();
+            a.ShowDialog();
+            if (!a.DialogResult.GetValueOrDefault(false))
+                return;
+            var db = _applicationDataFactory.CreateApplicationData();
+
+            var epec = new List<Specialization>();
+            epec.AddRange(db.Specializations);
+            SpecList = epec;
+            Spec = epec.Last();
+
+        });
+
         private async Task AddSpec(Specialization item, ITransactionalApplicationData context)
         {
             await App.Current.Dispatcher.BeginInvoke((Action)(() => { context.Specializations.Add(item); }));

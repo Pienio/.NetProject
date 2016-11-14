@@ -41,7 +41,7 @@
         </GroupBox>
         <Button x:Name="button" Content="Zarezerwuj wizytę" Command="{Binding RegisterVisitCmd}" Margin="10,10,0,5" DockPanel.Dock="Bottom" Height="26"/>
         <Grid>
-            <DataGrid x:Name="WynikiWyszukiwania" Margin="10,10,0,0" ItemsSource="{Binding Doctors}" SelectedItem="{Binding SelectedDoctor, Mode=OneWayToSource}"
+            <DataGrid x:Name="WynikiWyszukiwania" Margin="10,10,0,0" ItemsSource="{Binding Doctors}" SelectedItem="{Binding SelectedDoctor, Mode=OneWayToSource}" SelectionMode="Single"
                   AutoGenerateColumns="False" IsReadOnly="True" IsEnabled="{Binding AnyDoctors}">
                 <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding User.Name}" Header="Nazwisko lekarza" Width="*"/>

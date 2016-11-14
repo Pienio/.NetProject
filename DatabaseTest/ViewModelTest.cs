@@ -6,31 +6,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Visits.Services;
+using System.Data.Entity;
 
 namespace DatabaseTest
 {
-    public abstract class DataTest
+    public abstract class ViewModelTest
     {
-        public ITransactionalApplicationData Database { get; set; }
-        public IApplicationData Dtb { get; set; }
+        public ITransactionalApplicationData db { get; set; }
+        public ApplicationDataFactory Fac {
+            get; set; }
+        public ILogUserService asd
+        {
+            get; set;
+        } 
 
         [TestInitialize]
         public void Initialize()
         {
-            var factory = new ApplicationDataFactory();
-            Database = factory.CreateTransactionalApplicationData();
-          //  Database.CommitUnfinishedTransaction = false;
-           
-           // Dtb = factory.CreateApplicationData();
+            Fac = new ApplicationDataFactory();
+            asd = new LogUserService();
+            db = Fac.CreateTransactionalApplicationData();
+
+            
+
+
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            Database.Dispose();
+            db.ToCommit = true;
+            db.Rollback();
+            db.Dispose();
         }
-
         protected Doctor CreateDoctor()
         {
             var spec = new Specialization("Okulista");
@@ -62,4 +71,4 @@ namespace DatabaseTest
             return p;
         }
     }
-}
+    }

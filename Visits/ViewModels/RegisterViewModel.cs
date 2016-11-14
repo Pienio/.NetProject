@@ -38,6 +38,7 @@ namespace Visits.ViewModels
 
             }
         }
+        
 
         public ICommand RegisterUser => new Command(async p =>
         {
@@ -72,9 +73,11 @@ namespace Visits.ViewModels
                 return;
             var db = _applicationDataFactory.CreateApplicationData();
 
-            var Spec = new List<Specialization>();
-            Spec.AddRange(db.Specializations);
-            SpecList = Spec;
+            var epec = new List<Specialization>();
+            epec.AddRange(db.Specializations);
+            SpecList = epec;
+            Spec = epec.Last();
+
         });
         
         public string Error
@@ -317,11 +320,11 @@ namespace Visits.ViewModels
                 OnPropertyChanged("PIE");
             }
         }
-        private async Task AddPatient(Patient item, ITransactionalApplicationData context)
+        public async Task AddPatient(Patient item, ITransactionalApplicationData context)
         {
             await Task.Run(() => context.Patients.Add(item));
         }
-        private async Task AddDoctor(Doctor item, ITransactionalApplicationData context)
+        public async Task AddDoctor(Doctor item, ITransactionalApplicationData context)
         {
             await App.Current.Dispatcher.BeginInvoke((Action)(() => { context.Doctors.Add(item); }));
             

@@ -131,6 +131,7 @@ namespace Visits.ViewModels
             var wnd = App.Container.Resolve<Edit>();
             wnd.ShowDialog();
             OnPropertyChanged(nameof(LoggedUserName));
+            SearchCmd.Execute(null);
         });
 
         public ICommand VisitsViewCmd => new Command(p =>

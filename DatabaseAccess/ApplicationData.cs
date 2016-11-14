@@ -22,7 +22,8 @@ namespace DatabaseAccess.Model
         public bool CommitUnfinishedTransaction { get; set; } = true;
 
         public bool IsDisposed { get; set; } = false;
-
+        public bool ToCommit { get; set; } = true;
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<ApplicationData>(modelBuilder);
@@ -107,18 +108,22 @@ namespace DatabaseAccess.Model
         {
             if (IsTransactionRunning)
             {
-                try
+                if(ToCommit)
                 {
-                    SaveChanges();
-                    Database.CurrentTransaction.Commit();
-                    IsTransactionRunning = false;
+                    try
+                    {
+                        SaveChanges();
+                        Database.CurrentTransaction.Commit();
+                        IsTransactionRunning = false;
+                    }
+                    catch
+                    {
+                        Database.CurrentTransaction.Rollback();
+                        IsTransactionRunning = false;
+                        throw;
+                    }
                 }
-                catch
-                {
-                    Database.CurrentTransaction.Rollback();
-                    IsTransactionRunning = false;
-                    throw;
-                }
+               
             }
             else
                 throw new InvalidOperationException("Brak aktywnej transakcji.");
