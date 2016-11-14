@@ -117,11 +117,13 @@ namespace Visits.ViewModels
                 doctors = SelectedSpecialization.Doctors;
             if (string.IsNullOrWhiteSpace(name))
             {
-                Doctors = doctors;
+                Doctors = from d in doctors
+                          where d.User.Active
+                          select d;
                 return;
             }
             Doctors = await Task.Run(() => from d in db.Doctors.Local
-                                           where d.User.Name.ToString().ToLower().Contains(name)
+                                           where d.User.Name.ToString().ToLower().Contains(name)&&d.User.Active
                                            select d);
         });
 

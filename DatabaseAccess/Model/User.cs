@@ -18,5 +18,7 @@ namespace DatabaseAccess.Model
 
         [Required]
         public DocOrPat Kind { get; set; }
+        [Required]
+        public bool Active { get; set; } = true;
     }
 }

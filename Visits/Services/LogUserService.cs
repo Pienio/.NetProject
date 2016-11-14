@@ -31,7 +31,7 @@ namespace Visits.Services
         public async Task LogIn(string PESEL, string password, IApplicationData db)
         {
             var user = await Task.Run( () => (from u in db.Users
-                                             where u.PESEL == PESEL && u.Password == password
+                                             where u.PESEL == PESEL && u.Password == password&&u.Active
                                              select u).First());
             Person person;
             if (user.Kind == DocOrPat.Doctor)

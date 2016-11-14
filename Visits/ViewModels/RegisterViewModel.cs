@@ -43,16 +43,31 @@ namespace Visits.ViewModels
         public ICommand RegisterUser => new Command(async p =>
         {
             var db = _applicationDataFactory.CreateTransactionalApplicationData();
+
             Person a;
            
                 if (!_Who)
                 {
+                IEnumerable<User> asd = db.Users.Select(d => d).Where(d => d.PESEL == _Patient.User.PESEL);
+                         if (asd.Count() != 0)
+                         {
+                             MessageBox.Show("Istnieje juz użytkownik o takim peselu");
+                             return;
+                            }
+                   
+
                     await AddPatient(_Patient, db);
                     a = _Patient;
                 }
                 else
                 {
-                    await AddDoctor(us, db);
+                        IEnumerable<User> asd = db.Users.Select(d => d).Where(d => d.PESEL == us.User.PESEL);
+                         if (asd.Count() != 0)
+                             {
+                          MessageBox.Show("Istnieje juz użytkownik o takim peselu");
+                         return;
+                         }
+                await AddDoctor(us, db);
                     a = us;
                 }
 
