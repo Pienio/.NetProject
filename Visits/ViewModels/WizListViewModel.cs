@@ -52,8 +52,8 @@ namespace Visits.ViewModels
         public ICommand DeleteVisitCmd => new Command(async p =>
         {
             Visit v = p as Visit;
-            if (MessageBox.Show("Czy na pewno chcesz odwołać zaznaczoną wizytę?", App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                return;
+        //    if (MessageBox.Show("Czy na pewno chcesz odwołać zaznaczoną wizytę?", App.Name, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+          //      return;
             var db = _applicationDataFactory.CreateTransactionalApplicationData();
             await Task.Run(() => db.Visits.Remove(v));
             db.Commit();

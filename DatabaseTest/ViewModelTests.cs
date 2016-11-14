@@ -21,7 +21,7 @@ namespace DatabaseTest
         public void WizListViewModelCheck()
         {
 
-
+            db.ToCommit = false;
             Patient pat = CreatePatient();
             Doctor doc = CreateDoctor();
             db.Patients.Add(pat);
@@ -44,20 +44,12 @@ namespace DatabaseTest
             
             Assert.IsTrue(gb.IsDeepEqual(ec));
 
-            a.DeleteVisitCmd.Execute(a.Visits.First());
-            a.Invoke();
-            gb = a.Visits;
-            ec= from v in db.Visits.Local
-                where v.Patient.Key == asd.Logged.Key && (v.Date > DateTime.Now)
-                select v;
-
-            Assert.IsTrue(gb.IsDeepEqual(ec));
 
             asd.LogOut();
             asd.LogIn(doc.User.PESEL, doc.User.Password, db).Wait();
             ec = from v in db.Visits.Local
-                                    where v.Doctor.Key == asd.Logged.Key && (v.Date > DateTime.Now)
-                                    select v;
+                 where v.Doctor.Key == asd.Logged.Key && (v.Date > DateTime.Now)
+                 select v;
             a.Invoke();
             gb = a.Visits;
 

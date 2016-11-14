@@ -196,6 +196,7 @@
                 </Button.Style>
             </Button>
             <Button x:Name="Anul" Content="Anuluj" HorizontalAlignment="Right" Width="89" Height="25"  Margin="0,0,99,0" Command="{Binding Close}" CommandParameter="{Binding ElementName=EditWindow}"/>
+            <Button x:Name="DeleteAcc" Content="Usuń konto" Margin="23,0,192.8,0.4"/>
         </Grid>
     </StackPanel>
 </metro:MetroWindow>

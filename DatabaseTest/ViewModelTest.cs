@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Visits.Services;
 using System.Data.Entity;
+using System.IO;
 
 namespace DatabaseTest
 {
@@ -24,6 +25,7 @@ namespace DatabaseTest
         [TestInitialize]
         public void Initialize()
         {
+           // File.Delete("Wizyty.sqlite");
             Fac = new ApplicationDataFactory();
             asd = new LogUserService();
             db = Fac.CreateTransactionalApplicationData();

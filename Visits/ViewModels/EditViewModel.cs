@@ -287,7 +287,7 @@ namespace Visits.ViewModels
         
             
         });
-        public ICommand UpdateUser => new Command( p =>
+        public ICommand UpdateUser => new Command(p =>
         {
            
                 var db = _applicationDataFactory.CreateTransactionalApplicationData();
@@ -314,6 +314,7 @@ namespace Visits.ViewModels
         });
 
 
+        
         public ICommand RegisterSpecialization => new Command(p =>
         {
             AddSpec a = App.Container.Resolve<AddSpec>();

@@ -3,6 +3,7 @@ using DatabaseAccess.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,9 +19,10 @@ namespace DatabaseTest
         [TestInitialize]
         public void Initialize()
         {
+            
             var factory = new ApplicationDataFactory();
             Database = factory.CreateTransactionalApplicationData();
-          //  Database.CommitUnfinishedTransaction = false;
+            Database.CommitUnfinishedTransaction = false;
            
            // Dtb = factory.CreateApplicationData();
         }

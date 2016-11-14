@@ -45,5 +45,10 @@ namespace Visits
             ViewModel?.Initialize();
         
         }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
