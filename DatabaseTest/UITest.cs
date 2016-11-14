@@ -14,7 +14,7 @@ using Visits.Utils;
 namespace DatabaseTest
 {
     [TestClass]
-    public class UITests : DataTest
+    public class UITest : DataTest
     {
         [TestMethod]
         public async Task AuthenticationTest()
@@ -27,14 +27,14 @@ namespace DatabaseTest
                 Password = PasswordHasher.CreateHash("123456"),
                 PESEL = "11111111111"
             };
-            Patient q = new Patient() { User = p.User };
             Database.Patients.Add(p);
             Database.SaveChangesOn();
+            Patient q = new Patient() { Key = p.Key, User = p.User, Version = p.Version };
             Database.DetachOn();
 
             ILogUserService log = new LogUserService();
             await log.LogIn("11111111111", PasswordHasher.CreateHash("123456"), Database);
-            Assert.IsTrue(q != log.Logged);
+            Assert.IsTrue(p != log.Logged);
             Assert.IsTrue(q.IsDeepEqual(log.Logged));
         }
     }

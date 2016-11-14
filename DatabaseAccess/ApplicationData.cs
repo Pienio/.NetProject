@@ -30,6 +30,7 @@ namespace DatabaseAccess.Model
         }
         public ApplicationData(bool runTransaction) : base()
         {
+            Configuration.ProxyCreationEnabled = false;
             if (runTransaction)
             {
                 Database.BeginTransaction();
