@@ -38,7 +38,7 @@
                                     Visibility="{Binding Source={x:Reference element}, Path=DataContext.LoggedUser, Converter={StaticResource visibility}}">
                     </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Header="Data wizyty" Width="*" />
-                    <DataGridTemplateColumn Width="80">
+                    <DataGridTemplateColumn Width="80" Visibility="{Binding CanUserDeleteVisits, Converter={StaticResource visibilityBool}}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Odwołaj" Padding="5,3,5,3" Command="{Binding ElementName=visitsWnd, Path=DataContext.DeleteVisitCmd}" CommandParameter="{Binding}"/>
